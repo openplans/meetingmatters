@@ -1,1 +1,14 @@
 django
+
+# Database management and migration
+south
+
+# Search
+django-haystack
+
+# Authentication
+django-social-auth
+
+# Testing and debugging
+django-nose
+django-debug-toolbar

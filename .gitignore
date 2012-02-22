@@ -1,2 +1,5 @@
 *~
+*.py[c|o]
 .env/
+publicmeeting/project/settings/local.py
+publicmeeting/publicmeeting.db
