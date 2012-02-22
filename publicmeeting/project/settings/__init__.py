@@ -16,12 +16,21 @@ def get_local(varname, default=None):
     environment file on Dotcloud, to a local module on a development server.
 
     """
+    # Try the local module first.
     try:
         from . import local
         return getattr(local, varname)
     except ImportError, AttributeError:
         pass
 
+    # Try the os environment.
+    import os
+    try:
+        return os.environ[varname]
+    except KeyError:
+        pass
+
+    # If we get here and no default is supplied, raise an exception.
     if default is None:
         raise Exception('No value supplied for variable "' + str(varname) + '"')
 
