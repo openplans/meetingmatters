@@ -30,6 +30,27 @@ def get_local(varname, default=None):
     except KeyError:
         pass
 
+    # Heroku DATABASE_URL-based DB configuration.
+    if varname == 'DATABASES' and 'DATABASE_URL' in os.environ:
+        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+
+        # Ensure default database exists.
+        scheme_to_engine = {
+            'postgres': 'django.db.backends.postgresql_psycopg2',
+            'mysql': 'django.db.backends.mysql',
+        }
+
+        return {
+            'default': {
+                'ENGINE': scheme_to_engine[url.scheme],
+                'NAME': url.path[1:],
+                'USER': url.username,
+                'PASSWORD': url.password,
+                'HOST': url.hostname,
+                'PORT': url.port,
+            }
+        }
+
     # If we get here and no default is supplied, raise an exception.
     if default is None:
         raise Exception('No value supplied for variable "' + str(varname) + '"')
