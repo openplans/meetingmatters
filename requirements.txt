@@ -1,4 +1,12 @@
+# The server
 django
+# Unlike the gunicorn defined in Heroku's Django example, we're going
+# to use one of the async worker classes, "gevent". Using an async worker class
+# is recommended when serving traffic directly to gunicorn (which is what
+# happens under the Heroku Cedar stack).
+gunicorn
+gevent
+greenlet
 
 # Database management and migration
 psycopg2
