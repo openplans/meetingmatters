@@ -184,6 +184,7 @@ COMMUNITY_APPS = (
     'django_nose',
     'debug_toolbar',
     'social_auth',
+    'bootstrapped',
 )
 
 MY_REUSABLE_APPS = (
