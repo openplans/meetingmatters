@@ -32,6 +32,7 @@ def get_local(varname, default=None):
 
     # Heroku DATABASE_URL-based DB configuration.
     if varname == 'DATABASES' and 'DATABASE_URL' in os.environ:
+        import urlparse
         url = urlparse.urlparse(os.environ['DATABASE_URL'])
 
         # Ensure default database exists.
