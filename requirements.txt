@@ -1,6 +1,7 @@
 django
 
 # Database management and migration
+psycopg2
 south
 
 # Search
