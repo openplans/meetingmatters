@@ -5,7 +5,7 @@
   <div class="hero-unit">
     <h1>Public Meeting I/O</h1>
     <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-    <p><a class="btn btn-primary btn-large">Log in with Twitter</a></p>
+    <p><a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Log in with Twitter</a></p>
   </div> <!-- hero -->
 
 {% endblock %}

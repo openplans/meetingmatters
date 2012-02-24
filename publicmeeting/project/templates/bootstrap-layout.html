@@ -47,6 +47,13 @@
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
+
+            {% if user.is_authenticated %}
+            <p class="navbar-text pull-right">
+              Logged in as <a href="#">{{ user.username }}</a>
+            </p>
+            {% endif %}
+
           </div><!--/.nav-collapse -->
         </div>
       </div>

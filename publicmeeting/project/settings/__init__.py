@@ -142,6 +142,25 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+)
+
+TEMPLATE_CONTTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages"
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+)
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -158,21 +177,29 @@ ROOT_URLCONF = 'project.urls'
 # Authentication
 #
 
+AUTHENTICATION_BACKENDS = (
+    # See http://django-social-auth.readthedocs.org/en/latest/configuration.html
+    # for list of available backends.
+    'social_auth.backends.twitter.TwitterBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL          = '/login-form/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL    = '/'
+
 ###############################################################################
 #
 # 3rd-party service configuration and keys
 #
 
+TWITTER_CONSUMER_KEY         = get_local('TWITTER_CONSUMER_KEY')
+TWITTER_CONSUMER_SECRET      = get_local('TWITTER_CONSUMER_SECRET')
+
 ###############################################################################
 #
 # Site search configuration
 #
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
 
 ###############################################################################
 #
