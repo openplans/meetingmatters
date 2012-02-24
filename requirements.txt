@@ -18,6 +18,8 @@ django-haystack
 # Authentication
 django-social-auth
 
+git+git://github.com/mjumbewu/django-bootstrapped.git@bootstrap2#egg=django-bootstrapped
+
 # Testing and debugging
 django-nose
 django-debug-toolbar
