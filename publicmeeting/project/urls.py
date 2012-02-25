@@ -20,5 +20,7 @@ urlpatterns = patterns('',
     url(r'', include('social_auth.urls')),
     url(r'', include('django.contrib.auth.urls')),
 
+    url(r'^meetings/', include('create_meeting.urls')),
+
     url(r'^$', TemplateView.as_view(template_name='project-home.html')),
 )

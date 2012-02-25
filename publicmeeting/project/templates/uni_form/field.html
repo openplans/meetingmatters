@@ -1,0 +1,37 @@
+{% load datetime_fields %}
+
+{% if field.is_hidden %}
+    {{ field }}
+{% else %}
+<div class="control-group {% if field.errors %}error{% endif %}">
+    <label for="{{ field.auto_id }}" class="control-label">
+        {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
+    </label>
+    <div class="controls">
+        {% if field|is_datefield %}
+          <div class="input-append dateinput">
+        {% endif %}
+
+        {% if field|is_timefield %}
+          <div class="input-append timeinput">
+        {% endif %}
+
+        {{ field }}
+        {% if field|is_datefield %}<span class="add-on"><i class="icon-calendar" style="opacity: 0.4"></i></span>{% endif %}
+        {% if field|is_timefield %}<span class="add-on"><i class="icon-time" style="opacity: 0.4"></i></span>{% endif %}
+
+        {% if field|is_datefield or field|is_timefield %}
+          </div>
+        {% endif %}
+
+        {% if field.errors %}
+            <span class="help-inline">{% for error in field.errors %}{{ error }}<br/> {% endfor %}</span>
+        {% endif %}
+        {% if field.help_text%}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

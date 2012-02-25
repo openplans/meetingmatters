@@ -1,0 +1,64 @@
+{% extends "bootstrap-layout.html" %}
+{% load uni_form_tags %}
+
+{% block bootstrap_container_content %}
+
+    <div class="row">
+      <div class="span8">
+        <form method="POST" class="form-horizontal">
+          <legend>Step 1: Identifying Information</legend>
+
+          <div class="control-group">
+            <label class="control-label">Meeting Name</label>
+            <div class="controls">
+              <input type="text" class="span6" value="Philly City Council Rules">
+              <p class="help-block" class="span6">The meeting name should be descriptive.  What makes a good meeting name?  What makes a bad one?</p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Start Time</label>
+            <div class="controls">
+              <span class="input-append">
+                <input type="text" class="span3" value="February 22, 2012"><span class="add-on" style="margin-right: 10px"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+              </span>
+              <span class="input-append">
+                <input type="text" class="span2" value="10:00 AM"><span class="add-on" style="margin-right: 10px"><i class="icon-time" style="opacity: 0.4"></i></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">End Time</label>
+            <div class="controls">
+              <span class="input-append">
+                <input type="text" class="span3" value="February 22, 2012"><span class="add-on" style="margin-right: 10px"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+              </span>
+              <span class="input-append">
+                <input type="text" class="span2" value="12:00 PM"><span class="add-on" style="margin-right: 10px"><i class="icon-time" style="opacity: 0.4"></i></span>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <a href="create_meeting1.html" class="btn">Cancel</a>
+            <a href="#" class="btn btn-primary pull-right">Next</a>
+          </div>
+        </form>
+      </div>
+
+      <div class="span4">
+        <div class="alert alert-info">
+          <p>We've found the following meetings that seem similar to yours.  Consider modifying or attending one of these instead.</p>
+
+          <h5><a href="create_meeting3.html">Philadelphia City Council Committee on Rules</a></h5>
+          <h6>Wednesday, 22 February, 2012</h5>
+          <h6>10:00 AM - 12:00 PM</h5>
+
+          <hr>
+          <p>If your event does not appear above, sorry for the inconvenience.</p>
+        </div>
+      </div>
+    </div> <!-- row -->
+
+{% endblock %}

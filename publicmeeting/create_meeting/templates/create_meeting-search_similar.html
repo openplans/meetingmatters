@@ -1,0 +1,24 @@
+{% extends "bootstrap-layout.html" %}
+{% load uni_form_tags %}
+
+{% block bootstrap_container_content %}
+
+    <div class="row">
+      <div class="span8">
+
+        {% uni_form form form.helper %}
+
+        <script>
+          $(document).ready(function() {
+	          $( ".dateinput input" ).datepicker();
+          });
+        </script>
+
+      </div>
+
+      <div class="span3 well">
+        <p>Enter the name and time of the meeting.  Before creating the meeting, we will search to see whether there are any similar meetings that already exist.</p>
+      </div>
+    </div> <!-- row -->
+
+{% endblock %}

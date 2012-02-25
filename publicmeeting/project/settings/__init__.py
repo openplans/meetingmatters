@@ -188,7 +188,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_URL          = '/login-form/'
+LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/'
 
@@ -216,13 +216,16 @@ COMMUNITY_APPS = (
     'debug_toolbar',
     'social_auth',
     'bootstrapped',
+    'uni_form',
 )
 
 MY_REUSABLE_APPS = (
+    'datetime_fields',
 )
 
 PROJECT_APPS = (
     'project',
+    'create_meeting',
 )
 
 INSTALLED_APPS = (
@@ -234,7 +237,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.comments',
-) + COMMUNITY_APPS + MY_REUSABLE_APPS + PROJECT_APPS
+) + PROJECT_APPS + MY_REUSABLE_APPS + COMMUNITY_APPS
 
 ################################################################################
 #
