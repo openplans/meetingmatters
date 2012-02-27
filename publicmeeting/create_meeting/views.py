@@ -3,21 +3,27 @@ from django.http import HttpResponseRedirect
 from django.views import generic as views
 
 from . import forms
+from project import models
 
 class CheckForSimilarMeetingsView (views.FormView):
     form_class = forms.CheckForSimilarMeetingsForm
     template_name = 'create_meeting-search_similar.html'
-    
+
     def get_success_url(self):
-    	return reverse('create_meeting_fill_info')
+        return reverse('create_meeting_fill_info')
+
 
 
 class FillInMeetingInfoView (views.FormView):
     form_class = forms.FillInMeetingInfoForm
     template_name = 'create_meeting-fill_info.html'
-    
+
     def get_success_url(self):
-    	return '/meetings/create/finish'
+        return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.meeting.slug})
 
     def get_initial(self):
-    	return self.request.GET
+        return self.request.GET
+
+    def form_valid(self, form):
+        self.meeting = form.save()
+        return super(FillInMeetingInfoView, self).form_valid(form)

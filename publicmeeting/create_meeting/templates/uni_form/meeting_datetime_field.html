@@ -1,0 +1,48 @@
+<div class="control-group {% if field.errors %}error{% endif %}">
+    <label for="{{ field.auto_id }}" class="control-label">
+        {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
+    </label>
+    <div class="controls">
+
+          <span class="input-append">
+            <input type="text" class="span3" name="{{ field.name }}_0" id="id_{{ field.name }}_0" value="{{ field.value.0 }}"><span class="add-on" style="margin-right: 10px"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+          </span>
+          <span class="input-append">
+            <input type="text" class="span2" name="{{ field.name }}_1" id="id_{{ field.name }}_1" value="{{ field.value.1 }}"><span class="add-on" style="margin-right: 10px"><i class="icon-time" style="opacity: 0.4"></i></span>
+          </span>
+
+
+        <script>
+          function zeroFill( number, width ) {
+            width -= number.toString().length;
+            if ( width > 0 ) {
+              return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+            }
+            return number;
+          }
+
+          $(document).ready(function() {
+            var timeList = [];
+            var h, m, ap;
+
+            for (h = 1; h <= 12; h++)
+              for (m = 0; m < 60; m+=30) {
+                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' AM');
+                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' PM');
+            }
+
+	          $( "#id_{{ field.name }}_0" ).datepicker();
+            $( "#id_{{ field.name }}_1" ).autocomplete({source: timeList, delay: 0});
+          });
+        </script>
+
+        {% if field.errors %}
+            <span class="help-inline">{% for error in field.errors %}{{ error }}<br/> {% endfor %}</span>
+        {% endif %}
+        {% if field.help_text%}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="control-group {% if field.errors %}error{% endif %}">
+    <label for="{{ field.auto_id }}" class="control-label">
+        {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
+    </label>
+    <div class="controls">
+        <div class="input-append">
+            {{ field }}<span class="add-on"><i class="icon-map-marker" style="opacity: 0.4"></i></span>
+        </div>
+
+        {% if field.errors %}
+            <span class="help-inline">{% for error in field.errors %}{{ error }}<br/> {% endfor %}</span>
+        {% endif %}
+
+        <div style="padding-top: 10px; padding-bottom: 10px; width: 570px; height: 200px" class="venue_location_map"></div>
+
+        {% if field.help_text%}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>

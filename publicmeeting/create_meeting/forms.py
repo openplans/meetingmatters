@@ -4,75 +4,72 @@ from django.core.urlresolvers import reverse
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
+from project import models
+
 class CheckForSimilarMeetingsForm (forms.Form):
-    name = forms.CharField(
+    title = forms.CharField(
         label="Meeting Name",
         help_text="The meeting name should be descriptive. What makes a good meeting name? What makes a bad one?",
         widget=forms.TextInput(attrs={'class':'span6'})
     )
-
-    start_date = forms.DateField(
-        label="Start Time"
+    begin_time = forms.SplitDateTimeField(
+        label="Start time",
+        input_time_formats=('%H:%M', '%I:%M %p')
     )
-    start_time = forms.TimeField(
-        label="",
-        widget=forms.TextInput(attrs={'placeholder':'10:00 AM'}),
-        input_formats=('%H:%M', '%I:%M %p')
-    )
-
-    end_date = forms.DateField(
-        label="End Time"
-    )
-    end_time = forms.TimeField(
-        label="",
-        widget=forms.TextInput(attrs={'placeholder':'12:00 PM'}),
-        input_formats=('%H:%M', '%I:%M %p')
+    end_time = forms.SplitDateTimeField(
+        label="End time",
+        input_time_formats=('%H:%M', '%I:%M %p')
     )
 
     def __init__(self, *args, **kwargs):
 
         self.helper = FormHelper()
-        self.helper.form_method = 'GET'
-        self.helper.form_action = reverse('create_meeting_fill_info')
         self.helper.form_class = 'form-horizontal'
 
         self.helper.layout = Layout(
             Fieldset(
                 'Step 1: Check whether meeting exists',
-                'name', 'start_date', 'start_time',
-                'end_date', 'end_time',
+                'title', 'begin_time', 'end_time',
             ),
             ButtonHolder(
-                Submit('check', 'Next', css_class='btn btn-large btn-primary pull-right')
+                Submit('check', 'Next', css_class='btn btn-primary pull-right')
             )
         )
         return super(CheckForSimilarMeetingsForm, self).__init__(*args, **kwargs)
 
 
-class FillInMeetingInfoForm (forms.Form):
-    name = forms.CharField(
+class FillInMeetingInfoForm (forms.ModelForm):
+    title = forms.CharField(
         label="Meeting Name",
         help_text="The meeting name should be descriptive. What makes a good meeting name? What makes a bad one?",
         widget=forms.TextInput(attrs={'class':'span6'})
     )
+    begin_time = forms.SplitDateTimeField(
+        label="Start time",
+        input_time_formats=('%H:%M', '%I:%M %p')
+    )
+    end_time = forms.SplitDateTimeField(
+        label="End time",
+        input_time_formats=('%H:%M', '%I:%M %p')
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(attrs={'class':'span6'}),
+        help_text="Give readers an idea of the purpose of the meeting, as well as what will be discussed. If there is an agenda, include that as well.",
+        required=False
+    )
+    venue_name = forms.CharField(
+        label="Venue Address",
+        widget=forms.TextInput(attrs={'class':'span5'})
+    )
+    venue_additional = forms.CharField(
+        label="Notes",
+        widget=forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
+        required=False
+    )
 
-    start_date = forms.DateField(
-        label="Start Time"
-    )
-    start_time = forms.TimeField(
-        label="",
-        widget=forms.TextInput(attrs={'placeholder':'10:00 AM'}),
-        input_formats=('%H:%M', '%I:%M %p')
-    )
-
-    end_date = forms.DateField(
-        label="End Time"
-    )
-    end_time = forms.TimeField(
-        label="",
-        widget=forms.TextInput(attrs={'placeholder':'12:00 PM'}),
-        input_formats=('%H:%M', '%I:%M %p')
-    )
+    class Meta:
+        model = models.Meeting
+        exclude = ('speakers', 'attendees', 'slug')
 
     def __init__(self, *args, **kwargs):
 
@@ -84,11 +81,15 @@ class FillInMeetingInfoForm (forms.Form):
         self.helper.layout = Layout(
             Fieldset(
                 'Step 2: Fill in general information',
-                'name', 'start_date', 'start_time',
-                'end_date', 'end_time',
+                'title', 'begin_time', 'end_time',
+                'description',
+            ),
+            Fieldset(
+                'Step 3: Enter the location',
+                'venue_name', 'venue_additional'
             ),
             ButtonHolder(
-                Submit('check', 'Next', css_class='btn btn-large btn-primary pull-right')
+                Submit('check', 'Next', css_class='btn btn-primary pull-right')
             )
         )
         return super(FillInMeetingInfoForm, self).__init__(*args, **kwargs)
