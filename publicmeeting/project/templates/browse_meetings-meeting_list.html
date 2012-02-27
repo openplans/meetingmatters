@@ -1,0 +1,14 @@
+{% extends "bootstrap-layout.html" %}
+
+{% block bootstrap_container_content %}
+
+  <h2>Meetings</h2>
+  <ul>
+    {% for meeting in meetings %}
+      <li>
+        <h3><a href="{% url browse_meetings_meeting_detail slug=meeting.slug %}">{{ meeting.title }}</a></h3>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

@@ -2,6 +2,8 @@ from django.conf.urls.defaults import patterns, include, url
 
 from django.views.generic import TemplateView
 
+from . import views
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -21,6 +23,11 @@ urlpatterns = patterns('',
     url(r'', include('django.contrib.auth.urls')),
 
     url(r'^meetings/', include('create_meeting.urls')),
+
+    url(r'^meetings/$', views.MeetingListView.as_view(),
+        name='browse_meetings_meeting_list'),
+    url(r'^meetings/(?P<slug>.+)$', views.MeetingDetailView.as_view(),
+        name='browse_meetings_meeting_detail'),
 
     url(r'^$', TemplateView.as_view(template_name='project-home.html')),
 )
