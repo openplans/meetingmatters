@@ -4,11 +4,20 @@
     </label>
     <div class="controls">
 
+          {# sometimes the field value is a datetime, sometimes it's a pair :( #}
           <span class="input-append">
+            {% if field.value.date %}
             <input type="text" class="span3" name="{{ field.name }}_0" id="id_{{ field.name }}_0" value="{{ field.value|date:"SHORT_DATE_FORMAT" }}"><span class="add-on" style="margin-right: 10px"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+            {% else %}
+            <input type="text" class="span3" name="{{ field.name }}_0" id="id_{{ field.name }}_0" value="{{ field.value.0 }}"><span class="add-on" style="margin-right: 10px"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+            {% endif %}
           </span>
           <span class="input-append">
+            {% if field.value.time %}
             <input type="text" class="span2" name="{{ field.name }}_1" id="id_{{ field.name }}_1" value="{{ field.value|time:"h:i A" }}"><span class="add-on" style="margin-right: 10px"><i class="icon-time" style="opacity: 0.4"></i></span>
+            {% else %}
+            <input type="text" class="span2" name="{{ field.name }}_1" id="id_{{ field.name }}_1" value="{{ field.value.1 }}"><span class="add-on" style="margin-right: 10px"><i class="icon-time" style="opacity: 0.4"></i></span>
+            {% endif %}
           </span>
 
 

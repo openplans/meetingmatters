@@ -10,6 +10,17 @@
 
       </div>
 
+      <script>
+        $('#id_begin_time_0').change(function() {
+          var begin_date = $('#id_begin_time_0').val(),
+              end_date = $('#id_end_time_0').val();
+
+          if (end_date === '') {
+            $('#id_end_time_0').val(begin_date);
+          }
+        })
+      </script>
+
       <div class="span3 well">
         <p>Enter the name and time of the meeting.  Before creating the meeting, we will search to see whether there are any similar meetings that already exist.</p>
       </div>
