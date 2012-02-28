@@ -225,6 +225,7 @@ MY_REUSABLE_APPS = (
 
 PROJECT_APPS = (
     'project',
+    'meetings',
 )
 
 INSTALLED_APPS = (

@@ -1,19 +1,12 @@
 #from django.contrib.gis.db import models
 from django.db import models
 
-from project.utils import slugify_uniquely
-
-class TimestampedModel (models.Model):
-    created_datetime = models.DateTimeField(auto_now_add=True)
-    updated_datetime = models.DateTimeField(auto_now=True)
+from project.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
-class Meeting (TimestampedModel):
+class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     title = models.CharField(max_length=1023)
     """The title of the meeting"""
-
-    slug = models.SlugField(blank=True)
-    """The meeting slug"""
 
     description = models.TextField(null=True, blank=True)
     """The meeting description, potentially including the agenda."""
@@ -38,12 +31,6 @@ class Meeting (TimestampedModel):
     """Who is attending and/or speaking at the meeting"""
 
 #    objects = models.GeoManager()
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify_uniquely(self.title, Meeting)
-
-        return super(Meeting, self).save(*args, **kwargs)
 
 
 class MeetingTag (models.Model):
