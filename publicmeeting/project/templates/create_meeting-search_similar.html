@@ -11,6 +11,7 @@
       </div>
 
       <script>
+        // By default, set the end date to the same as the begin date.
         $('#id_begin_time_0').change(function() {
           var begin_date = $('#id_begin_time_0').val(),
               end_date = $('#id_end_time_0').val();
@@ -18,7 +19,7 @@
           if (end_date === '') {
             $('#id_end_time_0').val(begin_date);
           }
-        })
+        });
       </script>
 
       <div class="span3 well">
