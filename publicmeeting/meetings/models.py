@@ -32,6 +32,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
 #    objects = models.GeoManager()
 
+    def get_pre_slug(self):
+        return self.title
+
 
 class MeetingTag (models.Model):
     text = models.CharField(max_length=255)

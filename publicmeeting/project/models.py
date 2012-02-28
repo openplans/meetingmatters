@@ -19,7 +19,9 @@ class SlugifiedModelMixin (models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify_uniquely(getattr(self, self.slug_field),
-                                         self.__class__)
+            self.slug = slugify_uniquely(self.get_pre_slug(), self.__class__)
 
         return super(SlugifiedModelMixin, self).save(*args, **kwargs)
+
+    def get_pre_slug(self):
+        raise NotImplementedError()
