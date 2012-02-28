@@ -2,8 +2,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic as views
 
-from . import forms
-from project import models
+from .. import forms
+from .. import models
 
 class CheckForSimilarMeetingsView (views.FormView):
     form_class = forms.CheckForSimilarMeetingsForm

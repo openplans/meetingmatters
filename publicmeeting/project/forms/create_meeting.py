@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
-from project import models
+from .. import models
 
 class CheckForSimilarMeetingsForm (forms.Form):
     title = forms.CharField(

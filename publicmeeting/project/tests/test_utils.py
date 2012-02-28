@@ -14,9 +14,20 @@ class Test_slugifyUniquely:
 
         class ModelManagerStub (object):
             def filter(self, slug=None):
-                if slug in ('this-is-another', 'this-is-anoth-2', 'this-is-anoth-3',
-                    'this', 'thi-2', 'thi-3', 'thi-4', 'thi-5', 'thi-6', 'thi-7', 'thi-8', 'thi-9', 'th-10',
-                    'surprise', 'surprise-2', 'surprise-3'):
+                if slug in (
+                    'this-is-another',
+                    'this-is-anoth-2',
+                    'this-is-anoth-3',
+
+                    'this', 'thi-2',
+                    'thi-3', 'thi-4',
+                    'thi-5', 'thi-6',
+                    'thi-7', 'thi-8',
+                    'thi-9', 'th-10',
+
+                    'surprise',
+                    'surprise-2',
+                    'surprise-3'):
                     return QuerySetStub(count=1)
                 return QuerySetStub(count=0)
 

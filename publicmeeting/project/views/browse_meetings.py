@@ -1,6 +1,6 @@
 from django.views import generic as views
 
-from . import models
+from .. import models
 
 class MeetingListView (views.ListView):
     model = models.Meeting

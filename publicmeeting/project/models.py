@@ -1,6 +1,7 @@
 #from django.contrib.gis.db import models
 from django.db import models
-from django.template.defaultfilters import slugify
+
+from .utils import slugify_uniquely
 
 class TimestampedModel (models.Model):
     created_datetime = models.DateTimeField(auto_now_add=True)
@@ -39,8 +40,10 @@ class Meeting (TimestampedModel):
 #    objects = models.GeoManager()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Meeting, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify_uniquely(self.title, Meeting)
+
+        return super(Meeting, self).save(*args, **kwargs)
 
 
 class MeetingTag (models.Model):
