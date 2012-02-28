@@ -2,9 +2,12 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic as views
 
+from project.utils.decorators import LoginRequired
+
 from .. import forms
 from .. import models
 
+@LoginRequired
 class CheckForSimilarMeetingsView (views.FormView):
     form_class = forms.CheckForSimilarMeetingsForm
     template_name = 'create_meeting-search_similar.html'
@@ -14,6 +17,7 @@ class CheckForSimilarMeetingsView (views.FormView):
 
 
 
+@LoginRequired
 class FillInMeetingInfoView (views.FormView):
     form_class = forms.FillInMeetingInfoForm
     template_name = 'create_meeting-fill_info.html'
