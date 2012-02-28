@@ -15,6 +15,9 @@ south
 # Search
 django-haystack
 
+# Tagging
+django-taggit
+
 # Authentication
 django-social-auth
 
