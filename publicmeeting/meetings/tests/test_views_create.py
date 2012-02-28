@@ -32,23 +32,33 @@ class Test_CheckForSimilarMeetingsView:
 
 class Test_FillInMeetingInfoView:
 
+    def setup (world):
+        world.url = reverse('create_meeting_fill_info')
+        User.objects.all().delete()
+
+        world.credentials = dict(username='blah', password='cool')
+        User.objects.create_user(**world.credentials)
+
     @istest
-    def can_only_be_accessed_by_authenticated_user (self):
-        url = reverse('create_meeting_fill_info')
+    def can_only_be_accessed_by_authenticated_user (world):
         client = Client()
 
         client.logout()
-        response = client.get(url)
+        response = client.get(world.url)
         assert_equal(
             response.status_code,
             302
         )
 
-        User.objects.all().delete()
-        User.objects.create_user(username='blah', password='cool')
-        client.login(username='blah', password='cool')
-        response = client.get(url)
+        client.login(**world.credentials)
+        response = client.get(world.url)
         assert_equal(
             response.status_code,
             200
         )
+
+    @istest
+    def retrieves_initial_information_from_the_session (world):
+        client = Client()
+
+        client.login(**world.credentials)
