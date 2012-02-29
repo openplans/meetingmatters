@@ -7,7 +7,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Deleting model 'TimestampedModel'
         db.delete_table('meetings_timestampedmodel')
 
@@ -18,7 +18,7 @@ class Migration(SchemaMigration):
         db.delete_column('meetings_meeting', 'slug')
 
         # Adding field 'Meeting.id'
-        db.add_column('meetings_meeting', 'id', self.gf('django.db.models.fields.AutoField')(default=0, primary_key=True), keep_default=False)
+        db.add_column('meetings_meeting', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True), keep_default=False)
 
         # Adding field 'Meeting.created_datetime'
         db.add_column('meetings_meeting', 'created_datetime', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2012, 2, 28, 10, 53, 10, 907229), blank=True), keep_default=False)
@@ -28,7 +28,7 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        
+
         # Adding model 'TimestampedModel'
         db.create_table('meetings_timestampedmodel', (
             ('created_datetime', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
