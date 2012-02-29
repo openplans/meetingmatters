@@ -219,6 +219,7 @@ COMMUNITY_APPS = (
     'bootstrapped',
     'uni_form',
     'taggit',
+    'taggit_templatetags',
 )
 
 MY_REUSABLE_APPS = (

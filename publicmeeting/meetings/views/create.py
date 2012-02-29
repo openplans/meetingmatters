@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic as views
+from taggit import models as taggit_models
 
 from project.utils.decorators import LoginRequired
 
@@ -31,6 +32,12 @@ class FillInMeetingInfoView (views.CreateView):
     model = models.Meeting
     form_class = forms.FillInMeetingInfoForm
     template_name = 'create_meeting-fill_info.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(FillInMeetingInfoView, self).get_context_data(**kwargs)
+
+        context['tags'] = taggit_models.Tag.objects
+        return context
 
     def get_success_url(self):
         return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})

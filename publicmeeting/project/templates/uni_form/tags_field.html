@@ -1,3 +1,5 @@
+{% load taggit_extras %}
+
 <div class="control-group {% if field.errors %}error{% endif %}">
     <label for="{{ field.auto_id }}" class="control-label">
         {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
@@ -7,16 +9,49 @@
 
         <script>
           $(document).ready(function() {
-            var timeList = [];
-            var h, m, ap;
+            {% get_taglist as tags %}
+            var tagList = [{% for tag in tags %}'{{ tag.name }}'{% if not forloop.last %},{% endif %}{% endfor %}];
 
-            for (h = 1; h <= 12; h++)
-              for (m = 0; m < 60; m+=30) {
-                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' AM');
-                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' PM');
-            }
+            // The following code was lifted from
+            // http://jqueryui.com/demos/autocomplete/#multiple
+            function split( val ) {
+			        return val.split( /,\s*/ );
+		        }
+		        function extractLast( term ) {
+			        return split( term ).pop();
+		        }
 
-            $( "#id_{{ field.name }}" ).autocomplete({source: timeList, delay: 0});
+            $( "#id_{{ field.name }}" )
+              .bind( "keydown", function( event ) {
+				      if ( event.keyCode === $.ui.keyCode.TAB &&
+						        $( this ).data( "autocomplete" ).menu.active ) {
+					        event.preventDefault();
+				        }
+			        })
+			        .autocomplete({
+                source: tagList,
+                delay: 0,
+			          source: function( request, response ) {
+				          // delegate back to autocomplete, but extract the last term
+				          response( $.ui.autocomplete.filter(
+					          tagList, extractLast( request.term ) ) );
+			          },
+			          focus: function() {
+				          // prevent value inserted on focus
+				          return false;
+			          },
+			          select: function( event, ui ) {
+				          var terms = split( this.value );
+				          // remove the current input
+				          terms.pop();
+				          // add the selected item
+				          terms.push( ui.item.value );
+				          // add placeholder to get the comma-and-space at the end
+				          terms.push( "" );
+				          this.value = terms.join( ", " );
+				          return false;
+			          }
+				      });
           });
         </script>
 
