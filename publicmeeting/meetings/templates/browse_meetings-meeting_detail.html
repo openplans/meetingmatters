@@ -8,12 +8,16 @@
 
       <div class="row">
         <div class="span4">
-          <div class="meeting-time">{{ meeting.begin_time.date }}</div>
-          <div class="meeting-time">{{ meeting.begin_time.time }}</div>
+          {% if meeting.begin_time %}
+            <div class="meeting-time">{{ meeting.begin_time|date:"l, F j, Y" }}</div>
+            <div class="meeting-time">{{ meeting.begin_time|time:"g:i A" }}</div>
+          {% else %}
+            <div class="meeting-time">Time TBD</div>
+          {% endif %}
         </div>
 
         <div class="span4" align="right">
-          <div>{{ meeting.venue_name }}</div>
+          <div>{{ meeting.venue_name|default:"Location TBD" }}</div>
         </div>
       </div>
 
