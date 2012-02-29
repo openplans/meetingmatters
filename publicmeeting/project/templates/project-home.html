@@ -10,7 +10,16 @@
 
   <div class="row">
     <div class="span8 offset2">
-      {% include "partials/browse_meetings_meeting_list.html" %}
+      <h2>Upcoming Meetings</h2>
+      {% if meetings %}
+        {% include "partials/browse_meetings_meeting_list.html" %}
+      {% else %}
+        <p>There are no upcoming meetings.  Check out the
+           <a href="{% url browse_meetings_meeting_list %}">past meetings</a>,
+           or considering adding a
+           <a href="{% url create_meeting_search_similar %}">new meeting</a>
+           that you know about.</p>
+      {% endif %}
     </div>
   </div>
 
