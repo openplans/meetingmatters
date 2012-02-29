@@ -1,0 +1,32 @@
+<div class="control-group {% if field.errors %}error{% endif %}">
+    <label for="{{ field.auto_id }}" class="control-label">
+        {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
+    </label>
+    <div class="controls">
+        {{ field }}
+
+        <script>
+          $(document).ready(function() {
+            var timeList = [];
+            var h, m, ap;
+
+            for (h = 1; h <= 12; h++)
+              for (m = 0; m < 60; m+=30) {
+                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' AM');
+                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' PM');
+            }
+
+            $( "#id_{{ field.name }}" ).autocomplete({source: timeList, delay: 0});
+          });
+        </script>
+
+        {% if field.errors %}
+            <span class="help-inline">{% for error in field.errors %}{{ error }}<br/> {% endfor %}</span>
+        {% endif %}
+        {% if field.help_text%}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>

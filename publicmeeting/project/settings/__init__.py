@@ -218,6 +218,7 @@ COMMUNITY_APPS = (
     'social_auth',
     'bootstrapped',
     'uni_form',
+    'taggit',
 )
 
 MY_REUSABLE_APPS = (

@@ -1,5 +1,6 @@
 #from django.contrib.gis.db import models
 from django.db import models
+from taggit.managers import TaggableManager
 
 from project.models import TimestampedModelMixin, SlugifiedModelMixin
 
@@ -26,6 +27,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     venue_additional = models.TextField(null=True, blank=True)
     """Additional information about the venue, such as room number."""
 
+    tags = TaggableManager()
+    """The tags for the meeting"""
+
     speakers = models.ManyToManyField('auth.User', related_name='speaking_meetings', blank=True)
     attendees = models.ManyToManyField('auth.User', related_name='attending_meetings', blank=True)
     """Who is attending and/or speaking at the meeting"""
@@ -34,8 +38,3 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     def get_pre_slug(self):
         return self.title
-
-
-class MeetingTag (models.Model):
-    text = models.CharField(max_length=255)
-    """The tag text"""

@@ -4,6 +4,8 @@
     {% include "uni_form/venue_location_field.html" %}
 {% elif field.name == 'begin_time' or field.name == 'end_time' %}
     {% include "uni_form/meeting_datetime_field.html" %}
+{% elif field.name == 'tags' %}
+    {% include "uni_form/tags_field.html" %}
 {% else %}
     {% if field.is_hidden %}
         {{ field }}

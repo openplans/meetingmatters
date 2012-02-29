@@ -1,5 +1,6 @@
 from django import forms
 from django.core.urlresolvers import reverse
+from taggit import forms as taggit
 
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
@@ -57,6 +58,9 @@ class FillInMeetingInfoForm (forms.ModelForm):
         help_text="Give readers an idea of the purpose of the meeting, as well as what will be discussed. If there is an agenda, include that as well.",
         required=False
     )
+    tags = taggit.TagField(
+        widget=taggit.TagWidget(attrs={'class':'span6'})
+    )
     venue_name = forms.CharField(
         label="Venue Address",
         widget=forms.TextInput(attrs={'class':'span5'})
@@ -82,7 +86,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
             Fieldset(
                 'Step 2: Fill in general information',
                 'title', 'begin_time', 'end_time',
-                'description',
+                'description', 'tags'
             ),
             Fieldset(
                 'Step 3: Enter the location',
