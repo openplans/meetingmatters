@@ -29,9 +29,22 @@
       <div class="meeting-description">
         {{ meeting.description|linebreaks }}
       </div>
+
+      <div>
+        <a href="{% url update_meeting_fill_info meeting.slug %}">Edit this meeting</a>
+      </div>
   	</div>
 
-    <div class="span3">
+    <div class="span4">
+      <div class="well">
+        <h4>Tags</h4>
+        <div>
+          {% for tag in meeting.tags.all %}
+            <a class="meeting-tag btn btn-mini">{{ tag.name }} <i class="icon-tag"></i></a>
+          {% endfor %}
+        </div>
+
+      </div>
     </div>
   </div>
 

@@ -5,7 +5,7 @@ from taggit import forms as taggit
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
-from .. import models
+from . import models
 
 class CheckForSimilarMeetingsForm (forms.Form):
     title = forms.CharField(
@@ -29,7 +29,7 @@ class CheckForSimilarMeetingsForm (forms.Form):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Step 1: Check whether meeting exists',
+                'Step 0: Check whether meeting exists',
                 'title', 'begin_time', 'end_time',
             ),
             ButtonHolder(
@@ -69,12 +69,12 @@ class FillInMeetingInfoForm (forms.ModelForm):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Step 2: Fill in general information',
+                'Step 1: Fill in general information',
                 'title', 'begin_time', 'end_time',
                 'description', 'tags'
             ),
             Fieldset(
-                'Step 3: Enter the location',
+                'Step 2: Enter the location',
                 'venue_name', 'venue_additional'
             ),
             ButtonHolder(

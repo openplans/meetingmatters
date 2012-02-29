@@ -6,7 +6,7 @@ urlpatterns = patterns('meetings',
     # Create
     url(r'^create/$', views.CheckForSimilarMeetingsView.as_view(),
     	name='create_meeting_search_similar'),
-    url(r'^create/step2$', views.FillInMeetingInfoView.as_view(),
+    url(r'^create/step2$', views.CreateMeetingInfoView.as_view(),
     	name='create_meeting_fill_info'),
 
     # Browse
@@ -15,7 +15,7 @@ urlpatterns = patterns('meetings',
     url(r'^(?P<slug>[^/]+)/$', views.MeetingDetailView.as_view(),
         name='browse_meetings_meeting_detail'),
 
-    # Edit
-    url(r'^(?P<slug>.+)/edit/$', views.ModifyMeetingInfoView.as_view(),
-        name='edit_meeting_change_info'),
+    # Update
+    url(r'^(?P<slug>.+)/edit/$', views.UpdateMeetingInfoView.as_view(),
+        name='update_meeting_fill_info'),
 )

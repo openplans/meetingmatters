@@ -1,4 +1,4 @@
 from django.views import generic as views
 
-from .create import *
+from .edit import *
 from .browse import *

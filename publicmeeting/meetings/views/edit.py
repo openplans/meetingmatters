@@ -28,10 +28,10 @@ class CheckForSimilarMeetingsView (views.FormView):
 
 
 @LoginRequired
-class FillInMeetingInfoView (views.CreateView):
+class CreateMeetingInfoView (views.CreateView):
     model = models.Meeting
     form_class = forms.FillInMeetingInfoForm
-    template_name = 'create_meeting-fill_info.html'
+    template_name = 'edit_meeting-fill_info.html'
 
     def get_success_url(self):
         return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})
@@ -45,10 +45,10 @@ class FillInMeetingInfoView (views.CreateView):
         return super(FillInMeetingInfoView, self).get_form_kwargs()
 
 @LoginRequired
-class ModifyMeetingInfoView (views.UpdateView):
+class UpdateMeetingInfoView (views.UpdateView):
     model = models.Meeting
     form_class = forms.FillInMeetingInfoForm
-    template_name = 'create_meeting-fill_info.html'
+    template_name = 'edit_meeting-fill_info.html'
 
     def get_success_url(self):
         return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})
