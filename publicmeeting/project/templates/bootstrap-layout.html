@@ -51,8 +51,8 @@
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Meetings <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Browse meetings</a></li>
-                  <li><a href="/meetings/create/">Add a meeting</a></li>
+                  <li><a href="{% url browse_meetings_meeting_list %}">Browse meetings</a></li>
+                  <li><a href="{% url create_meeting_search_similar %}">Add a meeting</a></li>
                 </ul>
               </li>
             </ul>
