@@ -4,6 +4,7 @@ from .. import models
 
 class MeetingListView (views.ListView):
     model = models.Meeting
+    queryset = models.Meeting.objects.all().order_by('-begin_time')
     context_object_name = 'meetings'
     template_name = 'browse_meetings-meeting_list.html'
 
