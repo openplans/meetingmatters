@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
-
 from django.views.generic import TemplateView
+
+from . import views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -22,5 +23,5 @@ urlpatterns = patterns('',
 
     url(r'^meetings/', include('meetings.urls')),
 
-    url(r'^$', TemplateView.as_view(template_name='project-home.html')),
+    url(r'^$', views.HomepageView.as_view()),
 )

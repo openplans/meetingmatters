@@ -8,4 +8,10 @@
     <p><a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Log in with Twitter</a></p>
   </div> <!-- hero -->
 
+  <div class="row">
+    <div class="span8 offset2">
+      {% include "partials/browse_meetings_meeting_list.html" %}
+    </div>
+  </div>
+
 {% endblock %}
