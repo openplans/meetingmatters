@@ -10,7 +10,12 @@
         <div class="span4">
           {% if meeting.begin_time %}
             <div class="meeting-time">{{ meeting.begin_time|date:"l, F j, Y" }}</div>
-            <div class="meeting-time">{{ meeting.begin_time|time:"g:i A" }}</div>
+            <div class="meeting-time">
+              {{ meeting.begin_time|time:"g:i A" }}
+              {% if meeting.end_time %}
+                - {{ meeting.end_time|time:"g:i A" }}
+              {% endif %}
+            </div>
           {% else %}
             <div class="meeting-time">Time TBD</div>
           {% endif %}
