@@ -64,7 +64,7 @@
               Logged in as <a href="#">{{ user.username }}</a>
             </p>
             <ul class="nav">
-              <li><a href="/logout?next=/">Log out</a></li>
+              <li><a href="/logout?next={{ request.get_full_path }}">Log out</a></li>
             </ul>
             {% endif %}
 

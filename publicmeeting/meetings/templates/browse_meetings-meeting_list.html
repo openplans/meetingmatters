@@ -1,8 +1,40 @@
 {% extends "bootstrap-layout.html" %}
 
 {% block bootstrap_container_content %}
+  <div class="row">
+    <div class="span8">
+      <h2>Meetings
+      {% if selected_tags %}
+        tagged with
+        {% for tag in selected_tags %}
+          &quot;{{ tag.name }}&quot;{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% endif %}</h2>
 
-  <h2>Meetings</h2>
-  {% include "partials/browse_meetings_meeting_list.html" %}
+      {% include "partials/browse_meetings_meeting_list.html" %}
+    </div>
+
+    <div class="span4">
+      <div class="well">
+        <h4>Tags</h4>
+        <ul class="nav nav-pills nav-stacked">
+
+          <li {% if not selected_tags %}class="active"{% endif %}>
+            <a href="{% url browse_meetings_meeting_list %}">All</a>
+            <hr>
+          </li>
+
+          {% for tag in tags %}
+            <li {% if tag in selected_tags %}class="active"{% endif %}>
+              <a href="{% url browse_meetings_meeting_by_tag tag.slug %}">{{ tag.name }}</a>
+            </li>
+          {% endfor %}
+
+        </ul>
+      </div>
+    </div>
+  <div>
+
+
 
 {% endblock %}

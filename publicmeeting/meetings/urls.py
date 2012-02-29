@@ -12,6 +12,8 @@ urlpatterns = patterns('meetings',
     # Browse
     url(r'^$', views.MeetingListView.as_view(),
         name='browse_meetings_meeting_list'),
+    url(r'^\?tags=(?P<slug>[^&]+)$', views.MeetingListView.as_view(),
+        name='browse_meetings_meeting_by_tag'),
     url(r'^(?P<slug>[^/]+)/$', views.MeetingDetailView.as_view(),
         name='browse_meetings_meeting_detail'),
 
