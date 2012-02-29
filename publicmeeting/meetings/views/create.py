@@ -33,12 +33,6 @@ class FillInMeetingInfoView (views.CreateView):
     form_class = forms.FillInMeetingInfoForm
     template_name = 'create_meeting-fill_info.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(FillInMeetingInfoView, self).get_context_data(**kwargs)
-
-        context['tags'] = taggit_models.Tag.objects
-        return context
-
     def get_success_url(self):
         return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})
 
@@ -50,6 +44,11 @@ class FillInMeetingInfoView (views.CreateView):
         self.object = models.Meeting(**self.get_workflow_data())
         return super(FillInMeetingInfoView, self).get_form_kwargs()
 
-    def form_valid(self, form):
-        self.meeting = form.save()
-        return super(FillInMeetingInfoView, self).form_valid(form)
+@LoginRequired
+class ModifyMeetingInfoView (views.UpdateView):
+    model = models.Meeting
+    form_class = forms.FillInMeetingInfoForm
+    template_name = 'create_meeting-fill_info.html'
+
+    def get_success_url(self):
+        return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})
