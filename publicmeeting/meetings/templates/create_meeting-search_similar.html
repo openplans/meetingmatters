@@ -22,8 +22,33 @@
         });
       </script>
 
-      <div class="span3 well">
-        <p>Enter the name and time of the meeting.  Before creating the meeting, we will search to see whether there are any similar meetings that already exist.</p>
+      <div class="span4">
+        {% if similar_meetings %}
+          <div class="alert alert-info">
+            <p>We've found the following meetings that seem similar to yours.  Consider modifying or attending one of these instead.</p>
+
+            {% for meeting in similar_meetings %}
+              <h5><a href="{% url browse_meetings_meeting_detail meeting.slug %}">{{ meeting.title }}</a></h5>
+              {% if meeting.begin_time %}
+                <h6>{{ meeting.begin_time|date:"l, F j, Y" }}</h6>
+                <h6>{{ meeting.begin_time|time:"g:i A" }}
+                    {% if meeting.end_time %}
+                      - {{ meeting.end_time|time:"g:i A" }}
+                    {% endif %}</h6>
+              {% else %}
+                <h6>Time TBD</h6>
+              {% endif %}
+
+              <hr>
+            {% endfor %}
+
+            <p>Does your event appear above?</p>
+          </div>
+        {% else %}
+          <div class="well">
+            <p>Enter the name and time of the meeting.  Before creating the meeting, we will search to see whether there are any similar meetings that already exist.</p>
+          </div>
+        {% endif %}
       </div>
     </div> <!-- row -->
 

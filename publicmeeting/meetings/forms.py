@@ -33,7 +33,7 @@ class CheckForSimilarMeetingsForm (forms.Form):
                 'title', 'begin_time', 'end_time',
             ),
             ButtonHolder(
-                Submit('check', 'Next', css_class='btn btn-primary pull-right')
+                Submit('check', 'Continue', css_class='btn btn-primary pull-right')
             )
         )
         return super(CheckForSimilarMeetingsForm, self).__init__(*args, **kwargs)
@@ -78,7 +78,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
                 'venue_name', 'venue_additional'
             ),
             ButtonHolder(
-                Submit('check', 'Next', css_class='btn btn-primary pull-right')
+                Submit('check', 'Save', css_class='btn btn-primary pull-right')
             )
         )
         return super(FillInMeetingInfoForm, self).__init__(*args, **kwargs)
