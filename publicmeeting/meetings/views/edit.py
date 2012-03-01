@@ -21,25 +21,15 @@ class CheckForSimilarMeetingsView (views.FormView):
     def get_success_url(self):
         return reverse('create_meeting_fill_info')
 
-    def check_for_similar_meetings(self, form, threshold=0.5):
-        T = set(form.cleaned_data['title'].lower())
-
-        similar_meetings = []
-        for meeting in models.Meeting.objects.all():
-            S = set(meeting.title.lower())
-            similarity = len(S & T) / len(S | T)
-            if similarity > threshold:
-                similar_meetings.append(meeting)
-
-        return similar_meetings
-
     def meeting_unique(self, form):
         self.save_workflow_data(form)
         return super(CheckForSimilarMeetingsView, self).form_valid(form)
 
     def meeting_duplicate(self, form, similar_meetings):
+        # Allow the user to bypass the check on the second time
         form.helper.layout.fields[1].fields[0].value = "Continue Anyway"
         form.helper.layout.fields.append(Hidden('bypass_check', ''))
+
         return self.render_to_response(
             self.get_context_data(form=form,
                                   similar_meetings=similar_meetings))
@@ -48,7 +38,9 @@ class CheckForSimilarMeetingsView (views.FormView):
         if 'bypass_check' in self.request.POST:
             return self.meeting_unique(form)
 
-        similar_meetings = self.check_for_similar_meetings(form)
+        meeting = models.Meeting(**form.cleaned_data)
+        similar_meetings = meeting.similar_meetings()
+
         if similar_meetings:
             return self.meeting_duplicate(form, similar_meetings)
         else:

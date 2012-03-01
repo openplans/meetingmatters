@@ -1,3 +1,4 @@
+from __future__ import division
 #from django.contrib.gis.db import models
 from django.db import models
 from taggit.managers import TaggableManager
@@ -41,3 +42,15 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     def get_pre_slug(self):
         return self.title
+
+    def similar_meetings(self, threshold=0.7):
+        T = set(self.title.lower())
+
+        similar_meetings = []
+        for meeting in Meeting.objects.all():
+            S = set(meeting.title.lower())
+            similarity = len(S & T) / len(S | T)
+            if similarity > threshold:
+                similar_meetings.append(meeting)
+
+        return similar_meetings

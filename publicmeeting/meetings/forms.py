@@ -15,11 +15,13 @@ class CheckForSimilarMeetingsForm (forms.Form):
     )
     begin_time = forms.SplitDateTimeField(
         label="Start time",
-        input_time_formats=('%H:%M', '%I:%M %p')
+        input_time_formats=('%H:%M', '%I:%M %p'),
+        required=False
     )
     end_time = forms.SplitDateTimeField(
         label="End time",
-        input_time_formats=('%H:%M', '%I:%M %p')
+        input_time_formats=('%H:%M', '%I:%M %p'),
+        required=False
     )
 
     def __init__(self, *args, **kwargs):
