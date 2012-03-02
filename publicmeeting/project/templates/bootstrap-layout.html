@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="/">Public Meeting I/O</a>
+          <a class="brand" href="/">Meeting Matters</a>
           <div class="nav-collapse">
             <ul class="nav">
 <!--              <li><a href="/about">About</a></li>-->
@@ -69,6 +69,10 @@
             </p>
             <ul class="nav">
               <li><a href="/logout?next={{ request.get_full_path }}">Log out</a></li>
+            </ul>
+            {% else %}
+            <ul class="nav">
+              <li><a href="{% url socialauth_begin "twitter" %}">Log in with Twitter</a></li>
             </ul>
             {% endif %}
 

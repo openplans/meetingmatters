@@ -3,13 +3,21 @@
 {% block bootstrap_container_content %}
 
   <div class="hero-unit">
-    <h1>Public Meeting I/O</h1>
-    <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-    <p><a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Log in with Twitter</a></p>
+<!--    <p>A new way to</p>-->
+    <h1>Find & Join Public Meetings</h1>
+
+<!--    <div>-->
+<!--      <a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Browse Meetings</a>-->
+<!--      <a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Add a Meeting</a>-->
+<!--      <div class="pull-right">-->
+<!--        <a href="{% url socialauth_begin "twitter" %}" class="btn btn-primary btn-large">Log in with Twitter</a>-->
+<!--      </div>-->
+<!--    </div>-->
+
   </div> <!-- hero -->
 
   <div class="row">
-    <div class="span8 offset2">
+    <div class="span8">
       <h2>Upcoming Meetings</h2>
       {% if meetings %}
         {% include "partials/browse_meetings_meeting_list.html" %}
@@ -20,6 +28,25 @@
            <a href="{% url create_meeting_search_similar %}">new meeting</a>
            that you know about.</p>
       {% endif %}
+    </div>
+
+    <div class="span4">
+      <div class="well">
+        <div>
+          <a href="{% url browse_meetings_meeting_list %}">
+            <div align="center"><img src="{{ STATIC_URL }}community.png"></div>
+            <h2>Browse Meetings</h2>
+          </a>
+          <p>Look through the meetings that have been entered by the community.  You can see all meetings, or only those tagged with topics that interest you.</p>
+        </div>
+        <div>
+          <a href="{% url create_meeting_search_similar %}">
+            <div align="center"><img src="{{ STATIC_URL }}inbox.png"></div>
+            <h2>Add a Meeting</h2>
+          </a>
+          <p>This directory is community curated.  Share meetings that you know about, and make your community stronger.  Because meeting matters.</p>
+        </div>
+      </div>
     </div>
   </div>
 
