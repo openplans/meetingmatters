@@ -3,8 +3,8 @@ python:
   - "2.6"
   - "2.7"
 
-before_script:
-  - ci/before_script
+before_install:
+  - ci/before_install
 
 # command to install dependencies
 install: pip install -r requirements.txt --use-mirrors
