@@ -28,7 +28,7 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     venue_additional = models.TextField(null=True, blank=True, verbose_name="Notes")
     """Additional information about the venue, such as room number."""
 
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(blank=True, verbose_name="Topics", help_text="A comma-separated list of topics that will be discussed at the meeting.")
     """The tags for the meeting"""
 
     speakers = models.ManyToManyField('auth.User', related_name='speaking_meetings', blank=True)
