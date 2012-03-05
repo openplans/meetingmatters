@@ -11,3 +11,11 @@ install: pip install -r requirements.txt --use-mirrors
 
 # command to run tests
 script: nosetests
+
+
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.org#civicworks"
+    on_success: change
+    on_failure: always
