@@ -12,7 +12,7 @@ class MeetingListView (views.ListView):
         context = super(MeetingListView, self).get_context_data(**kwargs)
 
         tag_slugs = self.request.GET.getlist('tags')
-        context['tags'] = taggit_models.Tag.objects.all()
+        context['tags'] = taggit_models.Tag.objects.all().order_by('name')
         context['selected_tags'] = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
 
         return context
