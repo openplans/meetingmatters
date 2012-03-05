@@ -32,13 +32,20 @@
 
           $(document).ready(function() {
             var timeList = [];
-            var h, m, ap;
+            var h, m, ap, display_h;
 
-            for (h = 1; h <= 12; h++)
+            for (h = 0; h < 24; h++) {
+              display_h = h % 12;
+              display_h = (display_h === 0 ? 12 : display_h);
+              ap = (h < 12 ? 'AM' : 'PM');
+
               for (m = 0; m < 60; m+=30) {
-                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' AM');
-                timeList.push(zeroFill(h, 2) + ':' + zeroFill(m, 2) + ' PM');
+                timeList.push(zeroFill(display_h, 2) + ':' + zeroFill(m, 2) + ' ' + ap);
+              }
             }
+
+            // Move the really early times (before 8AM) to the end of the list.
+            timeList = timeList.slice(16).concat(timeList.slice(0,16));
 
 	          $( "#id_{{ field.name }}_0" ).datepicker();
             $( "#id_{{ field.name }}_1" ).autocomplete({source: timeList, delay: 0});
