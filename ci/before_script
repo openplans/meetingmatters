@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd publicmeeting
+python manage.py syncdb --noinput
+python manage.py migrate --noinput
