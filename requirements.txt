@@ -1,5 +1,5 @@
 # The server
-git+git://github.com/django/django.git@master#egg=django==1.4b1
+git+git://github.com/django/django.git@master#egg=django==1.4c1
 # Unlike the gunicorn defined in Heroku's Django example, we're going
 # to use one of the async worker classes, "gevent". Using an async worker class
 # is recommended when serving traffic directly to gunicorn (which is what
