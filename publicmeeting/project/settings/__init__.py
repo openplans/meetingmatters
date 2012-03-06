@@ -134,6 +134,11 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
 )
 
 # Make this unique, and don't share it with anybody.
@@ -222,6 +227,7 @@ COMMUNITY_APPS = (
     'uni_form',
     'taggit',
     'taggit_templatetags',
+    'compressor',
 )
 
 MY_REUSABLE_APPS = (
