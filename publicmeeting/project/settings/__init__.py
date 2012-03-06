@@ -164,6 +164,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social_auth.context_processors.social_auth_by_name_backends',
     'social_auth.context_processors.social_auth_backends',
     'social_auth.context_processors.social_auth_by_type_backends',
+
+    'utils.context_processors.settings.DEBUG',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -224,6 +226,7 @@ COMMUNITY_APPS = (
 
 MY_REUSABLE_APPS = (
     'datetime_fields',
+    'utils',
 )
 
 PROJECT_APPS = (

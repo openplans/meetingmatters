@@ -1,7 +1,7 @@
 from django.test import TestCase
 from nose.tools import *
 
-from project.utils import slugify_uniquely
+from utils import slugify_uniquely
 
 class Test_slugifyUniquely:
     def setUp (self):

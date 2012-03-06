@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from nose.tools import *
 
 from meetings.models import Meeting
-from meetings.views.create import CheckForSimilarMeetingsView
+from meetings.views.edit import CheckForSimilarMeetingsView
 
 class Test_CheckForSimilarMeetingsView:
 

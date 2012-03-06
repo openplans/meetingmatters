@@ -3,7 +3,7 @@ from __future__ import division
 from django.db import models
 from taggit.managers import TaggableManager
 
-from project.models import TimestampedModelMixin, SlugifiedModelMixin
+from utils.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
