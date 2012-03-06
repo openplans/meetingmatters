@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
 
     <!-- Le styles -->
-    {% if DEBUG %}
+    {% if not DEBUG %}
       {% compress css %}
         {% bootstrap_less %}
         <style type="text/less">
