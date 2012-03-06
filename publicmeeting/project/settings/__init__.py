@@ -58,7 +58,7 @@ def get_local(varname, default=None):
     return default
 
 
-DEBUG = get_local('DEBUG', True)
+DEBUG = True if get_local('DEBUG', 'True') == 'True' else False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
