@@ -2,16 +2,12 @@
 
 import os.path
 
+try:
+    from . import local
+except ImportError:
+    local = None
+
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
-MANAGERS = ADMINS
 
 def get_local(varname, default=None):
     """
@@ -22,9 +18,8 @@ def get_local(varname, default=None):
     """
     # Try the local module first.
     try:
-        from . import local
         return getattr(local, varname)
-    except ImportError, AttributeError:
+    except AttributeError:
         pass
 
     # Try the os environment.
@@ -62,6 +57,15 @@ def get_local(varname, default=None):
 
     return default
 
+
+DEBUG = get_local('DEBUG', True)
+TEMPLATE_DEBUG = DEBUG
+
+ADMINS = (
+    # ('Your Name', 'your_email@example.com'),
+)
+
+MANAGERS = ADMINS
 
 DATABASES = get_local('DATABASES', {
     'default': {
