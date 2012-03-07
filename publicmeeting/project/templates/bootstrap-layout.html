@@ -92,10 +92,12 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-<!--    {% bootstrap_js all %}-->
 
-    {% compress js %}
-    {% endcompress %}
+    {% if TEMPLATE_DEBUG %}
+      {% bootstrap_js all %}
+    {% else %}
+      <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    {% endif %}
 
   </body>
 </html>
