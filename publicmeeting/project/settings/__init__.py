@@ -7,7 +7,7 @@ try:
 except ImportError:
     local = None
 
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 def get_local(varname, default=None):
     """
@@ -141,10 +141,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-)
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = get_local('SECRET_KEY')
 
@@ -187,6 +183,22 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'project.urls'
+
+###############################################################################
+#
+# Static File Precompilation
+#
+
+# Since we want to precompile our project's LESS against Bootstrap, we must
+# specify the location of Bootstrap's less files in the lessc command.
+BOOTSTRAP_LESS_DIR = os.path.join(PROJECT_PATH, '../../.env/lib/python2.7/site-packages/bootstrapped/static/less/')
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
+)
+
+# So that the relative paths stay the same in our LESS as in our compiled CSS,
+# dump the compiled/compressed files into the STATIC_URL directory.
+COMPRESS_OUTPUT_DIR = '.'
 
 ###############################################################################
 #
