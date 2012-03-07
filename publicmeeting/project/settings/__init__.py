@@ -189,6 +189,8 @@ ROOT_URLCONF = 'project.urls'
 # Static File Precompilation
 #
 
+COMPRESS_ENABLED = True  # set to ``not DEBUG`` by default
+
 # Since we want to precompile our project's LESS against Bootstrap, we must
 # specify the location of Bootstrap's less files in the lessc command.
 BOOTSTRAP_LESS_DIR = os.path.join(PROJECT_PATH, '../../.env/lib/python2.7/site-packages/bootstrapped/static/less/')
