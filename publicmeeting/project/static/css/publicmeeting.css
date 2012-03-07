@@ -3701,3 +3701,20 @@ a.thumbnail:hover {
   text-align: center;
   margin-top: 2em;
 }
+.footer {
+  background-color: #eeeeee;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1em;
+  min-height: 100px;
+}
+.underlay {
+  background-color: #eeeeee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: -20px;
+  margin-bottom: 20px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+#about-box {
+  display: none;
+}

@@ -58,8 +58,8 @@ def get_local(varname, default=None):
     return default
 
 
-DEBUG = True if get_local('DEBUG', 'True') == 'True' else False
-TEMPLATE_DEBUG = DEBUG
+DEBUG = True if get_local('DEBUG', True) in ('True', True) else False
+TEMPLATE_DEBUG = True if get_local('TEMPLATE_DEBUG', DEBUG) in ('True', True) else False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -171,6 +171,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social_auth.context_processors.social_auth_by_type_backends',
 
     'utils.context_processors.settings.DEBUG',
+    'utils.context_processors.settings.TEMPLATE_DEBUG',
     'utils.context_processors.site',
 )
 

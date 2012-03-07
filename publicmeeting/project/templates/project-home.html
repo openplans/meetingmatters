@@ -1,5 +1,13 @@
 {% extends "bootstrap-layout.html" %}
 
+{% block bootstrap_navbar_underlay %}
+  <div class="underlay">
+    <div class="container">
+      <p><b>What's this?</b> {{ site.name }} is a community-edited directory of public meetings. Browse forthcoming meetings by topic. Log in and add meetings you know about.  <a data-toggle="modal" href="#about-box">Find out more</a>.</p>
+    </div>
+  </div>
+{% endblock %}
+
 {% block bootstrap_container_content %}
 
   <div class="row">
