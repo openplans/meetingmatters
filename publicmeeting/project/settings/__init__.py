@@ -198,7 +198,7 @@ COMPRESS_PRECOMPILERS = (
 
 # So that the relative paths stay the same in our LESS as in our compiled CSS,
 # dump the compiled/compressed files into the STATIC_URL directory.
-COMPRESS_OUTPUT_DIR = '.'
+#COMPRESS_OUTPUT_DIR = '.'
 
 ###############################################################################
 #
