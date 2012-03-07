@@ -171,6 +171,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social_auth.context_processors.social_auth_by_type_backends',
 
     'utils.context_processors.settings.DEBUG',
+    'utils.context_processors.site',
 )
 
 MIDDLEWARE_CLASSES = (
