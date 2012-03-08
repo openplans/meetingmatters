@@ -3687,12 +3687,14 @@ a.thumbnail:hover {
   font-style: italic;
   color: gray;
 }
-.home-upcoming-meetings {
+.home-upcoming-meetings,
+.about-content {
   float: left;
   margin-left: 20px;
   width: 620px;
 }
-.home-guide {
+.home-guide,
+.about-guide {
   float: left;
   margin-left: 20px;
   width: 300px;

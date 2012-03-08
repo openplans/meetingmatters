@@ -23,5 +23,8 @@ urlpatterns = patterns('',
 
     url(r'^meetings/', include('meetings.urls')),
 
-    url(r'^$', views.HomepageView.as_view()),
+    url(r'^$', views.HomepageView.as_view(),
+        name='project-home'),
+    url(r'^about/$', views.AboutView.as_view(),
+        name='project-about'),
 )

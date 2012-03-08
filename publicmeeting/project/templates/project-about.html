@@ -1,0 +1,33 @@
+{% extends "bootstrap-layout.html" %}
+
+{% block bootstrap_container_content %}
+
+  <div class="row">
+    <div class="about-content">
+      <h2>About {{ site.name }}</h2>
+
+      <hr>
+      <h4>What is {{ site.name }}?</h4>
+      <p>{{ site.name }} is a community-edited directory of public meetings. If there's a public meeting taking place, we want to get it listed here. Anyone can add meetings or make edits. The site is currently in an early stage of development.</p>
+
+      <hr>
+      <h4>Why does this site exist?</h4>
+      <p>Meetings matter. Yes, public meetings can be frustrating. But that doesn't mean we should give up on them. Instead, we want to connect more people with meetings that matter to them, and their community.</p>
+      <p>What if it was much easier to find out about meetings - maybe tracking your personal hot topics, or meetings taking place near your home or workplace? Rather than waiting for your municipality to publish info about upcoming meetings in a particular format, what if meeting information could be added and updated by thousands of concerned individuals, for everyone's benefit? What if making a poster or handout for an upcoming meeting was really easy? What if more people could contribute to meetings, either by coming in person or submitting comments before or after?</p>
+
+      <hr>
+      <h4>How can I get involved?</h4>
+      <p>This project is just getting started. Most importantly, you can <a href="{% url create_meeting_search_similar %}">add some meetings</a>.</p>
+      <p>We're also interested in hearing your ideas and criticisms. We want people to take the data and re-use it in many different ways. We hope coders will help us get through our long todo list of possible features.</p>
+
+      <hr>
+      <h4>Who's behind it?</h4>
+      <p>{{ site.name }} is a project from OpenPlans. We're thinking about tools to transform civic engagement. Making meetings matter is a small part of that effort.</p>
+    </div>
+
+    <div class="about-guide">
+      {% include "partials/project-guide.html" %}
+    </div>
+  </div>
+
+{% endblock %}

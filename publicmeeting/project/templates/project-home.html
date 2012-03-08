@@ -3,7 +3,7 @@
 {% block bootstrap_navbar_underlay %}
   <div class="underlay">
     <div class="container">
-      <p><b>What's this?</b> {{ site.name }} is a community-edited directory of public meetings. Browse forthcoming meetings by topic. Log in and add meetings you know about.  <a data-toggle="modal" href="#about-box">Find out more</a>.</p>
+      <p><b>What's this?</b> {{ site.name }} is a community-edited directory of public meetings. Browse forthcoming meetings by topic. Log in and add meetings you know about.  <a href="{% url project-about %}">Find out more</a>.</p>
     </div>
   </div>
 {% endblock %}
@@ -25,18 +25,7 @@
     </div>
 
     <div class="home-guide">
-      <div class="well">
-        <div>
-          <div class="home-guide-symbol"><a href="{% url browse_meetings_meeting_list %}"><img src="{{ STATIC_URL }}img/community.png" alt="Community" title="&quot;Community&quot; symbol by The Noun Project, from thenounproject.com collection."></a></div>
-          <h2><a href="{% url browse_meetings_meeting_list %}">Browse Meetings</a></h2>
-          <p>Look through the meetings that have been entered by the community.  You can see all meetings, or only those tagged with topics that interest you.</p>
-        </div>
-        <div>
-          <div class="home-guide-symbol"><a href="{% url create_meeting_search_similar %}"><img src="{{ STATIC_URL }}img/inbox.png" alt="Inbox" title="&quot;Inbox&quot; symbol by The Noun Project, from thenounproject.com collection."></a></div>
-          <h2><a href="{% url create_meeting_search_similar %}">Add a Meeting</a></h2>
-          <p>This directory is community curated.  Share meetings that you know about, and make your community stronger.  Because meeting matters.</p>
-        </div>
-      </div>
+      {% include "partials/project-guide.html" %}
     </div>
   </div>
 

@@ -3,8 +3,11 @@ from datetime import datetime
 
 from meetings.models import Meeting
 
+class AboutView (views.TemplateView):
+    template_name = 'project-about.html'
+
 class HomepageView (views.TemplateView):
-    template_name='project-home.html'
+    template_name = 'project-home.html'
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
