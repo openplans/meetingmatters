@@ -12,6 +12,9 @@ greenlet
 psycopg2
 south
 
+# Revision management
+git+git://github.com/etianen/django-reversion.git@django-1.4#egg=django-reversion
+
 # Search
 django-haystack
 

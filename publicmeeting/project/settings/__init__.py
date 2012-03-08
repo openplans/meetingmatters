@@ -182,6 +182,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    # These are for managing revisions.  The RevisionMiddleware wraps each
+    # request in a revision.  Any changes to models in a request will count
+    # under that revision.
+    'django.middleware.transaction.TransactionMiddleware',
+    'reversion.middleware.RevisionMiddleware',
 )
 
 ROOT_URLCONF = 'project.urls'
@@ -248,6 +254,7 @@ COMMUNITY_APPS = (
     'taggit',
     'taggit_templatetags',
     'compressor',
+    'reversion',
 )
 
 MY_REUSABLE_APPS = (

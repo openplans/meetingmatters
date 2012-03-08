@@ -1,4 +1,8 @@
 from django.contrib import admin
+from reversion import VersionAdmin
 from . import models
 
-admin.site.register(models.Meeting)
+class MeetingAdmin (VersionAdmin):
+    pass
+
+admin.site.register(models.Meeting, MeetingAdmin)
