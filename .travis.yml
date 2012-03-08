@@ -19,3 +19,4 @@ notifications:
       - "irc.freenode.org#civicworks"
     on_success: change
     on_failure: always
+  email: false
