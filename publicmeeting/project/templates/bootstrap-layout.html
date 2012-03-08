@@ -21,11 +21,6 @@
     <!-- Le styles -->
     {% compress css %}
       <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/publicmeeting.css">
-      <style type="text/css">
-        body {
-          padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-      </style>
     {% endcompress %}
 
     <!-- Le fav and touch icons -->
@@ -36,32 +31,35 @@
   </head>
 
   <body>
+    <div class="page-wrapper">
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
 
-          {% include "project-header.html" %}
+            {% include "project-header.html" %}
 
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="navbar-underlay">
-      {% block bootstrap_navbar_underlay %}
+      <div class="navbar-underlay">
+        {% block bootstrap_navbar_underlay %}
+        {% endblock %}
+      </div>
+
+
+      <div class="container">
+
+      {% block bootstrap_container_content %}
       {% endblock %}
+
+      </div> <!-- /container -->
+
+
+      {% include "project-footer.html" %}
+
     </div>
-
-
-    <div class="container">
-
-    {% block bootstrap_container_content %}
-    {% endblock %}
-
-    </div> <!-- /container -->
-
-
-    {% include "project-footer.html" %}
 
     <!-- Le javascript
     ================================================== -->

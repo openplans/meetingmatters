@@ -3680,6 +3680,33 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+html,
+body,
+.page-wrapper {
+  min-height: 100%;
+}
+html,
+body {
+  height: 100%;
+}
+.page-wrapper {
+  position: absolute;
+  width: 100%;
+}
+.page-wrapper > .container {
+  padding-top: 60px;
+  /* 60px to make the container go all the way to the bottom of the topbar */
+
+  padding-bottom: 112px;
+}
+.underlay {
+  background-color: #eeeeee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 40px;
+  margin-bottom: -40px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
 .meeting-description {
   margin-top: 1em;
 }
@@ -3703,19 +3730,34 @@ a.thumbnail:hover {
   text-align: center;
   margin-top: 2em;
 }
+/*
+.footer-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+*/
 .footer {
   background-color: #eeeeee;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   padding-top: 1em;
   min-height: 100px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
 }
-.underlay {
-  background-color: #eeeeee;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  margin-top: -20px;
-  margin-bottom: 20px;
-  padding-top: 1em;
-  padding-bottom: 1em;
+.footer .footer-nav {
+  float: left;
+  margin-left: 20px;
+  width: 460px;
+}
+.footer .footer-copyright {
+  float: left;
+  margin-left: 20px;
+  width: 460px;
+  text-align: right;
 }
 #about-box {
   display: none;

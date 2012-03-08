@@ -1,5 +1,32 @@
 @import "bootstrap";
 
+html, body, .page-wrapper {
+  min-height: 100%;
+}
+
+html, body {
+  height: 100%;
+}
+
+.page-wrapper {
+  > .container {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    padding-bottom: 112px;
+  }
+
+  position: absolute;
+  width: 100%;
+}
+
+.underlay {
+  background-color: @grayLighter;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 40px;
+  margin-bottom: -40px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .meeting-description {
   margin-top: 1em;
 }
@@ -23,21 +50,32 @@
   text-align: center;
   margin-top: 2em;
 }
-
+/*
+.footer-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+*/
 .footer {
   background-color: @grayLighter;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   padding-top: 1em;
   min-height: 100px;
-}
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
 
-.underlay {
-  background-color: @grayLighter;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  margin-top: -20px;
-  margin-bottom: 20px;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  .footer-nav {
+    .makeColumn(6);
+  }
+
+  .footer-copyright {
+    .makeColumn(6);
+    text-align: right;
+  }
 }
 
 #about-box {
