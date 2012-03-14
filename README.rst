@@ -22,7 +22,7 @@ How can I get involved?
 -----------------------
 This project is just getting started. Most importantly, you can `add some meetings <http://meetingmatters.org/meetings/create>`_.
 
-We're also interested in hearing your ideas and criticisms. We want people to take the data and re-use it in many different ways. We hope coders will help us get through our long todo list of possible features.
+We're also interested in hearing your ideas and criticisms. We want people to take the data and re-use it in many different ways, and we're interested in collaborating on feature development. Head over to the `developer mailing list <https://groups.google.com/group/meeting-matters-dev>`_.
 
 Who's behind it?
 ----------------
