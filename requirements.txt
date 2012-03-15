@@ -21,6 +21,10 @@ django-haystack
 # Tagging
 django-taggit
 
+# Sharing
+django-shorturls
+django-cal
+
 # Authentication
 django-social-auth
 
