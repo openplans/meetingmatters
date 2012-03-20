@@ -38,3 +38,6 @@ slimit
 # Testing and debugging
 django-nose
 django-debug-toolbar
+
+# Time
+pytz
