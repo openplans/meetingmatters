@@ -23,7 +23,7 @@ django-taggit
 
 # Sharing
 django-shorturls
-django-cal
+git+git://github.com/statesofpop/django-cal.git#egg=django-cal
 
 # Authentication
 django-social-auth
