@@ -22,5 +22,7 @@ urlpatterns = patterns('meetings',
 
     # Feeds
     url(r'^rss/$', feeds.MeetingListFeed(),
-        name='meeting_list_feed')
+        name='meeting_list_rss'),
+    url(r'^ical/$', feeds.MeetingListCal(),
+        name='meeting_list_ical'),
 )
