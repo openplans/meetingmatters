@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 
+from . import feeds
 from . import views
 
 urlpatterns = patterns('meetings',
@@ -12,12 +13,14 @@ urlpatterns = patterns('meetings',
     # Browse
     url(r'^$', views.MeetingListView.as_view(),
         name='browse_meetings_meeting_list'),
-    url(r'^\?tags=(?P<slug>[^&]+)$', views.MeetingListView.as_view(),
-        name='browse_meetings_meeting_by_tag'),
-    url(r'^(?P<slug>[^/]+)/$', views.MeetingDetailView.as_view(),
+    url(r'^~(?P<slug>[^/]+)/$', views.MeetingDetailView.as_view(),
         name='browse_meetings_meeting_detail'),
 
     # Update
     url(r'^(?P<slug>.+)/edit/$', views.UpdateMeetingInfoView.as_view(),
         name='update_meeting_fill_info'),
+
+    # Feeds
+    url(r'^rss/$', feeds.MeetingListFeed(),
+        name='meeting_list_feed')
 )

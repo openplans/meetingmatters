@@ -239,6 +239,11 @@ TWITTER_CONSUMER_SECRET      = get_local('TWITTER_CONSUMER_SECRET')
 # Site search configuration
 #
 
+SHORTEN_MODELS = {
+    'm': 'meetings.meeting',
+}
+#SHORT_BASE_URL = 'http://mtm.tt/'
+
 ###############################################################################
 #
 # Applications
@@ -255,6 +260,7 @@ COMMUNITY_APPS = (
     'taggit_templatetags',
     'compressor',
     'reversion',
+    'shorturls',
 )
 
 MY_REUSABLE_APPS = (

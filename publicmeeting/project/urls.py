@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'', include('social_auth.urls')),
     url(r'', include('django.contrib.auth.urls')),
 
+    url(r'^s/', include('shorturls.urls')),
     url(r'^meetings/', include('meetings.urls')),
 
     url(r'^$', views.HomepageView.as_view(),

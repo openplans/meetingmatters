@@ -40,6 +40,10 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     def __unicode__(self):
         return self.title
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('browse_meetings_meeting_detail', [str(self.slug)])
+
     def get_pre_slug(self):
         return self.title
 

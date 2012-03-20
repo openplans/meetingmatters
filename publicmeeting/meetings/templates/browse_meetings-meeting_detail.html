@@ -1,4 +1,5 @@
 {% extends "bootstrap-layout.html" %}
+{% load shorturl %}
 
 {% block bootstrap_container_content %}
 
@@ -43,6 +44,12 @@
           {% for tag in meeting.tags.all %}
             <a class="meeting-tag btn btn-mini" href="{% url browse_meetings_meeting_by_tag tag.slug %}">{{ tag.name }} <i class="icon-tag"></i></a>
           {% endfor %}
+        </div>
+
+        <hr>
+
+        <div class="meeting-share">
+          <a href="{% shorturl meeting %}"><i class="icon-share"></i> {% shorturl meeting %}</a>
         </div>
 
       </div>
