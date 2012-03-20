@@ -16,8 +16,6 @@ class MeetingListView (views.ListView):
         context['tags'] = taggit_models.Tag.objects.all().order_by('name')
         context['selected_tags'] = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
 
-        ends_in_slash = self.request.path.endswith(u'/')
-
         context['rss_url'] = reverse('meeting_list_rss') + '?' + self.request.GET.urlencode()
         context['ical_url'] = reverse('meeting_list_ical') + '?' + self.request.GET.urlencode()
 
