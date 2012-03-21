@@ -39,7 +39,7 @@
 
           {% for tag in tags %}
             <li {% if tag in selected_tags %}class="active"{% endif %}>
-              <a href="{% url 'browse_meetings_meeting_list' %}?tags={{ tag.slug|urlencode }}">{{ tag.name }}</a>
+              <a href="{% url 'browse_meetings_meeting_list' %}?{{ tag.qs }}">{{ tag.name }}</a>
             </li>
           {% endfor %}
 
