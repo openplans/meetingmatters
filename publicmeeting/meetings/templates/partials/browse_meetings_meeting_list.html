@@ -16,7 +16,7 @@
 
           <div class="span3 pull-right" align="right">
             {% for tag in meeting.tags.all %}
-              <a class="meeting-tag btn btn-mini" href="{% url browse_meetings_meeting_list %}?tag={{ tag.slug|urlencode }}">{{ tag.name }} <i class="icon-tag"></i></a>
+              <a class="meeting-tag btn btn-mini" href="{% url browse_meetings_meeting_list %}?tags={{ tag.slug|urlencode }}">{{ tag.name }} <i class="icon-tag"></i></a>
             {% endfor %}
           </div>
         </div>
