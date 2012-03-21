@@ -1,14 +1,33 @@
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django_cal.views import Events
+from taggit.models import Tag
 
 from . import models
 
 class MeetingListFeedMixin (object):
     tag_slugs = []
 
+    def title(self):
+        title = u'Public meetings'
+        if self.tag_slugs:
+            title += u' tagged with "'
+            title += u'", "'.join([tag.name for tag in self.tags()])
+            title += u'"'
+        return title
+
+    def description(self):
+        description = self.title() + u' from http://meetingmatters.org/'
+        return description
+
     def link(self):
-        return reverse('browse_meetings_meeting_list')
+        link = reverse('browse_meetings_meeting_list')
+        if self.tag_slugs:
+            link += u'?' + u'&'.join([u'tags=' + slug for slug in self.tag_slugs])
+        return link
+
+    def tags(self):
+        return Tag.objects.filter(slug__in=self.tag_slugs)
 
     def get_object(self, request, *args, **kwargs):
         self.tag_slugs = request.GET.getlist('tags')
