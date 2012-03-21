@@ -52,6 +52,9 @@ class MeetingListFeedMixin (object):
     def item_description(self, item):
         return item.description
 
+    def item_categories(self, item):
+        return [tag.name for tag in item.tags.all()]
+
 
 class MeetingListRss (MeetingListFeedMixin, Feed):
     pass
@@ -63,3 +66,21 @@ class MeetingListICal (MeetingListFeedMixin, Events):
 
     def item_end(self, item):
         return item.end_time
+
+    def cal_name(self):
+        return self.title()
+
+    def cal_desc(self):
+        return self.description()
+
+    def item_summary(self, item):
+        return self.item_title(item)
+
+    def item_location(self, item):
+        return item.venue_name
+
+    def item_created(self, item):
+        return item.created_datetime
+
+    def item_last_modified(self, item):
+        return item.updated_datetime
