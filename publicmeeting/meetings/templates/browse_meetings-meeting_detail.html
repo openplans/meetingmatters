@@ -29,7 +29,7 @@
       </div>
 
       <div class="meeting-description">
-        {{ meeting.description|linebreaks }}
+        {{ meeting.description|linebreaks|urlizetrunc:50 }}
       </div>
 
       <div>
