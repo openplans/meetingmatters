@@ -1,3 +1,4 @@
+from django.contrib.sites.models import Site
 from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 from django_cal.views import Events
@@ -18,7 +19,8 @@ class MeetingListFeedMixin (object):
         return title
 
     def description(self):
-        description = self.title() + u' from http://meetingmatters.org/'
+        current_site = Site.objects.get_current()
+        description = self.title() + u' from ' + current_site.domain
         return description
 
     def link(self):
