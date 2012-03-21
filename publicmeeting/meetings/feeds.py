@@ -7,6 +7,7 @@ from . import models
 
 class MeetingListFeedMixin (object):
     tag_slugs = []
+    querystring = None
 
     def title(self):
         title = u'Public meetings'
@@ -22,8 +23,8 @@ class MeetingListFeedMixin (object):
 
     def link(self):
         link = reverse('browse_meetings_meeting_list')
-        if self.tag_slugs:
-            link += u'?' + u'&'.join([u'tags=' + slug for slug in self.tag_slugs])
+        if self.querystring:
+            link += u'?' + self.querystring
         return link
 
     def tags(self):
@@ -31,6 +32,7 @@ class MeetingListFeedMixin (object):
 
     def get_object(self, request, *args, **kwargs):
         self.tag_slugs = request.GET.getlist('tags')
+        self.querystring = request.GET.urlencode()
 
     def items(self):
         # For RSS, how should these be ordered?
