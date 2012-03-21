@@ -13,23 +13,14 @@ class Migration(DataMigration):
         tz = timezone(settings.TIME_ZONE)
         for meeting in orm.Meeting.objects.all():
             t = meeting.begin_time
-            meeting.begin_time += tz.utcoffset(t.replace(tzinfo=None))
+            if t.tzinfo is None:
+                meeting.begin_time = tz.localize(t)
 
             t = meeting.end_time
-            meeting.end_time += tz.utcoffset(t.replace(tzinfo=None))
+            if t.tzinfo is None:
+                meeting.end_time = tz.localize(t)
 
             meeting.save()
-#        tz = timezone(settings.TIME_ZONE)
-#        for meeting in orm.Meeting.objects.all():
-#            t = meeting.begin_time
-#            if t.tzinfo is None:
-#                meeting.begin_time = tz.localize(t)
-
-#            t = meeting.end_time
-#            if t.tzinfo is None:
-#                meeting.end_time = tz.localize(t)
-
-#            meeting.save()
 
 
     def backwards(self, orm):
