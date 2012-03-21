@@ -13,10 +13,10 @@ class Migration(DataMigration):
         tz = timezone(settings.TIME_ZONE)
         for meeting in orm.Meeting.objects.all():
             t = meeting.begin_time
-            meeting.begin_time += tz.utcoffset(t)
+            meeting.begin_time += tz.utcoffset(t.replace(tzinfo=None))
 
             t = meeting.end_time
-            meeting.end_time += tz.utcoffset(t)
+            meeting.end_time += tz.utcoffset(t.replace(tzinfo=None))
 
             meeting.save()
 #        tz = timezone(settings.TIME_ZONE)
