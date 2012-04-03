@@ -6,6 +6,16 @@ from taggit.managers import TaggableManager
 from utils.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
+class Region (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
+    """A general region in which meetings take place"""
+
+    name = models.CharField(max_length=256)
+    """The name of this region"""
+
+    def __unicode__(self):
+        return self.name
+
+
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     title = models.CharField(max_length=1023, verbose_name="Meeting Name", help_text="The meeting name should be descriptive. What makes a good meeting name? What makes a bad one?")
     """The title of the meeting"""
@@ -18,6 +28,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     end_time = models.DateTimeField(null=True, blank=True, verbose_name="End time")
     """When does the meeting end.  NULL means ???."""
+
+    region = models.ForeignKey('Region', null=True, verbose_name="Region")
+    """The region in which this meeting takes place"""
 
     venue_name = models.TextField(null=True, blank=True, verbose_name="Venue Address")
     """The name or address of the venue.  NULL means TBD."""
@@ -49,9 +62,13 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     def similar_meetings(self, threshold=0.7):
         T = set(self.title.lower())
+        all_meetings = Meeting.objects.all()
+
+        if self.region:
+            all_meetings = all_meetings.filter(region = self.region)
 
         similar_meetings = []
-        for meeting in Meeting.objects.all():
+        for meeting in all_meetings:
             S = set(meeting.title.lower())
             similarity = len(S & T) / len(S | T)
             if similarity > threshold:

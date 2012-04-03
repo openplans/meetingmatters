@@ -283,6 +283,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.comments',
+    'django.contrib.gis',
 ) + PROJECT_APPS + MY_REUSABLE_APPS + COMMUNITY_APPS
 
 ################################################################################

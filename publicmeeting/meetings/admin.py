@@ -6,3 +6,4 @@ class MeetingAdmin (VersionAdmin):
     pass
 
 admin.site.register(models.Meeting, MeetingAdmin)
+admin.site.register(models.Region)

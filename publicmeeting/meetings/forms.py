@@ -84,3 +84,11 @@ class FillInMeetingInfoForm (forms.ModelForm):
             )
         )
         return super(FillInMeetingInfoForm, self).__init__(*args, **kwargs)
+
+
+class DefaultFilters (forms.Form):
+    region = forms.ModelChoiceField(
+        queryset=models.Region.objects.all(),
+        to_field_name='slug',
+        widget=forms.HiddenInput(),
+    )

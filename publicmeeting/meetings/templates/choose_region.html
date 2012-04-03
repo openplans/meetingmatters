@@ -1,0 +1,30 @@
+{% extends "bootstrap-layout.html" %}
+{% load url from future %}
+{% load shorturl %}
+
+{% block bootstrap_container_content %}
+
+  <div class="hero-unit">
+    <ul class="nav nav-list">
+      <li class="nav-header">
+        You are interested in meetings in...
+      </li>
+<!--      <li>-->
+<!--        <a href="#">(finding your location...)</a>-->
+<!--      </li>-->
+
+<!--      <li class="divider"></li>-->
+
+      {% for region in regions %}
+      <li>
+        <form method="POST" action="{% url 'project-choose_region' %}">{% csrf_token %}
+          <input type="hidden" name="region" id="id_region" value="{{ region.slug }}"/>
+          <button type="submit"><a>{{ region.name }}</a></button>
+        </form>
+      </li>
+      {% endfor %}
+
+    </ul>
+  </div>
+
+{% endblock %}

@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
     url(r'^$', views.HomepageView.as_view(),
         name='project-home'),
+    url(r'^choose-region/$', views.DefaultMeetingFilters.as_view(),
+        name='project-choose_region'),
     url(r'^about/$', views.AboutView.as_view(),
         name='project-about'),
 )
