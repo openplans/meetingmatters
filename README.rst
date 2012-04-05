@@ -27,4 +27,3 @@ We're also interested in hearing your ideas and criticisms. We want people to ta
 Who's behind it?
 ----------------
 Meeting Matters is a project from `OpenPlans <http://openplans.org>`_. We're thinking about tools to transform civic engagement. Making meetings matter is a small part of that effort.
-.
