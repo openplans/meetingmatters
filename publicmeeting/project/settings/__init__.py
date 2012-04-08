@@ -203,8 +203,9 @@ COMPRESS_ENABLED = True  # set to ``not DEBUG`` by default
 # Since we want to precompile our project's LESS against Bootstrap, we must
 # specify the location of Bootstrap's less files in the lessc command.
 BOOTSTRAP_LESS_DIR = os.path.join(PROJECT_PATH, '../../.env/lib/python2.7/site-packages/bootstrapped/static/less/')
+LESSC_PATH = os.path.abspath(os.path.join(PROJECT_PATH, '../../node_modules/less/bin/lessc'))
 COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
+    ('text/less', LESSC_PATH + ' {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
 )
 
 # So that the relative paths stay the same in our LESS as in our compiled CSS,

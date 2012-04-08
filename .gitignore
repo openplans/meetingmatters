@@ -1,5 +1,6 @@
 *~
 *.py[c|o]
 .env/
+node_modules/
 publicmeeting/project/settings/local.py
 publicmeeting/publicmeeting.db
