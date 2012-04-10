@@ -57,7 +57,7 @@ def get_local(varname, default=None):
         if 'DATABASE_URL' in os.environ:
             dbs['default'] = parse_db_url(os.environ['DATABASE_URL'])
 
-        else if 'SPACIALDB_URL' in os.environ:
+        elif 'SPACIALDB_URL' in os.environ:
             dbs['default'] = parse_db_url(os.environ['SPACIALDB_URL'], spatial=True)
 
         return dbs
