@@ -58,6 +58,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
             'title': forms.TextInput(attrs={'class':'span6'}),
             'description': forms.Textarea(attrs={'class':'span6'}),
             'tags': taggit.TagWidget(attrs={'class':'span6'}),
+            'region': forms.Select(attrs={'class':'span6'}),
             'venue_name': forms.TextInput(attrs={'class':'span5'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
         }
@@ -77,7 +78,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
             ),
             Fieldset(
                 'Step 2: Enter the location',
-                'venue_name', 'venue_additional'
+                'region', 'venue_name', 'venue_additional'
             ),
             ButtonHolder(
                 Submit('check', 'Save', css_class='btn btn-primary pull-right')
