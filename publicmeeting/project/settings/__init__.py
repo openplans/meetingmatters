@@ -30,18 +30,22 @@ def get_local(varname, default=None):
         pass
 
     # Heroku DATABASE_URL-based DB configuration.
-    if varname == 'DATABASES' and 'DATABASE_URL' in os.environ:
-        import urlparse
-        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+    if varname == 'DATABASES':
+        dbs = {}
 
-        # Ensure default database exists.
-        scheme_to_engine = {
-            'postgres': 'django.db.backends.postgresql_psycopg2',
-            'mysql': 'django.db.backends.mysql',
-        }
+        def parse_db_url(url_string, spatial=False):
+            import urlparse
+            url = urlparse.urlparse(url_string)
 
-        return {
-            'default': {
+            # Ensure default database exists.
+            scheme_to_engine = {
+                'postgres': ('django.db.backends.postgresql_psycopg2'
+                             if not spatial else
+                             'django.contrib.gis.db.backends.postgis'),
+                'mysql': 'django.db.backends.mysql',
+            }
+
+            return {
                 'ENGINE': scheme_to_engine[url.scheme],
                 'NAME': url.path[1:],
                 'USER': url.username,
@@ -49,7 +53,14 @@ def get_local(varname, default=None):
                 'HOST': url.hostname,
                 'PORT': url.port,
             }
-        }
+
+        if 'DATABASE_URL' in os.environ:
+            dbs['default'] = parse_db_url(os.environ['DATABASE_URL'])
+
+        else if 'SPACIALDB_URL' in os.environ:
+            dbs['default'] = parse_db_url(os.environ['SPACIALDB_URL'], spatial=True)
+
+        return dbs
 
     # If we get here and no default is supplied, raise an exception.
     if default is None:
