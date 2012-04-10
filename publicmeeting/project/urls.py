@@ -30,4 +30,6 @@ urlpatterns = patterns('',
         name='project-choose_region'),
     url(r'^about/$', views.AboutView.as_view(),
         name='project-about'),
+    url(r'^set-region/$', views.RegionSetterView.as_view(),
+        name='set-region'),
 )
