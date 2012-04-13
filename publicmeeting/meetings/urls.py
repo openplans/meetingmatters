@@ -9,6 +9,8 @@ urlpatterns = patterns('meetings',
     	name='create_meeting_search_similar'),
     url(r'^create/step2$', views.CreateMeetingInfoView.as_view(),
     	name='create_meeting_fill_info'),
+    url(r'^venue/create/$', views.CreateVenueInfoView.as_view(),
+      name='meetings_create_venue'),
 
     # Browse
     url(r'^$', views.MeetingListView.as_view(),

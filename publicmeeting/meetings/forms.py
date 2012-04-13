@@ -1,11 +1,17 @@
 from django import forms
+from django.contrib.gis import geos
 from django.core.urlresolvers import reverse
 from taggit import forms as taggit
 
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
+from utils.geocode import geocode
+
 from . import models
+
+import logging
+log = logging.getLogger(__name__)
 
 class CheckForSimilarMeetingsForm (forms.Form):
     title = forms.CharField(
@@ -49,6 +55,12 @@ class FillInMeetingInfoForm (forms.ModelForm):
     end_time = forms.SplitDateTimeField(
         label="End time",
         input_time_formats=('%H:%M', '%I:%M %p')
+    )
+    venue = forms.ModelChoiceField(
+        queryset=models.Venue.objects.all(),
+        widget=forms.Select(attrs={'class':'span4'}),
+        required=False,
+        help_text='If you do not find the venue in the list, you can <a href="#create-venue-modal" data-toggle="modal">create</a> a new one.'
     )
 #    venue_name = forms.CharField(
 #        label="Name",
@@ -110,3 +122,49 @@ class DefaultFilters (forms.Form):
         to_field_name='slug',
         widget=forms.HiddenInput(),
     )
+
+class VenueForm (forms.ModelForm):
+    class Meta:
+        model = models.Venue
+        exclude = ['slug', 'location']
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+#        self.helper.form_method = 'POST'
+#        self.helper.form_action = ''
+#        self.helper.form_class = 'form-horizontal'
+        self.helper.form_tag = False
+
+#        self.helper.layout = Layout(
+#            Fieldset(
+#                'Step 1: Fill in general information',
+#                'title', 'begin_time', 'end_time',
+#                'description', 'tags'
+#            ),
+#            Fieldset(
+#                'Step 2: Enter the location',
+#                'region', 'venue', 'venue_additional'
+#            ),
+#            ButtonHolder(
+#                Submit('check', 'Save', css_class='btn btn-primary pull-right')
+#            )
+#        )
+
+        return super(VenueForm, self).__init__(*args, **kwargs)
+
+    def clean(self, *args, **kwargs):
+        cleaned_data = super(VenueForm, self).clean(*args, **kwargs)
+
+        address = cleaned_data.get('address')
+        if self.instance.address != address:
+            geo = geocode(address)
+
+            if not geo or not geo['results']:
+                raise forms.ValidationError('Could not find this address.')
+
+            geo = geo['results'][0]
+            self.instance.location = geos.Point(
+                geo['geometry']['location']['lng'],
+                geo['geometry']['location']['lat'])
+
+        return cleaned_data

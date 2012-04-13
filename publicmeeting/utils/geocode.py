@@ -19,9 +19,7 @@ def geocode(address, retries=5, service='google', **kwargs):
             return None
 
         response.encoding = 'UTF8'
-        result = json.loads(response.text)
-
-        return results
+        return json.loads(response.text)
 
     else:
         raise ValueError('Unrecognized service: %s' % service)

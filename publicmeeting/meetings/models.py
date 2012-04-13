@@ -1,8 +1,10 @@
 from __future__ import division
 #from django.contrib.gis.db import models
 from django.contrib.gis.db import models
+from django.contrib.gis import geos
 from taggit.managers import TaggableManager
 
+from utils.geocode import geocode
 from utils.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
@@ -25,7 +27,7 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     address = models.CharField(max_length=1024)
     """The address of the venue"""
 
-    location = models.PointField()
+    location = models.PointField(blank=True)
     """A geographical point representing the venue"""
 
     objects = models.GeoManager()
@@ -38,6 +40,17 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
             return "{n}, {a}".format(n=self.name, a=self.address)
         else:
             return self.address
+
+    def save(self, *args, **kwargs):
+        if self.location is None:
+            geo = geocode(self.address)
+            if not geo or not geo['results']:
+                raise models.FieldError('Cannot find address')
+            geo = geo['results'][0]
+            self.location = geos.Point(
+                geo['geometry']['location']['lng'],
+                geo['geometry']['location']['lat'])
+        super(Venue, self).save(*args, **kwargs)
 
 
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):

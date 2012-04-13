@@ -16,7 +16,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
     <script>
       var venueData = {{ venues_json|default:"{}"|safe }};
     </script>
@@ -90,6 +89,8 @@
     {% else %}
       <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     {% endif %}
+    <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
 
 
     <script type="text/javascript">

@@ -31,6 +31,7 @@ django-social-auth
 # Async requests
 djangorestframework
 requests
+django-pjax
 
 # Template and style helpers
 git+git://github.com/mjumbewu/django-bootstrapped.git@bootstrap2#egg=django-bootstrapped==1.0.3-dev

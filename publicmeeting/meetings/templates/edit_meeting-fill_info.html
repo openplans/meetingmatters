@@ -9,4 +9,39 @@
       </div>
     </div> <!-- row -->
 
+  <div class="modal hide fade" id="create-venue-modal">
+    <form class="form-horizontal" method="POST" action="{% url meetings_create_venue %}">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Create a venue</h3>
+      </div>
+      <div class="modal-body" id="venue-form-wrapper">
+        {% uni_form venue_form venue_form.helper %}
+      </div>
+      <div class="modal-footer">
+        <a class="btn" data-dismiss="modal">Close</a>
+        <button type="submit" class="btn btn-primary">Save venue</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+        $('#create-venue-modal form').ajaxForm(function(responseText, statusText, xhr, $form) {
+          if (xhr.status === 201) {
+            $('#create-venue-modal').modal('hide');
+            venue = $.parseJSON(xhr.responseText)
+            venueData[venue.pk] = venue
+
+            $newOption = $('<option value="' + venue.pk +'" selected="selected">' + venue.name + '</option>');
+            $('#id_venue').append($newOption);
+            initVenueField();
+            fillVenueData();
+          } else {
+            $('#venue-form-wrapper').html(responseText)
+          }
+        });
+    });
+  </script>
+
 {% endblock %}

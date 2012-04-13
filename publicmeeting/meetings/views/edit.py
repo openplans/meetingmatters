@@ -3,7 +3,7 @@ from __future__ import division
 import json
 
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import linebreaksbr, urlencode
 from django.views import generic as views
 from taggit import models as taggit_models
@@ -69,6 +69,7 @@ class MeetingInfoFormViewMixin (object):
                 'lng': venue.location.x
             }
         context['venues_json'] = json.dumps(venues_data)
+        context['venue_form'] = forms.VenueForm()
         return context
 
 
@@ -105,3 +106,23 @@ class UpdateMeetingInfoView (MeetingInfoFormViewMixin, views.UpdateView):
 
     def get_success_url(self):
         return reverse('browse_meetings_meeting_detail', kwargs={'slug': self.object.slug})
+
+
+@LoginRequired
+class CreateVenueInfoView (views.CreateView):
+    model = models.Venue
+    form_class = forms.VenueForm
+    template_name = 'partials/meeting_edit_venue.html'
+
+    def form_valid(self, form):
+        venue = self.object = form.save()
+        venue_data = {
+            'name': venue.name,
+            'address': venue.address,
+            'encAddress': urlencode(venue.address),
+            'lat': venue.location.y,
+            'lng': venue.location.x,
+            'pk': venue.pk
+        }
+
+        return HttpResponse(json.dumps(venue_data), content_type="application/json", status=201)

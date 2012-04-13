@@ -16,10 +16,9 @@
         </div>
 
         <script>
-          $(document).ready(function() {
+          function initVenueField() {
             var $venueField = $( "#id_{{ field.name }}" );
-            var $venueAddress = $( "#{{ field.name }}-address-area" );
-            var $venueMap = $( "#{{ field.name }}-map-area" );
+
             var comboItems = [];
             $.each(venueData, function(pk, venue) {
               comboItems[pk] = {
@@ -27,24 +26,36 @@
                 value: venue.name
               };
             });
+            $venueField.combobox('destroy');
             $venueField.combobox({data: comboItems});
-            var fillVenueData = function() {
-              var pk = $venueField.val();
-              var data = venueData[pk];
+          };
 
-              if (data) {
-                $venueMap.html(
-                  '<img src="http://maps.googleapis.com/maps/api/staticmap?'+
-                  'center=' + data.encAddress + '&zoom=14&size=140x140&maptype=roadmap'+
-                  '&markers=color:blue%7C' + data.lat + ',' + data.lng + '&sensor=false">'
-                );
-                $venueAddress.html(data.address);
-              } else {
-                $venueMap.html('<div style="background-color: gray; width: 140px; height: 140px"></div>');
-                $venueAddress.html('');
-              }
-            };
+          function fillVenueData() {
+            var $venueField = $( "#id_{{ field.name }}" );
+            var $venueAddress = $( "#{{ field.name }}-address-area" );
+            var $venueMap = $( "#{{ field.name }}-map-area" );
+
+            var pk = $venueField.val();
+            var data = venueData[pk];
+
+            if (data) {
+              $venueMap.html(
+                '<img src="http://maps.googleapis.com/maps/api/staticmap?'+
+                'center=' + data.encAddress + '&zoom=14&size=140x140&maptype=roadmap'+
+                '&markers=color:blue%7C' + data.lat + ',' + data.lng + '&sensor=false">'
+              );
+              $venueAddress.html(data.address);
+            } else {
+              $venueMap.html('<div style="background-color: gray; width: 140px; height: 140px"></div>');
+              $venueAddress.html('');
+            }
+          };
+
+          $(document).ready(function() {
+            initVenueField();
             fillVenueData();
+
+            var $venueField = $( "#id_{{ field.name }}" );
             $venueField.bind('select', fillVenueData);
           });
         </script>
