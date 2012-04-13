@@ -1,0 +1,61 @@
+<div class="control-group {% if field.errors %}error{% endif %}">
+    <label for="{{ field.auto_id }}" class="control-label">
+        {% if field.field.required %}<b>{% endif %}{{ field.label|safe }}{% if field.field.required %}</b>{% endif %}
+    </label>
+    <div class="controls">
+
+        <div class="row">
+          <div class="span4">
+            {{ field }}
+            <div class="row">
+              <div id="{{ field.name }}-address-area" class="span4"></div>
+            </div>
+          </div>
+
+          <div id="{{ field.name }}-map-area" class="span2"></div>
+        </div>
+
+        <script>
+          $(document).ready(function() {
+            var $venueField = $( "#id_{{ field.name }}" );
+            var $venueAddress = $( "#{{ field.name }}-address-area" );
+            var $venueMap = $( "#{{ field.name }}-map-area" );
+            var comboItems = [];
+            $.each(venueData, function(pk, venue) {
+              comboItems[pk] = {
+                label: venue.name + '<br>' + venue.address,
+                value: venue.name
+              };
+            });
+            $venueField.combobox({data: comboItems});
+            var fillVenueData = function() {
+              var pk = $venueField.val();
+              var data = venueData[pk];
+
+              if (data) {
+                $venueMap.html(
+                  '<img src="http://maps.googleapis.com/maps/api/staticmap?'+
+                  'center=' + data.encAddress + '&zoom=14&size=140x140&maptype=roadmap'+
+                  '&markers=color:blue%7C' + data.lat + ',' + data.lng + '&sensor=false">'
+                );
+                $venueAddress.html(data.address);
+              } else {
+                $venueMap.html('<div style="background-color: gray; width: 140px; height: 140px"></div>');
+                $venueAddress.html('');
+              }
+            };
+            fillVenueData();
+            $venueField.bind('select', fillVenueData);
+          });
+        </script>
+
+        {% if field.errors %}
+            <span class="help-inline">{% for error in field.errors %}{{ error }}<br/> {% endfor %}</span>
+        {% endif %}
+        {% if field.help_text%}
+            <p class="help-block">
+                {{ field.help_text|safe }}
+            </p>
+        {% endif %}
+    </div>
+</div>

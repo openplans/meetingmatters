@@ -50,16 +50,24 @@ class FillInMeetingInfoForm (forms.ModelForm):
         label="End time",
         input_time_formats=('%H:%M', '%I:%M %p')
     )
+#    venue_name = forms.CharField(
+#        label="Name",
+#        widget=forms.TextInput(attrs={'class':'span6'})
+#    )
+#    venue_address = forms.CharField(
+#        label="Address",
+#        widget=forms.TextInput(attrs={'class':'span5'})
+#    )
 
     class Meta:
         model = models.Meeting
-        exclude = ('speakers', 'attendees', 'slug')
+        exclude = ('speakers', 'attendees', 'slug', 'venue_name')
         widgets = {
             'title': forms.TextInput(attrs={'class':'span6'}),
             'description': forms.Textarea(attrs={'class':'span6'}),
             'tags': taggit.TagWidget(attrs={'class':'span6'}),
             'region': forms.Select(attrs={'class':'span6'}),
-            'venue_name': forms.TextInput(attrs={'class':'span5'}),
+            'venue': forms.Select(attrs={'class':'span4'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
         }
 
@@ -78,12 +86,21 @@ class FillInMeetingInfoForm (forms.ModelForm):
             ),
             Fieldset(
                 'Step 2: Enter the location',
-                'region', 'venue_name', 'venue_additional'
+                'region', 'venue', 'venue_additional'
             ),
             ButtonHolder(
                 Submit('check', 'Save', css_class='btn btn-primary pull-right')
             )
         )
+
+#        if instance and instance.venue:
+#            initial = initial or {}
+#            initial.update({
+#                'venue_name': instance.venue.name,
+#                'venue_address': instance.venue.address
+#            })
+
+#        kwargs.update({'initial': initial, 'instance': instance})
         return super(FillInMeetingInfoForm, self).__init__(*args, **kwargs)
 
 

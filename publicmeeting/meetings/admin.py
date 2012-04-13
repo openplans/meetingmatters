@@ -7,3 +7,4 @@ class MeetingAdmin (VersionAdmin):
 
 admin.site.register(models.Meeting, MeetingAdmin)
 admin.site.register(models.Region)
+admin.site.register(models.Venue)

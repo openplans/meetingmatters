@@ -275,6 +275,7 @@ COMMUNITY_APPS = (
     'compressor',
     'reversion',
     'shorturls',
+    'djangorestframework',
 )
 
 MY_REUSABLE_APPS = (

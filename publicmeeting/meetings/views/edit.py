@@ -1,6 +1,10 @@
 from __future__ import division
+
+import json
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.template.defaultfilters import linebreaksbr, urlencode
 from django.views import generic as views
 from taggit import models as taggit_models
 from uni_form.layout import Hidden
@@ -50,8 +54,26 @@ class CheckForSimilarMeetingsView (views.FormView):
         self.request.session['create_meeting-workflow'] = form.cleaned_data
 
 
+class MeetingInfoFormViewMixin (object):
+    def get_context_data(self, **kwargs):
+        context = super(MeetingInfoFormViewMixin, self).get_context_data(**kwargs)
+
+        venues_data = {}
+        venues = models.Venue.objects.all()
+        for venue in venues:
+            venues_data[venue.pk] = {
+                'name': venue.name,
+                'address': venue.address,
+                'encAddress': urlencode(venue.address),
+                'lat': venue.location.y,
+                'lng': venue.location.x
+            }
+        context['venues_json'] = json.dumps(venues_data)
+        return context
+
+
 @LoginRequired
-class CreateMeetingInfoView (views.CreateView):
+class CreateMeetingInfoView (MeetingInfoFormViewMixin, views.CreateView):
     model = models.Meeting
     form_class = forms.FillInMeetingInfoForm
     template_name = 'edit_meeting-fill_info.html'
@@ -76,7 +98,7 @@ class CreateMeetingInfoView (views.CreateView):
         return super(CreateMeetingInfoView, self).get_form_kwargs()
 
 @LoginRequired
-class UpdateMeetingInfoView (views.UpdateView):
+class UpdateMeetingInfoView (MeetingInfoFormViewMixin, views.UpdateView):
     model = models.Meeting
     form_class = forms.FillInMeetingInfoForm
     template_name = 'edit_meeting-fill_info.html'

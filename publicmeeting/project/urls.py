@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 
     url(r'^s/', include('shorturls.urls')),
     url(r'^meetings/', include('meetings.urls')),
+    url(r'^utils/', include('utils.urls')),
 
     url(r'^$', views.HomepageView.as_view(),
         name='project-home'),

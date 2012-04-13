@@ -1,6 +1,6 @@
 from __future__ import division
 #from django.contrib.gis.db import models
-from django.db import models
+from django.contrib.gis.db import models
 from taggit.managers import TaggableManager
 
 from utils.models import TimestampedModelMixin, SlugifiedModelMixin
@@ -14,6 +14,30 @@ class Region (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
+    """A venue where meetings take place"""
+
+    name = models.CharField(max_length=256, null=True, blank=True)
+    """The name of the venue"""
+
+    address = models.CharField(max_length=1024)
+    """The address of the venue"""
+
+    location = models.PointField()
+    """A geographical point representing the venue"""
+
+    objects = models.GeoManager()
+
+    def get_pre_slug(self):
+        return self.name or self.address
+
+    def __unicode__(self):
+        if self.name:
+            return "{n}, {a}".format(n=self.name, a=self.address)
+        else:
+            return self.address
 
 
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
@@ -31,6 +55,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     region = models.ForeignKey('Region', null=True, verbose_name="Region")
     """The region in which this meeting takes place"""
+
+    venue = models.ForeignKey('Venue', null=True, blank=True, related_name='meetings')
+    """The venue where the meeting will take place"""
 
     venue_name = models.TextField(null=True, blank=True, verbose_name="Venue Address")
     """The name or address of the venue.  NULL means TBD."""
