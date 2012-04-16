@@ -9,7 +9,7 @@ from .. import models
 from .. import forms
 
 class MeetingListMixin (object):
-    def get_meetings(self, tags=[], region=None, **extra):
+    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, **extra):
         """
         tags -- A list of tag slugs
         region -- A list of one region slug. If there are more than one, all
@@ -19,23 +19,24 @@ class MeetingListMixin (object):
         """
         assert len(extra) == 0
 
-        # Start with all the meetings.
         meetings = models.Meeting.objects.all().select_related()
-
-        # Filter by any tags.
-        for tag in tags:
-            meetings = meetings.filter(tags__slug=tag)
-
-        # Filter by region.
-        if region and isinstance(region, list):
-            region = region[-1]
-
         if region:
-            meetings = meetings.filter(region__slug=region)
+            meetings = meetings.filter(region=region)
+        if center:
+            meetings = meetings.filter(venue__location__distance_lte=(pnt, radius))
+        if earliest:
+            meetings = meetings.filter(end_time__gt=earliest)
+        if latest:
+            meetings = meetings.filter(begin_time__lt=latest)
+        if tags:
+            # This filter is a disjunction of the selected tags
+            meetings = meetings.filter(tags__in=tags)
 
-        # Make sure each meeting is only in there once.
-        meetings.distinct()
+            # This filter is an adjunction of the selected tags
+            #for tag in tags:
+            #    meetings.filter(tags=tag)
 
+        meetings = meetings.distinct().order_by('begin_time')
         return meetings
 
     def get_query_params(self):
@@ -54,11 +55,13 @@ class MeetingListView (MeetingListMixin, views.ListView):
         all_tags = taggit_models.Tag.objects.all().order_by('name')
         selected_tags = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
 
-        context['tags'] = all_tags
+        context['tags'] = [tag for tag in all_tags]
         context['selected_tags'] = selected_tags
 
         context['rss_url'] = reverse('meeting_list_rss') + '?' + self.request.GET.urlencode()
         context['ical_url'] = reverse('meeting_list_ical') + '?' + self.request.GET.urlencode()
+
+        context['filter_form'] = self.form
 
         for tag in all_tags:
             get_params = self.request.GET.copy()
@@ -73,8 +76,10 @@ class MeetingListView (MeetingListMixin, views.ListView):
         return context
 
     def get_queryset(self):
-        filters = self.request.GET
-        return self.get_meetings(**filters).order_by('-begin_time')
+        if self.form.is_valid():
+            return self.get_meetings(**self.form.cleaned_data)
+        else:
+            return []
 
     def get(self, request, *args, **kwargs):
         # If there are default filters in the session, and they are not
@@ -86,6 +91,7 @@ class MeetingListView (MeetingListMixin, views.ListView):
             return HttpResponseRedirect('?'.join([request.path, query]))
 
         # Otherwise, just use the normal get.
+        self.form = forms.MeetingFilters(data=self.request.GET)
         return super(MeetingListView, self).get(request, *args, **kwargs)
 
 

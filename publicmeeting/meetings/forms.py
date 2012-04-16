@@ -1,14 +1,14 @@
+import datetime
+import taggit.forms
+import taggit.models
 from django import forms
 from django.contrib.gis import geos
 from django.core.urlresolvers import reverse
-from taggit import forms as taggit
-
 from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
-from utils.geocode import geocode
-
 from . import models
+from utils.geocode import geocode
 
 import logging
 log = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class':'span6'}),
             'description': forms.Textarea(attrs={'class':'span6'}),
-            'tags': taggit.TagWidget(attrs={'class':'span6'}),
+            'tags': taggit.forms.TagWidget(attrs={'class':'span6'}),
             'region': forms.Select(attrs={'class':'span6'}),
             'venue': forms.Select(attrs={'class':'span4'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
@@ -122,6 +122,37 @@ class DefaultFilters (forms.Form):
         to_field_name='slug',
         widget=forms.HiddenInput(),
     )
+
+class MeetingFilters (forms.Form):
+    region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False)
+    center = forms.CharField(required=False)
+    radius = forms.FloatField(required=False)
+    earliest = forms.DateField(required=False, initial=datetime.date.today)
+    latest = forms.DateField(required=False)
+    tags = forms.ModelMultipleChoiceField(queryset=taggit.models.Tag.objects.all(), to_field_name='slug', required=False)
+
+    def clean(self):
+        cleaned_data = super(MeetingFilters, self).clean()
+        center = cleaned_data.get('center')
+        radius = cleaned_data.get('radius')
+
+        if center and not radius:
+            msg = u'Radius is required when center is specified.'
+            self._errors['radius'] = self.error_class([msg])
+
+        if radius and not center:
+            msg = u'Center is required when radius is specified.'
+            self._errors['center'] = self.error_class([msg])
+
+        if center:
+            try:
+                center = cleaned_data['center'] = geos.fromstr(center)
+            except geos.GEOSException:
+                msg = u'Center is not a valid WKT point (see http://en.wikipedia.org/wiki/Well-known_text)'
+                self._errors['center'] = self.error_class([msg])
+
+        return cleaned_data
+
 
 class VenueForm (forms.ModelForm):
     class Meta:

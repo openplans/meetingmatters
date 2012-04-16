@@ -1,8 +1,9 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic as views
-from datetime import datetime
+from datetime import date, datetime
 
+from meetings.forms import MeetingFilters
 from meetings.models import Meeting
 from meetings.models import Region
 from meetings.views.browse import MeetingListMixin
@@ -20,16 +21,11 @@ class HomepageView (MeetingListMixin, views.TemplateView):
         context = super(HomepageView, self).get_context_data(**kwargs)
 
         filters = self.request.session.get('default_filters', {})
-        meetings = self.get_meetings(**filters)
-        meetings = meetings.filter(begin_time__gt=datetime.now())
-        meetings = meetings.order_by('begin_time')
-
-        context['meetings'] = meetings
-        if filters.get('region'):
-            try:
-                context['region'] = Region.objects.get(slug=filters['region'])
-            except Region.DoesNotExist:
-                pass
+        form = MeetingFilters(data=filters)
+        if form.is_valid():
+            context['region'] = form.cleaned_data.get('region')
+            form.cleaned_data.update({'earliest': date.today()})
+            context['meetings'] = self.get_meetings(**form.cleaned_data)
         return context
 
 
