@@ -16,7 +16,7 @@
         Upcoming Meetings
         {% if region %}in {{ region.name }}{% endif %}</h2>
       {% if meetings %}
-        {% include "partials/browse_meetings_meeting_list.html" %}
+        {% include "partials/meetings_meeting_list.html" %}
       {% else %}
         <p>There are no upcoming meetings.  Check out the
            <a href="{% url browse_meetings_meeting_list %}">past meetings</a>,
