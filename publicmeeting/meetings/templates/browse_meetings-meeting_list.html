@@ -29,21 +29,42 @@
 
     <div class="homepage-sidebar-wrapper span4">
       <div class="well">
-        <h4>Topics</h4>
-        <ul class="nav nav-pills nav-stacked">
+        <script src="{{ STATIC_URL }}js/meetings_filter.js"></script>
 
-          <li {% if not selected_tags %}class="active"{% endif %}>
-            <a href="{% url 'browse_meetings_meeting_list' %}">All</a>
-            <hr>
-          </li>
+        <form method="GET" id="id_filter_form">
+          <h4>Place</h4>
+          <label for="id_center">Center</label><input type="text" name="center" id="id_center">
+          <label for="id_radius">Radius</label><input type="text" name="radius" id="id_radius">
 
-          {% for tag in tags %}
-            <li {% if tag in selected_tags %}class="active"{% endif %}>
-              <a href="{% url 'browse_meetings_meeting_list' %}?{{ tag.qs }}">{{ tag.name }}</a>
+          <h4>Time</h4>
+          <label for="id_earliest">From</label><input type="date" name="earliest" id="id_earliest">
+          <label for="id_latest">Until</label><input type="date" name="latest" id="id_latest">
+
+          <h4>Topics</h4>
+          <ul class="nav nav-pills nav-stacked">
+            <li id="id_all_tags-li" {% if not filter_form.cleaned_data.tags %}class="active"{% endif %}>
+              <a id="id_all_tags-btn">All</a>
+              <script>
+                $(document).ready(function() {
+                  initAllTopicsFilter();
+                });
+              </script>
+              <hr>
             </li>
-          {% endfor %}
 
-        </ul>
+            {% for tag in tags %}
+              <li id="id_tags-{{ tag.slug }}-li"{% if tag in filter_form.cleaned_data.tags %} class="active"{% endif %}>
+                <a id="id_tags-{{ tag.slug }}-btn">{{ tag.name }}</a>
+                <input type="checkbox" name="tags" value="{{ tag.slug }}" id="id_tags-{{ tag.slug }}"{% if tag in filter_form.cleaned_data.tags %} checked="checked"{% endif %} style="display: none">
+                <script>
+                  $(document).ready(function() {
+                    initTopicFilter('{{ tag.slug }}');
+                  });
+                </script>
+              </li>
+            {% endfor %}
+          </ul>
+        </form>
       </div>
     </div>
   </div>
