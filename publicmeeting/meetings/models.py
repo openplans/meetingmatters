@@ -88,7 +88,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     attendees = models.ManyToManyField('auth.User', related_name='attending_meetings', blank=True)
     """Who is attending and/or speaking at the meeting"""
 
-#    objects = models.GeoManager()
+    # Meeting has no geo fields, but we want to be able to do geo queries on
+    # meetings, so we need a GeoManager.
+    objects = models.GeoManager()
 
     def __unicode__(self):
         return self.title

@@ -1,0 +1,23 @@
+{% load url from future %}
+
+<div class="row">
+  <div class="span6">
+    <h2>Meetings
+    {% if selected_tags %}
+      tagged with
+      {% for tag in selected_tags %}
+        &quot;{{ tag.name }}&quot;{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    {% endif %}</h2>
+  </div>
+  <div class="meeting-feeds span2">
+    Subscribe to this list:
+    <a href="{{ rss_url }}"><i class="icon-rss"></i> RSS</a>
+    <a href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
+  </div>
+</div>
+
+<div class="meeting-list">
+  <link href="{{ rss_url }}" rel="alternate" type="application/rss+xml" />
+  {% include "partials/meetings_meeting_list.html" %}
+</div>

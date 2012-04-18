@@ -46,12 +46,4 @@ function initAllTopicsFilter() {
       $li.addClass('active');
     }
   });
-
-  $chk.change(function() {
-    $form.submit();
-  })
-
-  $form.ajaxForm(function(responseText) {
-    alert(responseText);
-  });
 }

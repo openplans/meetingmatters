@@ -23,7 +23,7 @@ class MeetingListMixin (object):
         if region:
             meetings = meetings.filter(region=region)
         if center:
-            meetings = meetings.filter(venue__location__distance_lte=(pnt, radius))
+            meetings = meetings.filter(venue__location__distance_lte=(center, radius))
         if earliest:
             meetings = meetings.filter(end_time__gt=earliest)
         if latest:
@@ -62,16 +62,6 @@ class MeetingListView (MeetingListMixin, views.ListView):
         context['ical_url'] = reverse('meeting_list_ical') + '?' + self.request.GET.urlencode()
 
         context['filter_form'] = self.form
-
-        for tag in all_tags:
-            get_params = self.request.GET.copy()
-            tag_slugs_copy = tag_slugs[:]
-            if tag in selected_tags:
-                tag_slugs_copy.remove(tag.slug)
-            else:
-                tag_slugs_copy.append(tag.slug)
-            get_params.setlist('tags', tag_slugs_copy)
-            tag.qs = get_params.urlencode()
 
         return context
 

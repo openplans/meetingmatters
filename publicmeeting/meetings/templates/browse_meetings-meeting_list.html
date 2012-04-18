@@ -3,46 +3,99 @@
 
 {% block bootstrap_container_content %}
   <div class="row">
-    <div class="span8">
-      <div class="row">
-        <div class="span6">
-          <h2>Meetings
-          {% if selected_tags %}
-            tagged with
-            {% for tag in selected_tags %}
-              &quot;{{ tag.name }}&quot;{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-          {% endif %}</h2>
-        </div>
-        <div class="meeting-feeds span2">
-          Subscribe to this list:
-          <a href="{{ rss_url }}"><i class="icon-rss"></i> RSS</a>
-          <a href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
-        </div>
-      </div>
-
-      <div class="meeting-list">
-        <link href="{{ rss_url }}" rel="alternate" type="application/rss+xml" />
-        {% include "partials/meetings_meeting_list.html" %}
-      </div>
+    <div id="id_browse-meetings-wrapper" class="browse-meetings-wrapper span8">
+      {% include "partials/meetings_browse_meetings.html" %}
     </div>
 
     <div class="homepage-sidebar-wrapper span4">
       <div class="well">
         <script src="{{ STATIC_URL }}js/meetings_filter.js"></script>
 
+        {% with filters=filter_form.cleaned_data %}
         <form method="GET" id="id_filter_form">
+          <button class="btn btn-primary btn-large" type="submit">Update</button>
+
           <h4>Place</h4>
-          <label for="id_center">Center</label><input type="text" name="center" id="id_center">
-          <label for="id_radius">Radius</label><input type="text" name="radius" id="id_radius">
+          <label for="id_region">Region</label>
+          <select name="region" id="id_region">
+            <option value=""{% if not filters.region %} selected="selected"{% endif %}>All regions</option>
+            {% for region in regions %}
+              <option value="{{ region.slug }}"{% if region == filters.region %} selected="selected"{% endif %}>{{ region.name }}</option>
+            {% endfor %}
+          </select>
+
+          <input type="checkbox" id="id_geofilter"{% if filters.center %} checked="checked"{% endif %}><label for="id_geofilter">Filter by location</label>
+          <div id="id_location-map-wrapper" style="width: 220px; height: 220px; background-color: gray">
+          </div>
+
+          <input type="hidden" name="center" value="{{ filters.center|default:'' }}" id="id_center">
+          <input type="hidden" name="radius" value="{{ filters.radius|default:'' }}" id="id_radius">
+
+          <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+          <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+          <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+          <script>
+            $(document).ready(function() {
+              var map = new L.Map('id_location-map-wrapper');
+              var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+                  cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+                  cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+              map.addLayer(cloudmade);
+
+              $('#id_geofilter').change(function() {
+                toggleGeoBoundsMap();
+              })
+
+              function toggleGeoBoundsMap() {
+                var geofilter = $('#id_geofilter').is(':checked');
+                if (geofilter) {
+                  var center = new L.LatLng(
+                          {{ filters.point.y|default:39.956596 }},
+                          {{ filters.point.x|default:-75.155411 }}
+                      ),
+                      radius = {{ filters.radius|default:0.18187 }},
+                      mapBounds = new L.LatLngBounds(
+                          new L.LatLng(center.lat - radius, center.lng - radius),
+                          new L.LatLng(center.lat + radius, center.lng + radius)
+                      );
+                  map.fitBounds(mapBounds);
+                  map.on('moveend', function(evt) {
+                    setGeoFilterValues(map);
+                  });
+
+                } else {
+//                  $('#id_location-map-wrapper').html('');
+                }
+                setGeoFilterValues(map);
+              }
+
+              function setGeoFilterValues(map) {
+                var geofilter = $('#id_geofilter').is(':checked');
+                if (geofilter) {
+                  mc = map.getCenter();
+                  mb = map.getBounds();
+
+                  radius = mb._northEast.lat - mc.lat;
+                  center = 'POINT (' + mc.lng + ' ' + mc.lat + ')';
+                  $('#id_center').val(center);
+                  $('#id_radius').val(radius);
+                } else {
+                  $('#id_center').removeAttr('value');
+                  $('#id_radius').removeAttr('value');
+                }
+              }
+
+              toggleGeoBoundsMap();
+            });
+          </script>
 
           <h4>Time</h4>
-          <label for="id_earliest">From</label><input type="date" name="earliest" id="id_earliest">
-          <label for="id_latest">Until</label><input type="date" name="latest" id="id_latest">
+          <label for="id_earliest">From</label><input type="date" name="earliest" value="{{ filters.earliest|date:'Y-m-d'|default:'' }}" id="id_earliest">
+          <label for="id_latest">Until</label><input type="date" name="latest" value="{{ filters.latest|date:'Y-m-d'|default:'' }}" id="id_latest">
 
           <h4>Topics</h4>
           <ul class="nav nav-pills nav-stacked">
-            <li id="id_all_tags-li" {% if not filter_form.cleaned_data.tags %}class="active"{% endif %}>
+            <li id="id_all_tags-li" {% if not filters.tags %}class="active"{% endif %}>
               <a id="id_all_tags-btn">All</a>
               <script>
                 $(document).ready(function() {
@@ -53,9 +106,9 @@
             </li>
 
             {% for tag in tags %}
-              <li id="id_tags-{{ tag.slug }}-li"{% if tag in filter_form.cleaned_data.tags %} class="active"{% endif %}>
+              <li id="id_tags-{{ tag.slug }}-li"{% if tag in filters.tags %} class="active"{% endif %}>
                 <a id="id_tags-{{ tag.slug }}-btn">{{ tag.name }}</a>
-                <input type="checkbox" name="tags" value="{{ tag.slug }}" id="id_tags-{{ tag.slug }}"{% if tag in filter_form.cleaned_data.tags %} checked="checked"{% endif %} style="display: none">
+                <input type="checkbox" name="tags" value="{{ tag.slug }}" id="id_tags-{{ tag.slug }}"{% if tag in filters.tags %} checked="checked"{% endif %} style="display: none">
                 <script>
                   $(document).ready(function() {
                     initTopicFilter('{{ tag.slug }}');
@@ -65,6 +118,7 @@
             {% endfor %}
           </ul>
         </form>
+        {% endwith %}
       </div>
     </div>
   </div>
