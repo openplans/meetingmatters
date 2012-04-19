@@ -4,9 +4,11 @@ from django.core.urlresolvers import reverse
 from django_cal.views import Events
 from taggit.models import Tag
 
+from . import forms
 from . import models
+from .views import browse as views
 
-class MeetingListFeedMixin (object):
+class MeetingListFeedMixin (views.MeetingListMixin):
     tag_slugs = []
     querystring = None
 
@@ -33,16 +35,16 @@ class MeetingListFeedMixin (object):
         return Tag.objects.filter(slug__in=self.tag_slugs)
 
     def get_object(self, request, *args, **kwargs):
+        self.form = forms.MeetingFilters(data=request.GET)
         self.tag_slugs = request.GET.getlist('tags')
         self.querystring = request.GET.urlencode()
 
     def items(self):
         # For RSS, how should these be ordered?
-        queryset = models.Meeting.objects.all().order_by('created_datetime')
-        tag_slugs = self.tag_slugs
-
-        if tag_slugs:
-            queryset = queryset.filter(tags__slug__in=tag_slugs).distinct()
+        if self.form.is_valid():
+            queryset = self.get_meetings(**self.form.cleaned_data).order_by('created_datetime')
+        else:
+            queryset = models.Meeting.objects.none()
 
         return queryset
 
