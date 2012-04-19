@@ -276,6 +276,7 @@ COMMUNITY_APPS = (
     'reversion',
     'shorturls',
     'djangorestframework',
+    'floppyforms',
 )
 
 MY_REUSABLE_APPS = (

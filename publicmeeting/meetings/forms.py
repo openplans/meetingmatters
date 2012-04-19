@@ -1,7 +1,7 @@
 import datetime
+import floppyforms as forms
 import taggit.forms
 import taggit.models
-from django import forms
 from django.contrib.gis import geos
 from django.core.urlresolvers import reverse
 from uni_form.helper import FormHelper
