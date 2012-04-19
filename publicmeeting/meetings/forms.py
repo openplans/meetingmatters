@@ -127,6 +127,7 @@ class MeetingFilters (forms.Form):
     region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False)
     center = forms.CharField(required=False)
     radius = forms.FloatField(required=False)
+    bbox = forms.CharField(required=False)
     earliest = forms.DateField(required=False, initial=datetime.date.today)
     latest = forms.DateField(required=False)
     tags = forms.ModelMultipleChoiceField(queryset=taggit.models.Tag.objects.all(), to_field_name='slug', required=False)
@@ -136,6 +137,7 @@ class MeetingFilters (forms.Form):
         center = cleaned_data.get('center')
         radius = cleaned_data.get('radius')
 
+        # Center and radius must be set together
         if center and not radius:
             msg = u'Radius is required when center is specified.'
             self._errors['radius'] = self.error_class([msg])
@@ -150,6 +152,18 @@ class MeetingFilters (forms.Form):
             except geos.GEOSException:
                 msg = u'Center is not a valid WKT point (see http://en.wikipedia.org/wiki/Well-known_text)'
                 self._errors['center'] = self.error_class([msg])
+
+        # N, S, E, and W must all be set together, or none at all.
+        bbox = cleaned_data.get('bbox')
+        if bbox:
+            try:
+                n, e, s, w = [float(val) for val in cleaned_data['bbox'].split(',')]
+                bbox = u'POLYGON(({e} {n}, {e} {s}, {w} {s}, {w} {n}, {e} {n}))'.format(n=n, e=e, s=s, w=w)
+            except ValueError:
+                msg = u'Bbox must have exactly 4 comma-separated values.'
+                self._errors['bbox'] = self.error_class([msg])
+            else:
+                cleaned_data['bbox'] = geos.fromstr(bbox)
 
         return cleaned_data
 

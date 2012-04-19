@@ -1,8 +1,17 @@
 {% load url from future %}
 
+{% with filter_form.cleaned_data as filters %}
 <div class="row">
   <div class="span6">
     <h2>Meetings
+    {% if filters.earliest %}
+      from {{ filters.earliest }}
+    {% endif %}
+
+    {% if filters.latest %}
+      until {{ filters.latest }}
+    {% endif %}
+
     {% if selected_tags %}
       tagged with
       {% for tag in selected_tags %}
@@ -16,6 +25,7 @@
     <a href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
   </div>
 </div>
+{% endwith %}
 
 <div class="meeting-list">
   <link href="{{ rss_url }}" rel="alternate" type="application/rss+xml" />

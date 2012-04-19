@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.contrib.gis import geos
 from django.http import HttpResponseRedirect
 from django.views import generic as views
 from taggit import models as taggit_models
@@ -9,7 +10,7 @@ from .. import models
 from .. import forms
 
 class MeetingListMixin (object):
-    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, **extra):
+    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, **extra):
         """
         tags -- A list of tag slugs
         region -- A list of one region slug. If there are more than one, all
@@ -22,8 +23,10 @@ class MeetingListMixin (object):
         meetings = models.Meeting.objects.all().select_related()
         if region:
             meetings = meetings.filter(region=region)
-        if center:
+        if center and radius:
             meetings = meetings.filter(venue__location__distance_lte=(center, radius))
+        if bbox:
+            meetings = meetings.filter(venue__location__contained=bbox)
         if earliest:
             meetings = meetings.filter(end_time__gt=earliest)
         if latest:
