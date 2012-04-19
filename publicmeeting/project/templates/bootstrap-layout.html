@@ -89,8 +89,11 @@
     {% else %}
       <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     {% endif %}
-    <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
+
+    {% compress js %}
+      <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
+      <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
+    {% endcompress %}
 
 
     <script type="text/javascript">

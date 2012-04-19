@@ -24,9 +24,9 @@
 
         {% with filters=filter_form.cleaned_data %}
         <form method="GET" id="id_filter_form">
-          <button class="btn btn-primary btn-large" style="width: 100%" type="submit">Update Filters</button>
+          <button id="id_update-filters-btn" class="btn btn-primary btn-large" type="submit">Update Filters</button>
 
-          <hr>
+          <hr class="filter-section-separator">
 
           <h4 id="id_place-filter-header">Place</h4>
           <div id="id_place-filter-wrapper">
@@ -35,22 +35,22 @@
             {{ filter_form.bbox }}
           </div>
 
-          <hr>
+          <hr class="filter-section-separator">
 
           <h4 id="id_time-filter-header">Time</h4>
           <div id="id_time-filter-wrapper">
-            <div style="clear: both">
+            <div class="filter-date-wrapper">
               <label for="id_earliest">From</label>
               {{ filter_form.earliest }}
             </div>
 
-            <div style="clear: both">
+            <div class="filter-date-wrapper">
               <label for="id_latest">Until</label>
               {{ filter_form.latest }}
             </div>
           </div>
 
-          <hr style="clear: both">
+          <hr class="filter-section-separator">
 
           <h4 id="id_topics-filter-header">Topics</h4>
           <div id="id_topics-filter-wrapper">
