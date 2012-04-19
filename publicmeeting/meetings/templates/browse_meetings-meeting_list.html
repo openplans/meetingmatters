@@ -83,21 +83,21 @@
         <script>
           $(document).ready(function() {
             $('#id_place-filter-header').click(function() {
-              $('#id_place-filter-wrapper').slideToggle();
+              togglePlaceFilterVisibility();
             });
             $('#id_time-filter-header').click(function() {
-              $('#id_time-filter-wrapper').slideToggle();
+              toggleTimeFilterVisibility();
             });
             $('#id_topics-filter-header').click(function() {
-              $('#id_topics-filter-wrapper').slideToggle();
+              toggleTopicsFilterVisibility();
             });
 
             {% if not filters.bbox %}
-            $('#id_place-filter-wrapper').hide();
+            hidePlaceFilter();
             {% endif %}
 
             {% if not filters.earliest and not filters.latest %}
-            $('#id_time-filter-wrapper').hide();
+            hideTimeFilter();
             {% endif %}
 
 //            $('#id_topics-filter-wrapper').hide();

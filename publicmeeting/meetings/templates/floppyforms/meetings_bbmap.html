@@ -1,11 +1,11 @@
 {% comment %}
-
-  Note that the following assets need to be included somewhere on the page:
-
-  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
-  <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
-  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-
+ %
+ %  Note that the following assets need to be included somewhere on the page:
+ %
+ %  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+ %  <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+ %  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+ %
 {% endcomment %}
 
 {% with type='hidden' %}
@@ -17,6 +17,13 @@
     <input type="checkbox" id="{{attrs.id}}-enable"{% if value %} checked="checked"{% endif %}> Filter by location
   </label>
   <div id="{{attrs.id}}-map-container"><div id="{{attrs.id}}-map-wrapper" style="width: 220px; height: 220px; background-color: gray"></div></div>
+</div>
+
+<div>
+  <label for="{{attrs.id}}-jump-to" class="checkbox">Jump to</label>
+  <span class="input-append">
+    <input type="text" id="{{attrs.id}}-jump-to"><span class="add-on"><i class="icon-map-marker" style="opacity: 0.4"></i></span>
+  </span>
 </div>
 
 <script>
@@ -31,5 +38,8 @@
       toggleGeoBoundsMap(map, '{{attrs.id}}');
       setGeoFilterValues(map, '{{attrs.id}}');
     });
+
+    var $jumpToInput = $('#{{attrs.id}}-jump-to')
+    var autocomplete = new google.maps.places.Autocomplete($jumpToInput[0]);
   });
 </script>

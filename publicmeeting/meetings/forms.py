@@ -129,7 +129,7 @@ class DatepickerInput (forms.DateInput):
 
 
 class GeoBBInput (forms.DateInput):
-    template_name = 'floppyforms/meetings_bbmap.html'
+    template_name = 'floppyforms/meetings_bbmap_google.html'
 
 
 class MeetingFilters (forms.Form):

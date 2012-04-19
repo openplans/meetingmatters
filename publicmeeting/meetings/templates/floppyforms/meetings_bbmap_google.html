@@ -1,0 +1,73 @@
+{% comment %}
+ %
+ %  Note that the following assets need to be included somewhere on the page:
+ %
+ %  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+ %  <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+ %  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+ %
+{% endcomment %}
+
+{% with type='hidden' %}
+  {% include "floppyforms/input.html" %}
+{% endwith %}
+
+<div>
+  <label for="{{attrs.id}}-enable" class="checkbox">
+    <input type="checkbox" id="{{attrs.id}}-enable"{% if value %} checked="checked"{% endif %}> Filter by location
+  </label>
+  <div id="{{attrs.id}}-map-container">
+    <div id="{{attrs.id}}-map-wrapper" style="width: 220px; height: 220px; background-color: gray"></div>
+
+    <div>
+      <label for="{{attrs.id}}-jump-to">Jump to</label>
+      <span class="input-append">
+        <input type="text" id="{{attrs.id}}-jump-to"><span class="add-on"><i class="icon-map-marker" style="opacity: 0.4"></i></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var G = google.maps,
+
+        $mapWrapper = $('#{{attrs.id}}-map-wrapper'),
+        mapOptions = {
+          center: new G.LatLng(0, 0),
+          zoom: 1,
+          mapTypeId: G.MapTypeId.ROADMAP
+        },
+        map = new G.Map($mapWrapper[0], mapOptions),
+
+        $jumpToInput = $('#{{attrs.id}}-jump-to'),
+        autocomplete = new G.places.Autocomplete($jumpToInput[0]);
+
+    initGeoBoundsMap(map, '{{ value }}', '{{attrs.id}}', G);
+    toggleGeoBoundsMap(map, '{{attrs.id}}', G);
+
+    $('#{{attrs.id}}-enable').change(function() {
+      toggleGeoBoundsMap(map, '{{attrs.id}}', G);
+    });
+
+    $jumpToInput.keydown(function(e){
+      if (e.keyCode == 13) {
+        e.preventDefault();
+      }
+    });
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      var place = autocomplete.getPlace();
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(17);  // Why 17? Because it looks good.
+      }
+
+      if (map.getBounds()) {
+        setGeoFilterValues(map, '{{attrs.id}}', G);
+      }
+    });
+  });
+</script>
