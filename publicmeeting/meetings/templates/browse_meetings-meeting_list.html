@@ -1,4 +1,6 @@
 {% extends "bootstrap-layout.html" %}
+
+{% load compress %}
 {% load url from future %}
 
 {% block bootstrap_container_content %}
@@ -9,7 +11,16 @@
 
     <div class="homepage-sidebar-wrapper span4">
       <div class="well">
+
+        <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+        {% compress css %}
+        {% endcompress %}
+        <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+
+        <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
         <script src="{{ STATIC_URL }}js/meetings_filter.js"></script>
+        {% compress js %}
+        {% endcompress %}
 
         {% with filters=filter_form.cleaned_data %}
         <form method="GET" id="id_filter_form">
@@ -20,77 +31,8 @@
           <h4 id="id_place-filter-header">Place</h4>
           <div id="id_place-filter-wrapper">
             <label for="id_region">Region</label>
-            <select name="region" id="id_region">
-              <option value=""{% if not filters.region %} selected="selected"{% endif %}>All regions</option>
-              {% for region in regions %}
-                <option value="{{ region.slug }}"{% if region == filters.region %} selected="selected"{% endif %}>{{ region.name }}</option>
-              {% endfor %}
-            </select>
-
-            <div>
-              <label for="id_geofilter" class="checkbox">
-                <input type="checkbox" id="id_geofilter"{% if filters.bbox %} checked="checked"{% endif %}> Filter by location
-              </label>
-              <div id="id_location-map-container"><div id="id_location-map-wrapper" style="width: 220px; height: 220px; background-color: gray"></div></div>
-              <input type="hidden" name="bbox" value="{{ filters.bbox|default:'' }}" id="id_bbox">
-            </div>
-
-            <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
-            <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
-            <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-            <script>
-              $(document).ready(function() {
-                function initGeoBoundsMap(map) {
-                  var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-                      cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-                      cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
-                  {% with filters.bbox.0 as bbox %}
-                      mapBounds = new L.LatLngBounds(
-                          new L.LatLng({{ bbox.0.1|default:40.149488 }}, {{ bbox.0.0|default:-74.942551 }}),
-                          new L.LatLng({{ bbox.2.1|default:39.871804 }}, {{ bbox.2.0|default:-75.301666 }})
-                      );
-                  {% endwith %}
-                  map.fitBounds(mapBounds);
-                  map.addLayer(cloudmade);
-                  map.on('moveend', function(evt) {
-                    setGeoFilterValues(map);
-                  });
-                }
-
-                function toggleGeoBoundsMap(map) {
-                  var geofilter = $('#id_geofilter').is(':checked');
-                  if (geofilter) {
-                    $('#id_location-map-wrapper').show();
-                  } else {
-                    $('#id_location-map-wrapper').hide();
-                  }
-                }
-
-                function setGeoFilterValues(map) {
-                  var geofilter = $('#id_geofilter').is(':checked');
-                  if (geofilter) {
-                    var mb = map.getBounds(),
-                        ne = mb._northEast,
-                        sw = mb._southWest;
-                    bbox = ne.lat + ',' + ne.lng + ',' + sw.lat + ',' + sw.lng;
-                    $('#id_bbox').val(bbox);
-                  } else {
-                    $('#id_bbox').removeAttr('value');
-                  }
-                }
-
-                var map = new L.Map('id_location-map-wrapper');
-
-                initGeoBoundsMap(map);
-                setGeoFilterValues(map);
-                toggleGeoBoundsMap(map);
-
-                $('#id_geofilter').change(function() {
-                  toggleGeoBoundsMap(map);
-                  setGeoFilterValues(map);
-                });
-              });
-            </script>
+            {{ filter_form.region }}
+            {{ filter_form.bbox }}
           </div>
 
           <hr>
@@ -99,24 +41,13 @@
           <div id="id_time-filter-wrapper">
             <div style="clear: both">
               <label for="id_earliest">From</label>
-              <span class="input-append">
-                <input type="date" name="earliest" value="{{ filters.earliest|date:'Y-m-d'|default:'' }}" id="id_earliest"><span class="add-on"><i class="icon-calendar" style="opacity: 0.4"></i></span>
-              </span>
+              {{ filter_form.earliest }}
             </div>
 
             <div style="clear: both">
               <label for="id_latest">Until</label>
-              <span class="input-append">
-                <input type="date" name="latest" value="{{ filters.latest|date:'Y-m-d'|default:'' }}" id="id_latest"><span class="add-on"><i class="icon-calendar" style="opacity: 0.4"></i></span>
-              </span>
+              {{ filter_form.latest }}
             </div>
-
-            <script>
-              $(document).ready(function() {
-                $('#id_earliest').datepicker();
-                $('#id_latest').datepicker();
-              });
-            </script>
           </div>
 
           <hr style="clear: both">
@@ -161,9 +92,15 @@
               $('#id_topics-filter-wrapper').slideToggle();
             });
 
+            {% if not filters.bbox %}
             $('#id_place-filter-wrapper').hide();
+            {% endif %}
+
+            {% if not filters.earliest and not filters.latest %}
             $('#id_time-filter-wrapper').hide();
-            $('#id_topics-filter-wrapper').hide();
+            {% endif %}
+
+//            $('#id_topics-filter-wrapper').hide();
           });
         </script>
         {% endwith %}

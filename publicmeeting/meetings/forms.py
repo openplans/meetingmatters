@@ -123,13 +123,22 @@ class DefaultFilters (forms.Form):
         widget=forms.HiddenInput(),
     )
 
+
+class DatepickerInput (forms.DateInput):
+    template_name = 'floppyforms/meetings_datepicker.html'
+
+
+class GeoBBInput (forms.DateInput):
+    template_name = 'floppyforms/meetings_bbmap.html'
+
+
 class MeetingFilters (forms.Form):
-    region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False)
+    region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False, empty_label='All regions')
     center = forms.CharField(required=False)
     radius = forms.FloatField(required=False)
-    bbox = forms.CharField(required=False)
-    earliest = forms.DateField(required=False, initial=datetime.date.today)
-    latest = forms.DateField(required=False)
+    bbox = forms.CharField(required=False, widget=GeoBBInput())
+    earliest = forms.DateField(required=False, initial=datetime.date.today, widget=DatepickerInput())
+    latest = forms.DateField(required=False, widget=DatepickerInput())
     tags = forms.ModelMultipleChoiceField(queryset=taggit.models.Tag.objects.all(), to_field_name='slug', required=False)
 
     def clean(self):

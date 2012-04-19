@@ -1,0 +1,12 @@
+<span class="input-append">
+  {% include "floppyforms/input.html" %}<span class="add-on"><i class="icon-calendar" style="opacity: 0.4"></i></span>
+</span>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var options = {
+      dateFormat: 'yy-mm-dd'
+    };
+    $('#{{ attrs.id }}').datepicker(options);
+  });
+</script>

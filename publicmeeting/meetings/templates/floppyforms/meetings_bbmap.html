@@ -1,0 +1,35 @@
+{% comment %}
+
+  Note that the following assets need to be included somewhere on the page:
+
+  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+  <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+
+{% endcomment %}
+
+{% with type='hidden' %}
+  {% include "floppyforms/input.html" %}
+{% endwith %}
+
+<div>
+  <label for="{{attrs.id}}-enable" class="checkbox">
+    <input type="checkbox" id="{{attrs.id}}-enable"{% if value %} checked="checked"{% endif %}> Filter by location
+  </label>
+  <div id="{{attrs.id}}-map-container"><div id="{{attrs.id}}-map-wrapper" style="width: 220px; height: 220px; background-color: gray"></div></div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var map = new L.Map('{{attrs.id}}-map-wrapper');
+
+    initGeoBoundsMap(map, '{{ value }}');
+    toggleGeoBoundsMap(map, '{{attrs.id}}');
+    setGeoFilterValues(map, '{{attrs.id}}');
+
+    $('#{{attrs.id}}-enable').change(function() {
+      toggleGeoBoundsMap(map, '{{attrs.id}}');
+      setGeoFilterValues(map, '{{attrs.id}}');
+    });
+  });
+</script>
