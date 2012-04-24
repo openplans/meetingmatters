@@ -88,6 +88,10 @@ class MeetingListView (MeetingListMixin, views.ListView):
         return super(MeetingListView, self).get(request, *args, **kwargs)
 
 
+class MeetingListPartialView (MeetingListView):
+    template_name = 'partials/meetings_browse_meetings.html'
+
+
 class MeetingDetailView (views.DetailView):
     model = models.Meeting
     context_object_name = 'meeting'

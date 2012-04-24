@@ -100,6 +100,11 @@
             hideTimeFilter();
             {% endif %}
 
+            $('#id_filter_form').attr('action', '{% url "browse_meetings_meeting_list_partial" %}');
+            $('#id_filter_form').ajaxForm({
+              target: '#id_browse-meetings-wrapper'
+            });
+
 //            $('#id_topics-filter-wrapper').hide();
           });
         </script>
