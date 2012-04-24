@@ -24,9 +24,10 @@
 
         {% with filters=filter_form.cleaned_data %}
         <form method="GET" id="id_filter_form">
-          <button id="id_update-filters-btn" class="btn btn-primary btn-large" type="submit">Update Filters</button>
-
-          <hr class="filter-section-separator">
+          <div id="id_update-filters-wrapper">
+            <button id="id_update-filters-btn" class="btn btn-primary btn-large" type="submit">Update Filters</button>
+            <hr class="filter-section-separator">
+          </div>
 
           <h4 id="id_place-filter-header">Place</h4>
           <div id="id_place-filter-wrapper">
@@ -105,7 +106,15 @@
               target: '#id_browse-meetings-wrapper'
             });
 
+            $('#id_filter_form input, #id_filter_form select').change(function() {
+              $('#id_filter_form').submit();
+            })
+
 //            $('#id_topics-filter-wrapper').hide();
+
+            // If we can do javascript, then there's no need for the Update
+            // Filters button.
+            $('#id_update-filters-wrapper').remove();
           });
         </script>
         {% endwith %}

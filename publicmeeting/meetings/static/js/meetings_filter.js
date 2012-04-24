@@ -142,9 +142,9 @@ function setGeoFilterValues(map, fieldid, provider) {
     }
 
     bbox = n + ',' + e + ',' + s + ',' + w;
-    $('#' + fieldid).val(bbox);
+    $('#' + fieldid).val(bbox).change();
   } else {
-    $('#' + fieldid).removeAttr('value');
+    $('#' + fieldid).removeAttr('value').change();
   }
 }
 
