@@ -23,7 +23,7 @@
     Subscribe to this list:
     <a href="{{ rss_url }}"><i class="icon-rss"></i> RSS</a>
     <a href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
-    <a href="{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode }}"><i class="icon-share-alt"></i> Link</a>
+    <a href="{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}"><i class="icon-share-alt"></i> Link</a>
   </div>
 </div>
 {% endwith %}
@@ -32,3 +32,8 @@
   <link href="{{ rss_url }}" rel="alternate" type="application/rss+xml" />
   {% include "partials/meetings_meeting_list.html" %}
 </div>
+
+<script>
+  var currentUrl = '{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}';
+  window.history.replaceState({}, 'Meetings', currentUrl);
+</script>

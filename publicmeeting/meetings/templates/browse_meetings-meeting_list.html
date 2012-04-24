@@ -108,11 +108,19 @@
               target: '#id_browse-meetings-wrapper'
             });
 
+            var filterTimeout;
+
             $('#id_filter_form input, #id_filter_form select')
               .not('#id_bbox-jump-to')
               .not('#id_bbox-enable')
               .change(function() {
-                $('#id_filter_form').submit();
+                // When a filter form input changes, submit the form.  Wait a
+                // bit before submitting, in case the user is making quick
+                // changes in succession.
+                clearTimeout(filterTimeout);
+                filterTimeout = setTimeout(function() {
+                  $('#id_filter_form').submit();
+                }, 1000);
               });
 
             // If we can do javascript, then there's no need for the Update
