@@ -101,16 +101,19 @@
             hideTimeFilter();
             {% endif %}
 
+//            $('#id_topics-filter-wrapper').hide();
+
             $('#id_filter_form').attr('action', '{% url "browse_meetings_meeting_list_partial" %}');
             $('#id_filter_form').ajaxForm({
               target: '#id_browse-meetings-wrapper'
             });
 
-            $('#id_filter_form input, #id_filter_form select').change(function() {
-              $('#id_filter_form').submit();
-            })
-
-//            $('#id_topics-filter-wrapper').hide();
+            $('#id_filter_form input, #id_filter_form select')
+              .not('#id_bbox-jump-to')
+              .not('#id_bbox-enable')
+              .change(function() {
+                $('#id_filter_form').submit();
+              });
 
             // If we can do javascript, then there's no need for the Update
             // Filters button.
