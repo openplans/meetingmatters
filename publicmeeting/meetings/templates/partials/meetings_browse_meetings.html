@@ -23,7 +23,7 @@
     Subscribe to this list:
     <a id="id_rss-link" href="{{ rss_url }}"><i class="icon-rss"></i> RSS</a>
     <a id="id_ical-link" href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
-    <a id="id_perma-link" href="{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}"><i class="icon-share-alt"></i> Link</a>
+<!--    <a id="id_perma-link" href="{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}"><i class="icon-share-alt"></i> Link</a>-->
   </div>
 </div>
 {% endwith %}
@@ -32,15 +32,3 @@
   <link href="{{ rss_url }}" rel="alternate" type="application/rss+xml" />
   {% include "partials/meetings_meeting_list.html" %}
 </div>
-
-<script>
-  var currentUrl = '{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}';
-  window.history.replaceState({}, 'Meetings', currentUrl);
-
-  $(document).ready(function() {
-    $('#id_rss-link').popover({
-      placement: 'bottom',
-      content: '<p>Right-click the link to copy the link address.</p>'
-    });
-  });
-</script>
