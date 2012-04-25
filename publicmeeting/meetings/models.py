@@ -102,6 +102,23 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     def get_pre_slug(self):
         return self.title
 
+    # It takes "a long time" to get the tags for each meeting in a meeting list,
+    # so we're going to do some simple caching.
+    __tag_cache = {}
+    def get_cached_tags(self):
+        if self.pk is None:
+            return []
+
+        tags = self.__tag_cache.get(self.pk, None)
+        if tags is None:
+            tags = self.__tag_cache[self.pk] = self.tags.all()
+
+        return tags
+
+    def bust_tag_cache(self):
+        if self.pk in self.__tag_cache:
+            del self.__tag_cache[self.pk]
+
     def similar_meetings(self, threshold=0.7):
         T = set(self.title.lower())
         all_meetings = Meeting.objects.all()

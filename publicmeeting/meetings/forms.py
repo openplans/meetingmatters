@@ -115,6 +115,11 @@ class FillInMeetingInfoForm (forms.ModelForm):
 #        kwargs.update({'initial': initial, 'instance': instance})
         return super(FillInMeetingInfoForm, self).__init__(*args, **kwargs)
 
+    def save(self, *args, **kwargs):
+        instance = super(FillInMeetingInfoForm, self).save(*args, **kwargs)
+        instance.bust_tag_cache()
+        return instance
+
 
 class DefaultFilters (forms.Form):
     region = forms.ModelChoiceField(
