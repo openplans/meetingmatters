@@ -311,7 +311,10 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 SOUTH_TESTS_MIGRATE = False
 
 # Debug toolbar
+def custom_show_toolbar(request):
+    return DEBUG
 DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
     'INTERCEPT_REDIRECTS': False
 }
 INTERNAL_IPS = ('127.0.0.1',)
