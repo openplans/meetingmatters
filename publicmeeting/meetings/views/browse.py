@@ -20,7 +20,10 @@ class MeetingListMixin (object):
         """
         assert len(extra) == 0
 
-        meetings = models.Meeting.objects.all().select_related()
+        # Start with all the objects, following foreign keys.  Specify the venue
+        # explicitly, since select_related doesn't follow potentially NULL
+        # columns by default.
+        meetings = models.Meeting.objects.all().select_related('venue')
         if region:
             meetings = meetings.filter(region=region)
         if center and radius:
