@@ -178,9 +178,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    'social_auth.context_processors.social_auth_by_name_backends',
-    'social_auth.context_processors.social_auth_backends',
-    'social_auth.context_processors.social_auth_by_type_backends',
+#    'social_auth.context_processors.social_auth_by_name_backends',
+#    'social_auth.context_processors.social_auth_backends',
+#    'social_auth.context_processors.social_auth_by_type_backends',
 
     'project.context_processors.regions',
     'utils.context_processors.settings.DEBUG',
