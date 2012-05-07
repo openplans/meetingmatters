@@ -22,6 +22,7 @@
         {% compress js %}
         {% endcompress %}
 
+        {% if filter_form.is_valid %}
         {% with filters=filter_form.cleaned_data %}
         <form method="GET" id="id_filter_form">
           <div id="id_update-filters-wrapper">
@@ -66,10 +67,11 @@
                 <hr>
               </li>
 
+              {% with selected_tags=filters.tags %}
               {% for tag in tags %}
-                <li id="id_tags-{{ tag.slug }}-li"{% if tag in filters.tags %} class="active"{% endif %}>
+                <li id="id_tags-{{ tag.slug }}-li"{% if tag in selected_tags %} class="active"{% endif %}>
                   <a id="id_tags-{{ tag.slug }}-btn">{{ tag.name }}</a>
-                  <input type="checkbox" name="tags" value="{{ tag.slug }}" id="id_tags-{{ tag.slug }}"{% if tag in filters.tags %} checked="checked"{% endif %} style="display: none">
+                  <input type="checkbox" name="tags" value="{{ tag.slug }}" id="id_tags-{{ tag.slug }}"{% if tag in selected_tags %} checked="checked"{% endif %} style="display: none">
                   <script>
                     $(document).ready(function() {
                       initTopicFilter('{{ tag.slug }}');
@@ -77,6 +79,7 @@
                   </script>
                 </li>
               {% endfor %}
+              {% endwith %}
             </ul>
           </div>
         </form>
@@ -129,6 +132,10 @@
           });
         </script>
         {% endwith %}
+
+        {% else %}
+            {{ filter_form.errors }}
+        {% endif %} {# filter_form.is_valid #}
       </div>
     </div>
   </div>
