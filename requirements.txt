@@ -4,9 +4,8 @@ Django==1.4
 # to use one of the async worker classes, "gevent". Using an async worker class
 # is recommended when serving traffic directly to gunicorn (which is what
 # happens under the Heroku Cedar stack).
-#gunicorn
-#gevent
-#greenlet
+gunicorn
+gevent
 
 # Database management and migration
 psycopg2
