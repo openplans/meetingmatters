@@ -204,6 +204,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'project.urls'
+WSGI_APPLICATION = 'wsgi.application'
 
 ###############################################################################
 #
