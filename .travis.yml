@@ -12,6 +12,10 @@ install: pip install -r requirements.txt --use-mirrors
 # command to run tests
 script: publicmeeting/manage.py test
 
+# the settings module requires a SECRET_KEY
+env:
+  SECRET_KEY=123abc
+
 
 notifications:
   irc:
