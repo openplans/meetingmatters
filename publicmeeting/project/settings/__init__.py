@@ -69,8 +69,9 @@ def get_local(varname, default=None):
     return default
 
 
-DEBUG = True if get_local('DEBUG', True) in ('True', True) else False
-TEMPLATE_DEBUG = True if get_local('TEMPLATE_DEBUG', DEBUG) in ('True', True) else False
+DEBUG = (get_local('DEBUG', True) == 'True')
+TEMPLATE_DEBUG = (get_local('TEMPLATE_DEBUG', DEBUG) in ('True', True))
+SHOW_DEBUG_TOOLBAR = (get_local('SHOW_DEBUG_TOOLBAR', 'True') == 'True')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -313,7 +314,7 @@ SOUTH_TESTS_MIGRATE = False
 
 # Debug toolbar
 def custom_show_toolbar(request):
-    return DEBUG
+    return SHOW_DEBUG_TOOLBAR
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
     'INTERCEPT_REDIRECTS': False
