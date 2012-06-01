@@ -1,4 +1,4 @@
-{% load taggit_extras %}
+{% load projecttags %}
 
 <div class="control-group {% if field.errors %}error{% endif %}">
     <label for="{{ field.auto_id }}" class="control-label">
@@ -9,7 +9,7 @@
 
         <script>
           $(document).ready(function() {
-            {% get_taglist as tags %}
+            {% get_cached_tags as tags %}
             var tagList = [{% for tag in tags %}'{{ tag.name }}'{% if not forloop.last %},{% endif %}{% endfor %}];
 
             // The following code was lifted from

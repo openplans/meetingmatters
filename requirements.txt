@@ -43,6 +43,7 @@ django-floppyforms
 django-taggit-templatetags
 django-compressor
 slimit
+django-templatetag-sugar
 
 # Testing and debugging
 django-nose
