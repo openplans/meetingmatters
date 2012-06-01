@@ -11,6 +11,10 @@ gevent
 psycopg2
 south
 
+# Caching
+pylibmc==1.2.2
+django-pylibmc-sasl==0.2.4
+
 # Revision management
 django-reversion==1.6.0
 

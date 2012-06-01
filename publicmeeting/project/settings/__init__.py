@@ -69,7 +69,7 @@ def get_local(varname, default=None):
     return default
 
 
-DEBUG = (get_local('DEBUG', True) == 'True')
+DEBUG = (get_local('DEBUG', 'True') == 'True')
 TEMPLATE_DEBUG = (get_local('TEMPLATE_DEBUG', DEBUG) in ('True', True))
 SHOW_DEBUG_TOOLBAR = (get_local('SHOW_DEBUG_TOOLBAR', 'True') == 'True')
 
@@ -225,6 +225,26 @@ COMPRESS_PRECOMPILERS = (
 # So that the relative paths stay the same in our LESS as in our compiled CSS,
 # dump the compiled/compressed files into the STATIC_URL directory.
 #COMPRESS_OUTPUT_DIR = '.'
+
+###############################################################################
+#
+# Cache
+#
+# By default, django uses a local memory cache, and stores the session info in
+# the database.  We want to check whether we can use Memcached.  If so, we will
+# store the cache there, and use the cache to store session information too.
+#
+MEMCACHE_SERVERS = get_local('MEMCACHE_SERVERS', '')
+MEMCACHE_USERNAME = get_local('MEMCACHE_USERNAME', '')
+MEMCACHE_PASSWORD = get_local('MEMCACHE_PASSWORD', '')
+
+if MEMCACHE_SERVERS:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_pylibmc.memcached.PyLibMCCache'
+        }
+    }
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 ###############################################################################
 #
