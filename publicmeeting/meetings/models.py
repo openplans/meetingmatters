@@ -55,19 +55,29 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
         super(Venue, self).save(*args, **kwargs)
 
 
-class MeetingTopicManager (models.Manager):
+class CachingManager (models.Manager):
+    def get_cache_key(self):
+        opts = self.model._meta
+        return '.'.join([opts.app_label, opts.module_name])
+    
     def cached(self):
-        topics = cache.get('meetings.MeetingTopic')
+        key = self.get_cache_key()
+        topics = cache.get(key)
         
         if topics is None:
-            topics = MeetingTopic.objects.all().order_by('name')
-            cache.set('meetings.MeetingTopic', topics)
+            topics = self.model.objects.all().order_by('name')
+            cache.set(key, topics)
         
         return topics
     
     def bust_cache(self):
-        cache.delete('meetings.MeetingTopic')
+        key = self.get_cache_key()
+        cache.delete(key)
 
+
+class MeetingTopicManager (CachingManager):
+    pass
+    
 
 class MeetingTopic (SlugifiedModelMixin, models.Model):
     name = models.CharField(verbose_name='Topic', max_length=100)
