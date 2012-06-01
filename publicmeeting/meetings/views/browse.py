@@ -61,7 +61,7 @@ class MeetingListView (MeetingListMixin, views.ListView):
         all_tags = taggit_models.Tag.objects.all().order_by('name')
         selected_tags = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
 
-        context['tags'] = [tag for tag in all_tags]
+        context['tags'] = models.MeetingTopic.objects.cached()
         context['selected_tags'] = selected_tags
 
         context['rss_url'] = reverse('meeting_list_rss') + '?' + self.request.GET.urlencode()
@@ -99,6 +99,15 @@ class MeetingDetailView (views.DetailView):
     model = models.Meeting
     context_object_name = 'meeting'
     template_name = 'browse_meetings-meeting_detail.html'
+    
+    def get_object(self, queryset=None):
+        slug = self.kwargs['slug']
+        try:
+            return models.Meeting.objects.select_related('venue').get(slug=slug)
+        except models.Meeting.DoesNotExist:
+            from django.http import Http404
+            raise Http404(_(u"No %(verbose_name)s found matching the query") %
+                          {'verbose_name': models.Meeting._meta.verbose_name})
 
 
 class DefaultMeetingFilters (views.FormView):

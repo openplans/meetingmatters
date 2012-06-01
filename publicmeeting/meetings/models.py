@@ -2,7 +2,9 @@ from __future__ import division
 #from django.contrib.gis.db import models
 from django.contrib.gis.db import models
 from django.contrib.gis import geos
+from django.core.cache import cache
 from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
 from utils.geocode import geocode
 from utils.models import TimestampedModelMixin, SlugifiedModelMixin
@@ -53,6 +55,38 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
         super(Venue, self).save(*args, **kwargs)
 
 
+class MeetingTopicManager (models.Manager):
+    def cached(self):
+        topics = cache.get('meetings.MeetingTopic')
+        
+        if topics is None:
+            topics = MeetingTopic.objects.all()
+            cache.set('meetings.MeetingTopic', topics)
+        
+        return topics
+    
+    def bust_cache(self):
+        cache.delete('meetings.MeetingTopic')
+
+
+class MeetingTopic (SlugifiedModelMixin, models.Model):
+    name = models.CharField(verbose_name='Topic', max_length=100)
+    
+    # meetings (reverse)
+    
+    objects = MeetingTopicManager()
+    
+    def __unicode__(self):
+        return self.name
+    
+    def get_pre_slug(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        super(MeetingTopic, self).save(*args, **kwargs)
+        self.objects.bust_cache()
+
+
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     title = models.CharField(max_length=1023, verbose_name="Meeting Name", help_text="The meeting name should be descriptive. What makes a good meeting name? What makes a bad one?")
     """The title of the meeting"""
@@ -81,7 +115,7 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     venue_additional = models.TextField(null=True, blank=True, verbose_name="Notes")
     """Additional information about the venue, such as room number."""
 
-    tags = TaggableManager(blank=True, verbose_name="Topics", help_text="A comma-separated list of topics that will be discussed at the meeting.")
+    tags = models.ManyToManyField('MeetingTopic', related_name='meetings', blank=True, verbose_name="Topics", help_text="A comma-separated list of topics that will be discussed at the meeting.")
     """The tags for the meeting"""
 
     speakers = models.ManyToManyField('auth.User', related_name='speaking_meetings', blank=True)
@@ -104,20 +138,21 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     # It takes "a long time" to get the tags for each meeting in a meeting list,
     # so we're going to do some simple caching.
-    __tag_cache = {}
     def get_cached_tags(self):
         if self.pk is None:
             return []
 
-        tags = self.__tag_cache.get(self.pk, None)
+        cache_key = 'tags_' + str(self.pk)
+        tags = cache.get(cache_key)
         if tags is None:
-            tags = self.__tag_cache[self.pk] = self.tags.all()
+            tags = self.tags.all()
+            cache.set(cache_key, tags)
 
         return tags
 
     def bust_tag_cache(self):
-        if self.pk in self.__tag_cache:
-            del self.__tag_cache[self.pk]
+        cache_key = 'tags_' + str(self.pk)
+        cache.delete(cache_key)
 
     def similar_meetings(self, threshold=0.7):
         T = set(self.title.lower())
