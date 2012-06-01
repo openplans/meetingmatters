@@ -59,7 +59,7 @@ class MeetingInfoFormViewMixin (object):
         context = super(MeetingInfoFormViewMixin, self).get_context_data(**kwargs)
 
         venues_data = {}
-        venues = models.Venue.objects.all()
+        venues = models.Venue.objects.cached()
         for venue in venues:
             venues_data[venue.pk] = {
                 'name': venue.name,

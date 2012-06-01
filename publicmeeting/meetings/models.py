@@ -10,6 +10,26 @@ from utils.geocode import geocode
 from utils.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
+class CachingManager (models.Manager):
+    def get_cache_key(self):
+        opts = self.model._meta
+        return '.'.join([opts.app_label, opts.module_name])
+    
+    def cached(self):
+        key = self.get_cache_key()
+        topics = cache.get(key)
+        
+        if topics is None:
+            topics = self.all()
+            cache.set(key, topics)
+        
+        return topics
+    
+    def bust_cache(self):
+        key = self.get_cache_key()
+        cache.delete(key)
+
+
 class Region (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     """A general region in which meetings take place"""
 
@@ -18,6 +38,8 @@ class Region (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     def __unicode__(self):
         return self.name
+
+    objects = CachingManager()
 
 
 class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
@@ -43,6 +65,8 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
         else:
             return self.address
 
+    objects = CachingManager()
+
     def save(self, *args, **kwargs):
         if self.location is None:
             geo = geocode(self.address)
@@ -55,30 +79,11 @@ class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
         super(Venue, self).save(*args, **kwargs)
 
 
-class CachingManager (models.Manager):
-    def get_cache_key(self):
-        opts = self.model._meta
-        return '.'.join([opts.app_label, opts.module_name])
-    
-    def cached(self):
-        key = self.get_cache_key()
-        topics = cache.get(key)
-        
-        if topics is None:
-            topics = self.model.objects.all().order_by('name')
-            cache.set(key, topics)
-        
-        return topics
-    
-    def bust_cache(self):
-        key = self.get_cache_key()
-        cache.delete(key)
-
-
 class MeetingTopicManager (CachingManager):
-    pass
-    
+    def all(self):
+        return super(MeetingTopicManager, self).all().order_by('name')
 
+        
 class MeetingTopic (SlugifiedModelMixin, models.Model):
     name = models.CharField(verbose_name='Topic', max_length=100)
     
