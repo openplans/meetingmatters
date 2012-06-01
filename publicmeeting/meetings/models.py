@@ -60,7 +60,7 @@ class MeetingTopicManager (models.Manager):
         topics = cache.get('meetings.MeetingTopic')
         
         if topics is None:
-            topics = MeetingTopic.objects.all()
+            topics = MeetingTopic.objects.all().order_by('name')
             cache.set('meetings.MeetingTopic', topics)
         
         return topics
