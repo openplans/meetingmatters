@@ -47,6 +47,37 @@ class CheckForSimilarMeetingsForm (forms.Form):
         return super(CheckForSimilarMeetingsForm, self).__init__(*args, **kwargs)
 
 
+#
+# We won't use the taggit tags, but the form fields are still useful.
+#
+from django.utils.translation import ugettext as _
+from taggit.utils import parse_tags, edit_string_for_tags
+
+class MeetingTopicWidget(forms.TextInput):
+    def render(self, name, value, attrs=None):
+        if value is not None and not isinstance(value, basestring):
+            value = edit_string_for_tags(models.MeetingTopic.objects.filter(id__in=value))
+        return super(MeetingTopicWidget, self).render(name, value, attrs)
+
+
+class MeetingTopicField(forms.CharField):
+    widget = MeetingTopicWidget
+
+    def clean(self, value):
+        value = super(MeetingTopicField, self).clean(value)
+        try:
+            tag_names = parse_tags(value)
+        except ValueError:
+            raise forms.ValidationError(_("Please provide a comma-separated list of tags."))
+        
+        tags = []
+        for tag_name in tag_names:
+            tag, created = models.MeetingTopic.objects.get_or_create(name=tag_name)
+            tags.append(tag.id)
+        
+        return tags
+
+
 class FillInMeetingInfoForm (forms.ModelForm):
     begin_time = forms.SplitDateTimeField(
         label="Start time",
@@ -61,6 +92,9 @@ class FillInMeetingInfoForm (forms.ModelForm):
         widget=forms.Select(attrs={'class':'span4'}),
         required=False,
         help_text='If you do not find the venue in the list, you can <a href="#create-venue-modal" data-toggle="modal">create</a> a new one.'
+    )
+    tags = MeetingTopicField(
+        widget=MeetingTopicWidget(attrs={'class':'span6'}),
     )
 #    venue_name = forms.CharField(
 #        label="Name",
@@ -77,7 +111,6 @@ class FillInMeetingInfoForm (forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class':'span6'}),
             'description': forms.Textarea(attrs={'class':'span6'}),
-            'tags': taggit.forms.TagWidget(attrs={'class':'span6'}),
             'region': forms.Select(attrs={'class':'span6'}),
             'venue': forms.Select(attrs={'class':'span4'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
