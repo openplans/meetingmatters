@@ -2,11 +2,17 @@ import sys
 
 from django.conf import settings as django_settings
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 
 from meetings import models
 
 def regions(request):
-    regions = models.Region.objects.all()
+    regions = cache.get('regions')
+    
+    if regions is None:
+        regions = list(models.Region.objects.all())
+        cache.set('regions', regions)
+    
     default_filters = request.session.get('default_filters', {})
     region_slug = default_filters.get('region', None)
 
