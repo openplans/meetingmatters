@@ -3779,3 +3779,7 @@ body {
 .filter-section-separator {
   clear: both;
 }
+
+#id_filter_form h4 {
+  cursor: pointer;
+}
