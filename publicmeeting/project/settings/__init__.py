@@ -60,7 +60,8 @@ def get_local(varname, default=None):
         elif 'SPACIALDB_URL' in os.environ:
             dbs['default'] = parse_db_url(os.environ['SPACIALDB_URL'], spatial=True)
 
-        return dbs
+        if dbs:
+            return dbs
 
     # If we get here and no default is supplied, raise an exception.
     if default is None:
