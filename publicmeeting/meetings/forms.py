@@ -69,12 +69,12 @@ class MeetingTopicField(forms.CharField):
             tag_names = parse_tags(value)
         except ValueError:
             raise forms.ValidationError(_("Please provide a comma-separated list of tags."))
-        
+
         tags = []
         for tag_name in tag_names:
             tag, created = models.MeetingTopic.objects.get_or_create(name=tag_name)
             tags.append(tag.id)
-        
+
         return tags
 
 
@@ -177,7 +177,7 @@ class MeetingFilters (forms.Form):
     bbox = forms.CharField(required=False, widget=GeoBBInput())
     earliest = forms.DateField(required=False, initial=datetime.date.today, widget=DatepickerInput())
     latest = forms.DateField(required=False, widget=DatepickerInput())
-    tags = forms.ModelMultipleChoiceField(queryset=taggit.models.Tag.objects.all(), to_field_name='slug', required=False)
+    tags = forms.ModelMultipleChoiceField(queryset=models.MeetingTopic.objects.all(), to_field_name='slug', required=False)
 
     def clean(self):
         cleaned_data = super(MeetingFilters, self).clean()

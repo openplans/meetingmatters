@@ -75,6 +75,7 @@ class MeetingListView (MeetingListMixin, views.ListView):
         if self.form.is_valid():
             return self.get_meetings(**self.form.cleaned_data)
         else:
+            logging.debug(self.form.errors)
             return []
 
     def get(self, request, *args, **kwargs):
@@ -99,7 +100,7 @@ class MeetingDetailView (views.DetailView):
     model = models.Meeting
     context_object_name = 'meeting'
     template_name = 'browse_meetings-meeting_detail.html'
-    
+
     def get_object(self, queryset=None):
         slug = self.kwargs['slug']
         try:
