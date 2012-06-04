@@ -181,7 +181,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 #    'social_auth.context_processors.social_auth_backends',
 #    'social_auth.context_processors.social_auth_by_type_backends',
 
-    'project.context_processors.regions',
     'utils.context_processors.settings.DEBUG',
     'utils.context_processors.settings.TEMPLATE_DEBUG',
     'utils.context_processors.site',

@@ -14,32 +14,20 @@ class CachingManager (models.Manager):
     def get_cache_key(self):
         opts = self.model._meta
         return '.'.join([opts.app_label, opts.module_name])
-    
+
     def cached(self):
         key = self.get_cache_key()
         topics = cache.get(key)
-        
+
         if topics is None:
             topics = self.all()
             cache.set(key, topics)
-        
+
         return topics
-    
+
     def bust_cache(self):
         key = self.get_cache_key()
         cache.delete(key)
-
-
-class Region (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
-    """A general region in which meetings take place"""
-
-    name = models.CharField(max_length=256)
-    """The name of this region"""
-
-    def __unicode__(self):
-        return self.name
-
-    objects = CachingManager()
 
 
 class Venue (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
@@ -83,20 +71,20 @@ class MeetingTopicManager (CachingManager):
     def all(self):
         return super(MeetingTopicManager, self).all().order_by('name')
 
-        
+
 class MeetingTopic (SlugifiedModelMixin, models.Model):
     name = models.CharField(verbose_name='Topic', max_length=100)
-    
+
     # meetings (reverse)
-    
+
     objects = MeetingTopicManager()
-    
+
     def __unicode__(self):
         return self.name
-    
+
     def get_pre_slug(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         super(MeetingTopic, self).save(*args, **kwargs)
         self.objects.bust_cache()
@@ -114,9 +102,6 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
 
     end_time = models.DateTimeField(null=True, blank=True, verbose_name="End time")
     """When does the meeting end.  NULL means ???."""
-
-    region = models.ForeignKey('Region', null=True, verbose_name="Region")
-    """The region in which this meeting takes place"""
 
     venue = models.ForeignKey('Venue', null=True, blank=True, related_name='meetings')
     """The venue where the meeting will take place"""
@@ -172,9 +157,6 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     def similar_meetings(self, threshold=0.7):
         T = set(self.title.lower())
         all_meetings = Meeting.objects.all()
-
-        if self.region:
-            all_meetings = all_meetings.filter(region = self.region)
 
         similar_meetings = []
         for meeting in all_meetings:
