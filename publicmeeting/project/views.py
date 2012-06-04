@@ -6,7 +6,6 @@ from datetime import date, datetime
 from meetings.forms import MeetingFilters
 from meetings.models import Meeting
 from meetings.views.browse import MeetingListMixin
-from meetings.views.browse import DefaultMeetingFilters
 
 
 class AboutView (views.TemplateView):
