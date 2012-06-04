@@ -7,7 +7,12 @@ before_install:
   - ci/before_install
 
 # command to install dependencies
-install: pip install -r requirements.txt --use-mirrors
+install:
+  - sudo apt-get install binutils gdal-bin libproj-dev postgresql-9.1-postgis
+  - pip install -r requirements.txt --use-mirrors
+
+before_script:
+  - psql -c 'create database project;' -U postgres -T template_postgis
 
 # command to run tests
 script: publicmeeting/manage.py test
