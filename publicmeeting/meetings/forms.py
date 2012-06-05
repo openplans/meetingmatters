@@ -187,6 +187,7 @@ class MeetingFilters (forms.Form):
     earliest = forms.DateField(required=False, initial=datetime.date.today, widget=DatepickerInput())
     latest = forms.DateField(required=False, widget=DatepickerInput())
     tags = forms.ModelMultipleChoiceField(queryset=models.MeetingTopic.objects.all(), to_field_name='slug', required=False)
+    canceled = forms.BooleanField(label='Show canceled meetings', required=False, initial=False)
 
     def clean(self):
         cleaned_data = super(MeetingFilters, self).clean()

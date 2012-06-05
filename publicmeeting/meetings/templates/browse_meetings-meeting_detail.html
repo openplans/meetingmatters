@@ -21,6 +21,7 @@
           {% else %}
             <div class="meeting-time">Time TBD</div>
           {% endif %}
+
         </div>
 
         <div class="span4" align="right">
@@ -28,6 +29,12 @@
           <div>{{ meeting.venue_additional|urlizetrunc:36 }}</div>
         </div>
       </div>
+
+      {% if meeting.canceled %}
+        <div class="alert alert-error">
+          This meeting has been canceled.
+        </div>
+      {% endif %}
 
       <div class="meeting-description">
         {{ meeting.description|linebreaks|urlizetrunc:50 }}

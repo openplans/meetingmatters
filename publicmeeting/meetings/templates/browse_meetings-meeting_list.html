@@ -116,7 +116,7 @@
             $('#id_filter_form input, #id_filter_form select')
               .not('#id_bbox-jump-to')
               .not('#id_bbox-enable')
-              .change(function() {
+              .change(function(e) {
                 // When a filter form input changes, submit the form.  Wait a
                 // bit before submitting, in case the user is making quick
                 // changes in succession.

@@ -10,7 +10,7 @@ from .. import models
 from .. import forms
 
 class MeetingListMixin (object):
-    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, **extra):
+    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, canceled=False, **extra):
         """
         tags -- A list of tag slugs
         region -- A list of one region slug. If there are more than one, all
@@ -24,6 +24,8 @@ class MeetingListMixin (object):
         # explicitly, since select_related doesn't follow potentially NULL
         # columns by default.
         meetings = models.Meeting.objects.all().select_related('venue')
+        if not canceled:
+            meetings = meetings.filter(canceled=False)
         if region:
             meetings = meetings.filter(region=region)
         if center and radius:
