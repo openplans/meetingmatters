@@ -23,6 +23,14 @@
     Subscribe to this list:
     <a id="id_rss-link" href="{{ rss_url }}"><i class="icon-rss"></i> RSS</a>
     <a id="id_ical-link" href="{{ ical_url }}"><i class="icon-calendar"></i> iCal</a>
+
+    <script>
+      $(function() {
+        initRssLinkPopover();
+        initIcsLinkPopover();
+      });
+    </script>
+
 <!--    <a id="id_perma-link" href="{% url "browse_meetings_meeting_list" %}?{{ request.GET.urlencode|safe }}"><i class="icon-share-alt"></i> Link</a>-->
   </div>
 </div>

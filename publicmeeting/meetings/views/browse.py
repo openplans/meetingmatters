@@ -60,10 +60,10 @@ class MeetingListView (MeetingListMixin, views.ListView):
         context = super(MeetingListView, self).get_context_data(**kwargs)
 
         tag_slugs = self.request.GET.getlist('tags')
-        all_tags = taggit_models.Tag.objects.all().order_by('name')
-        selected_tags = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
+        all_tags = models.MeetingTopic.ordered_objects.cached()
+        selected_tags = models.MeetingTopic.objects.filter(slug__in=tag_slugs)
 
-        context['tags'] = models.MeetingTopic.objects.cached()
+        context['tags'] = all_tags
         context['selected_tags'] = selected_tags
 
         context['rss_url'] = reverse('meeting_list_rss') + '?' + self.request.GET.urlencode()

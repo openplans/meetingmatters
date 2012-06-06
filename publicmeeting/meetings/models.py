@@ -89,7 +89,8 @@ class MeetingTopic (SlugifiedModelMixin, models.Model):
 
     # meetings (reverse)
 
-    objects = MeetingTopicManager()
+    objects = CachingManager()
+    ordered_objects = MeetingTopicManager()
 
     def __unicode__(self):
         return self.name

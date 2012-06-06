@@ -29,4 +29,8 @@ urlpatterns = patterns('meetings',
         name='meeting_list_rss'),
     url(r'^ical/$', feeds.MeetingListICal(),
         name='meeting_list_ical'),
+
+    # API
+    url(r'^api/v1/meetings/$', views.MeetingListApiView.as_view(),
+        name='meeting_list_resource')
 )

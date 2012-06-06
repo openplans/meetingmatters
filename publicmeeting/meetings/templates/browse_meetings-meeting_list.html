@@ -4,6 +4,17 @@
 {% load url from future %}
 
 {% block bootstrap_container_content %}
+  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+  {% compress css %}
+  {% endcompress %}
+  <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
+
+  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+  <script src="{{ STATIC_URL }}js/meetings_filter.js"></script>
+  <script src="{{ STATIC_URL }}js/meetings_subscription.js"></script>
+  {% compress js %}
+  {% endcompress %}
+
   <div class="row">
     <div id="id_browse-meetings-wrapper" class="browse-meetings-wrapper span8">
       {% include "partials/meetings_browse_meetings.html" %}
@@ -11,16 +22,6 @@
 
     <div class="homepage-sidebar-wrapper span4">
       <div class="well">
-
-        <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
-        {% compress css %}
-        {% endcompress %}
-        <!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.ie.css"><![endif]-->
-
-        <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-        <script src="{{ STATIC_URL }}js/meetings_filter.js"></script>
-        {% compress js %}
-        {% endcompress %}
 
         {% if filter_form.is_valid %}
         {% with filters=filter_form.cleaned_data %}
