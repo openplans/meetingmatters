@@ -170,3 +170,19 @@ function hidePlaceFilter() {
 function hideTimeFilter() {
   $('#id_time-filter-wrapper').hide();
 }
+
+function hideMeetingListUpdateAlert() {
+  $('#id_loading-meetings-alert').slideUp();
+}
+
+function updateMeetingList(filterTimeout) {
+  $('#id_loading-meetings-alert').slideDown();
+
+  // When a filter form input changes, submit the form.  Wait a
+  // bit before submitting, in case the user is making quick
+  // changes in succession.
+  clearTimeout(filterTimeout);
+  return setTimeout(function() {
+    $('#id_filter_form').submit();
+  }, 1000);
+}
