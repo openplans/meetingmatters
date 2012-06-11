@@ -125,11 +125,19 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = os.path.join(PROJECT_PATH, '..', '..', 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = get_local('STATIC_URL', '/static/')
+
+# Where to put static files.
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = get_local('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = get_local('AWS_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = get_local('AWS_STORAGE_BUCKET_NAME', '')
+
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
