@@ -227,6 +227,7 @@ LESSC_PATH = os.path.abspath(os.path.join(PROJECT_PATH, '../../node_modules/less
 COMPRESS_PRECOMPILERS = (
     ('text/less', LESSC_PATH + ' {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
 )
+COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # So that the relative paths stay the same in our LESS as in our compiled CSS,
 # dump the compiled/compressed files into the STATIC_URL directory.
