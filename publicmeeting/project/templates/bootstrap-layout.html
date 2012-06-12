@@ -1,5 +1,4 @@
 {% load bootstrap %}
-{% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,9 +22,7 @@
     <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
 
     <!-- Le styles -->
-    {% compress css %}
-      <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/publicmeeting.css">
-    {% endcompress %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/publicmeeting.css">
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -91,10 +88,8 @@
       <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     {% endif %}
 
-    {% compress js %}
-      <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
-      <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
-    {% endcompress %}
+    <script src="{{ STATIC_URL }}js/jquery.combobox.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.form.js"></script>
 
 
     <script type="text/javascript">
