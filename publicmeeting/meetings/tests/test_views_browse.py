@@ -3,17 +3,16 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Point
-from taggit.models import Tag
 from nose.tools import *
 
-from meetings.models import Meeting, Venue
+from meetings.models import Meeting, Venue, MeetingTopic
 from meetings.views.browse import MeetingListView
 
 class Test_MeetingListView:
 
     def setup(world):
         Meeting.objects.all().delete()
-        Tag.objects.all().delete()
+        MeetingTopic.objects.all().delete()
         Venue.objects.all().delete()
 
         world.url = reverse('browse_meetings_meeting_list')
@@ -22,9 +21,9 @@ class Test_MeetingListView:
 
     @istest
     def returns_only_meetings_with_the_specified_tags (world):
-        t1 = Tag.objects.create(name='t1')
-        t2 = Tag.objects.create(name='t2')
-        t3 = Tag.objects.create(name='t3')
+        t1 = MeetingTopic.objects.create(name='t1', slug='t1')
+        t2 = MeetingTopic.objects.create(name='t2', slug='t2')
+        t3 = MeetingTopic.objects.create(name='t3', slug='t3')
 
         m1 = Meeting.objects.create(slug='m1'); m1.tags.add(t1)
         m2 = Meeting.objects.create(slug='m2'); m2.tags.add(t2)

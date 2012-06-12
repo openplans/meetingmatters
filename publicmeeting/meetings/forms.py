@@ -69,13 +69,25 @@ class MeetingTopicField(forms.CharField):
             tag_names = parse_tags(value)
         except ValueError:
             raise forms.ValidationError(_("Please provide a comma-separated list of tags."))
-        
+
         tags = []
         for tag_name in tag_names:
             tag, created = models.MeetingTopic.objects.get_or_create(name=tag_name)
             tags.append(tag.id)
-        
+
         return tags
+
+
+class DatepickerInput (forms.DateInput):
+    template_name = 'floppyforms/meetings_datepicker.html'
+
+
+class GeoBBInput (forms.DateInput):
+    template_name = 'floppyforms/meetings_bbmap_google.html'
+
+
+class CancelMeetingInput (forms.CheckboxInput):
+    template_name = 'floppyforms/meetings_cancel_box.html'
 
 
 class FillInMeetingInfoForm (forms.ModelForm):
@@ -114,6 +126,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
             'region': forms.Select(attrs={'class':'span6'}),
             'venue': forms.Select(attrs={'class':'span4'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
+            'canceled': CancelMeetingInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -132,6 +145,10 @@ class FillInMeetingInfoForm (forms.ModelForm):
             Fieldset(
                 'Step 2: Enter the location',
                 'region', 'venue', 'venue_additional'
+            ),
+            Fieldset(
+                'Cancellation',
+                'canceled'
             ),
             ButtonHolder(
                 Submit('check', 'Save', css_class='btn btn-primary pull-right')
@@ -162,14 +179,6 @@ class DefaultFilters (forms.Form):
     )
 
 
-class DatepickerInput (forms.DateInput):
-    template_name = 'floppyforms/meetings_datepicker.html'
-
-
-class GeoBBInput (forms.DateInput):
-    template_name = 'floppyforms/meetings_bbmap_google.html'
-
-
 class MeetingFilters (forms.Form):
     region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False, empty_label='All regions')
     center = forms.CharField(required=False)
@@ -177,7 +186,8 @@ class MeetingFilters (forms.Form):
     bbox = forms.CharField(required=False, widget=GeoBBInput())
     earliest = forms.DateField(required=False, initial=datetime.date.today, widget=DatepickerInput())
     latest = forms.DateField(required=False, widget=DatepickerInput())
-    tags = forms.ModelMultipleChoiceField(queryset=taggit.models.Tag.objects.all(), to_field_name='slug', required=False)
+    tags = forms.ModelMultipleChoiceField(queryset=models.MeetingTopic.objects.all(), to_field_name='slug', required=False)
+    canceled = forms.BooleanField(label='Show canceled meetings', required=False, initial=False)
 
     def clean(self):
         cleaned_data = super(MeetingFilters, self).clean()

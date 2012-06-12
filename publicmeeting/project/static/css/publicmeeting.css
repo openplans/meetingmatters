@@ -2761,7 +2761,7 @@ input[type="submit"].btn.small {
 .navbar-search .search-query :-moz-placeholder {
   color: #eeeeee;
 }
-.navbar-search .search-query::-webkit-input-placeholder {
+.navbar-search .search-query ::-webkit-input-placeholder {
   color: #eeeeee;
 }
 .navbar-search .search-query:hover {
@@ -3777,5 +3777,8 @@ body {
 }
 .filter-date-wrapper,
 .filter-section-separator {
+  clear: both;
+}
+.alert {
   clear: both;
 }

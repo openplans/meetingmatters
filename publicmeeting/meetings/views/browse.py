@@ -10,7 +10,7 @@ from .. import models
 from .. import forms
 
 class MeetingListMixin (object):
-    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, **extra):
+    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, canceled=False, **extra):
         """
         tags -- A list of tag slugs
         region -- A list of one region slug. If there are more than one, all
@@ -24,6 +24,8 @@ class MeetingListMixin (object):
         # explicitly, since select_related doesn't follow potentially NULL
         # columns by default.
         meetings = models.Meeting.objects.all().select_related('venue')
+        if not canceled:
+            meetings = meetings.filter(canceled=False)
         if region:
             meetings = meetings.filter(region=region)
         if center and radius:
@@ -58,10 +60,10 @@ class MeetingListView (MeetingListMixin, views.ListView):
         context = super(MeetingListView, self).get_context_data(**kwargs)
 
         tag_slugs = self.request.GET.getlist('tags')
-        all_tags = taggit_models.Tag.objects.all().order_by('name')
-        selected_tags = taggit_models.Tag.objects.filter(slug__in=tag_slugs)
+        all_tags = models.MeetingTopic.ordered_objects.cached()
+        selected_tags = models.MeetingTopic.objects.filter(slug__in=tag_slugs)
 
-        context['tags'] = models.MeetingTopic.objects.cached()
+        context['tags'] = all_tags
         context['selected_tags'] = selected_tags
 
         context['rss_url'] = reverse('meeting_list_rss') + '?' + self.request.GET.urlencode()
@@ -75,6 +77,7 @@ class MeetingListView (MeetingListMixin, views.ListView):
         if self.form.is_valid():
             return self.get_meetings(**self.form.cleaned_data)
         else:
+            logging.debug(self.form.errors)
             return []
 
     def get(self, request, *args, **kwargs):
@@ -99,7 +102,7 @@ class MeetingDetailView (views.DetailView):
     model = models.Meeting
     context_object_name = 'meeting'
     template_name = 'browse_meetings-meeting_detail.html'
-    
+
     def get_object(self, queryset=None):
         slug = self.kwargs['slug']
         try:

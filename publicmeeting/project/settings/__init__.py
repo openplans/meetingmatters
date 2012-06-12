@@ -125,11 +125,19 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
+STATIC_ROOT = os.path.join(PROJECT_PATH, '..', '..', 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = get_local('STATIC_URL', '/static/')
+
+# Where to put static files.
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = get_local('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = get_local('AWS_SECRET_ACCESS_KEY', '')
+AWS_STORAGE_BUCKET_NAME = get_local('AWS_STORAGE_BUCKET_NAME', '')
+
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -210,7 +218,7 @@ WSGI_APPLICATION = 'wsgi.application'
 # Static File Precompilation
 #
 
-COMPRESS_ENABLED = True  # set to ``not DEBUG`` by default
+COMPRESS_ENABLED = False  # set to ``not DEBUG`` by default
 
 # Since we want to precompile our project's LESS against Bootstrap, we must
 # specify the location of Bootstrap's less files in the lessc command.
@@ -219,6 +227,8 @@ LESSC_PATH = os.path.abspath(os.path.join(PROJECT_PATH, '../../node_modules/less
 COMPRESS_PRECOMPILERS = (
     ('text/less', LESSC_PATH + ' {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
 )
+COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+COMPRESS_OFFLINE = True
 
 # So that the relative paths stay the same in our LESS as in our compiled CSS,
 # dump the compiled/compressed files into the STATIC_URL directory.

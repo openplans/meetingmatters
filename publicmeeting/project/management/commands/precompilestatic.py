@@ -15,7 +15,7 @@ class Command(BaseCommand):
         params = dict(
             infile = os.path.join(static_dir, 'less', 'publicmeeting.less'),
             outfile = os.path.join(static_dir, 'css', 'publicmeeting.css'),
-            bootstrap_dir = os.path.join(static_dir, '..', '..', '..', '.env/lib/python2.7/site-packages/bootstrapped/static/less/')
+            bootstrap_dir = os.path.join(static_dir, '..', '..', '..', 'env/lib/python2.7/site-packages/bootstrapped/static/less/')
         )
 
         assert os.path.exists(params['bootstrap_dir'])

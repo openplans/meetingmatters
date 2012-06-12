@@ -34,7 +34,3 @@ urlpatterns = patterns('',
     url(r'^set-region/$', views.RegionSetterView.as_view(),
         name='set-region'),
 )
-
-# Serve static files
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-urlpatterns += staticfiles_urlpatterns()

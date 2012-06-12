@@ -14,17 +14,17 @@ class CachingManager (models.Manager):
     def get_cache_key(self):
         opts = self.model._meta
         return '.'.join([opts.app_label, opts.module_name])
-    
+
     def cached(self):
         key = self.get_cache_key()
         topics = cache.get(key)
-        
+
         if topics is None:
             topics = self.all()
             cache.set(key, topics)
-        
+
         return topics
-    
+
     def bust_cache(self):
         key = self.get_cache_key()
         cache.delete(key)
@@ -83,23 +83,24 @@ class MeetingTopicManager (CachingManager):
     def all(self):
         return super(MeetingTopicManager, self).all().order_by('name')
 
-        
+
 class MeetingTopic (SlugifiedModelMixin, models.Model):
     name = models.CharField(verbose_name='Topic', max_length=100)
-    
+
     # meetings (reverse)
-    
-    objects = MeetingTopicManager()
-    
+
+    objects = CachingManager()
+    ordered_objects = MeetingTopicManager()
+
     def __unicode__(self):
         return self.name
-    
+
     def get_pre_slug(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         super(MeetingTopic, self).save(*args, **kwargs)
-        self.objects.bust_cache()
+        MeetingTopic.objects.bust_cache()
 
 
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
@@ -136,6 +137,9 @@ class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     speakers = models.ManyToManyField('auth.User', related_name='speaking_meetings', blank=True)
     attendees = models.ManyToManyField('auth.User', related_name='attending_meetings', blank=True)
     """Who is attending and/or speaking at the meeting"""
+
+    canceled = models.BooleanField(default=False, blank=True)
+    """Whether the meeting is canceled"""
 
     # Meeting has no geo fields, but we want to be able to do geo queries on
     # meetings, so we need a GeoManager.

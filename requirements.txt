@@ -51,3 +51,7 @@ django-debug-toolbar
 
 # Time
 pytz
+
+# Deployment
+django-storages
+boto
