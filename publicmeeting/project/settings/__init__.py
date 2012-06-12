@@ -73,6 +73,7 @@ def get_local(varname, default=None):
 DEBUG = (get_local('DEBUG', 'True') == 'True')
 TEMPLATE_DEBUG = (get_local('TEMPLATE_DEBUG', DEBUG) in ('True', True))
 SHOW_DEBUG_TOOLBAR = (get_local('SHOW_DEBUG_TOOLBAR', 'True') == 'True')
+USE_S3 = (get_local('USE_S3', 'False') == 'True')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -131,12 +132,18 @@ STATIC_ROOT = os.path.join(PROJECT_PATH, '..', '..', 'static')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = get_local('STATIC_URL', '/static/')
 
-# Where to put static files.
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+# If we have an S3 bucket set up, then make sure that everything that should
+# uses it as a storage backend.
 AWS_ACCESS_KEY_ID = get_local('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = get_local('AWS_SECRET_ACCESS_KEY', '')
 AWS_STORAGE_BUCKET_NAME = get_local('AWS_STORAGE_BUCKET_NAME', '')
+
+USE_S3_STORAGE = get_local('USE_S3_STORAGE', AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME)
+
+if USE_S3_STORAGE:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
@@ -227,7 +234,6 @@ LESSC_PATH = os.path.abspath(os.path.join(PROJECT_PATH, '../../node_modules/less
 COMPRESS_PRECOMPILERS = (
     ('text/less', LESSC_PATH + ' {infile} {outfile} -I' + BOOTSTRAP_LESS_DIR),
 )
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 COMPRESS_OFFLINE = True
 
 # So that the relative paths stay the same in our LESS as in our compiled CSS,
