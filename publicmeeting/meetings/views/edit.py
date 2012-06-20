@@ -90,11 +90,7 @@ class CreateMeetingInfoView (MeetingInfoFormViewMixin, views.CreateView):
         self.object = models.Meeting(**self.get_workflow_data())
 
         default_filters = self.request.session.get('default_filters', {})
-        if 'region' in default_filters:
-            try:
-                self.object.region = models.Region.objects.get(slug=default_filters['region'])
-            except models.Region.DoesNotExist:
-                pass
+        # Set default, auto-fill form values here.  None are set right now.
 
         return super(CreateMeetingInfoView, self).get_form_kwargs()
 

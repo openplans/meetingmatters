@@ -10,11 +10,9 @@ from .. import models
 from .. import forms
 
 class MeetingListMixin (object):
-    def get_meetings(self, earliest=None, latest=None, tags=[], region=None, center=None, radius=None, bbox=None, canceled=False, **extra):
+    def get_meetings(self, earliest=None, latest=None, tags=[], center=None, radius=None, bbox=None, canceled=False, **extra):
         """
         tags -- A list of tag slugs
-        region -- A list of one region slug. If there are more than one, all
-            but the last one are ignored.
         extra -- This should usually be empty
 
         """
@@ -26,8 +24,6 @@ class MeetingListMixin (object):
         meetings = models.Meeting.objects.all().select_related('venue')
         if not canceled:
             meetings = meetings.filter(canceled=False)
-        if region:
-            meetings = meetings.filter(region=region)
         if center and radius:
             meetings = meetings.filter(venue__location__distance_lte=(center, radius))
         if bbox:
@@ -111,25 +107,3 @@ class MeetingDetailView (views.DetailView):
             from django.http import Http404
             raise Http404(_(u"No %(verbose_name)s found matching the query") %
                           {'verbose_name': models.Meeting._meta.verbose_name})
-
-
-class DefaultMeetingFilters (views.FormView):
-    form_class = forms.DefaultFilters
-    template_name = 'choose_region.html'
-
-    def get_success_url(self):
-        return reverse('project-home')
-
-    def get_context_data(self, **kwargs):
-        context = super(DefaultMeetingFilters, self).get_context_data(**kwargs)
-        context['regions'] = models.Region.objects.all()
-        return context
-
-    def form_valid(self, form):
-        default_filters = self.request.session.get('default_filters', {})
-
-        region = form.cleaned_data.get('region', None)
-        default_filters['region'] = region.slug if region else None
-
-        self.request.session['default_filters'] = default_filters
-        return super(DefaultMeetingFilters, self).form_valid(form)

@@ -123,7 +123,6 @@ class FillInMeetingInfoForm (forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class':'span6'}),
             'description': forms.Textarea(attrs={'class':'span6'}),
-            'region': forms.Select(attrs={'class':'span6'}),
             'venue': forms.Select(attrs={'class':'span4'}),
             'venue_additional': forms.Textarea(attrs={'class':'span6', 'rows':'3'}),
             'canceled': CancelMeetingInput(),
@@ -144,7 +143,7 @@ class FillInMeetingInfoForm (forms.ModelForm):
             ),
             Fieldset(
                 'Step 2: Enter the location',
-                'region', 'venue', 'venue_additional'
+                'venue', 'venue_additional'
             ),
             Fieldset(
                 'Cancellation',
@@ -172,15 +171,10 @@ class FillInMeetingInfoForm (forms.ModelForm):
 
 
 class DefaultFilters (forms.Form):
-    region = forms.ModelChoiceField(
-        queryset=models.Region.objects.all(),
-        to_field_name='slug',
-        widget=forms.HiddenInput(),
-    )
+    pass
 
 
 class MeetingFilters (forms.Form):
-    region = forms.ModelChoiceField(queryset=models.Region.objects.all(), to_field_name='slug', required=False, empty_label='All regions')
     center = forms.CharField(required=False)
     radius = forms.FloatField(required=False)
     bbox = forms.CharField(required=False, widget=GeoBBInput())
@@ -245,7 +239,7 @@ class VenueForm (forms.ModelForm):
 #            ),
 #            Fieldset(
 #                'Step 2: Enter the location',
-#                'region', 'venue', 'venue_additional'
+#                'venue', 'venue_additional'
 #            ),
 #            ButtonHolder(
 #                Submit('check', 'Save', css_class='btn btn-primary pull-right')

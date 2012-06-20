@@ -45,23 +45,9 @@
       </div>
 
       <div class="navbar-underlay">
+
         {% block bootstrap_navbar_underlay %}
         {% endblock %}
-
-        <div class="underlay" align="right">
-          <div class="container">
-            Interested in:
-            <span class="dropdown active">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">{% if current_region %}the {{ current_region.name }}{% else %}all regions{% endif %} <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li {% if not current_region %}class="active"{% endif %}><a href="{% url set-region %}?next={{ request.get_full_path|urlencode }}">all regions</a></li>
-                {% for region in regions %}
-                  <li {% if region.slug == current_region.slug %}class="active"{% endif %}><a href="{% url set-region %}?region={{ region.slug|urlencode }}&next={{ request.get_full_path|urlencode }}">{{ region.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </span>
-          </div>
-        </div>
 
       </div>
 
