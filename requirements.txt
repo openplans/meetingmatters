@@ -29,7 +29,7 @@ django-shorturls
 git+git://github.com/statesofpop/django-cal.git#egg=django-cal
 
 # Authentication
-django-social-auth
+django-social-auth==0.7.22
 
 # Async requests
 djangorestframework
