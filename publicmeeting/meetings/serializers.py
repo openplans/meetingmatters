@@ -1,11 +1,12 @@
 import json
-from djangorestframework import resources
-from . import models
+from rest_framework import serializers
+from meetings import models
 
-class MeetingResource (resources.ModelResource):
-    model = models.Meeting
-    queryset = model.objects.all().prefetch_related('tags').select_related('venue')
-    exclude = ['region', 'speakers', 'attendees', 'venue_name', 'venue_additional']
+class MeetingSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = models.Meeting
+        queryset = model.objects.all().prefetch_related('tags').select_related('venue')
+        exclude = ['region', 'speakers', 'attendees', 'venue_name', 'venue_additional']
 
     def topics(self, meeting):
         return [tag.name for tag in meeting.tags.all()]

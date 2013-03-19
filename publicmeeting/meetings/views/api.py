@@ -1,5 +1,9 @@
-from djangorestframework import views, mixins
-from .. import resources
+from rest_framework.generics import ListAPIView
+from meetings import serializers
+from meetings import models
 
-class MeetingListApiView (mixins.PaginatorMixin, views.ListModelView):
-    resource = resources.MeetingResource
+class MeetingListApiView (ListAPIView):
+    model = models.Meeting
+    serializer_class = serializers.MeetingSerializer
+    paginate_by = 10
+    paginate_by_param = 'page_size'

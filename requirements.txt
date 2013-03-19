@@ -1,5 +1,5 @@
 # The server
-Django==1.4
+Django<1.5
 # Unlike the gunicorn defined in Heroku's Django example, we're going
 # to use one of the async worker classes, "gevent". Using an async worker class
 # is recommended when serving traffic directly to gunicorn (which is what
@@ -16,7 +16,7 @@ pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 
 # Revision management
-django-reversion==1.6.0
+django-reversion>=1.7
 
 # Search
 django-haystack

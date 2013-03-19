@@ -310,7 +310,7 @@ COMMUNITY_APPS = (
     'compressor',
     'reversion',
     'shorturls',
-    'djangorestframework',
+    'rest_framework',
     'floppyforms',
 )
 
