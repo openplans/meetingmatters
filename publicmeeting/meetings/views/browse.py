@@ -41,7 +41,7 @@ class MeetingListMixin (object):
             #    meetings.filter(tags=tag)
 
         meetings = meetings.distinct().order_by('begin_time')
-        return meetings
+        return meetings.prefetch_related('minutes')
 
     def get_query_params(self):
         pass
