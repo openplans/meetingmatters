@@ -91,6 +91,20 @@ class MeetingTopic (SlugifiedModelMixin, models.Model):
         MeetingTopic.objects.bust_cache()
 
 
+class MeetingMinutes (models.Model):
+    meeting = models.ForeignKey('Meeting', related_name='minutes')
+    """The meeting that the minutes are for"""
+
+    poster = models.ForeignKey('auth.User', related_name='minutes')
+    """The user posting the minutes"""
+
+    label = models.CharField(max_length=140)
+    """The label or title of the minutes; e.g. 'Official meeting minutes'"""
+
+    url = models.URLField()
+    """The URL where the minutes are posted"""
+
+
 class Meeting (SlugifiedModelMixin, TimestampedModelMixin, models.Model):
     title = models.CharField(max_length=1023, verbose_name="Meeting Name", help_text="The meeting name should be descriptive. What makes a good meeting name? What makes a bad one?")
     """The title of the meeting"""
