@@ -359,7 +359,7 @@ INTERNAL_IPS = ('127.0.0.1',)
 # the site admins on every HTTP 500 error.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
+LOGGING = get_local('LOGGING', {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
@@ -375,4 +375,4 @@ LOGGING = {
             'propagate': True,
         },
     }
-}
+})
