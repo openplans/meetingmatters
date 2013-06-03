@@ -8,7 +8,7 @@ from uni_form.helper import FormHelper
 from uni_form.layout import Layout, ButtonHolder, Submit, Fieldset
 
 from . import models
-from utils.geocode import geocode
+from ..utils.geocode import geocode
 
 import logging
 log = logging.getLogger(__name__)

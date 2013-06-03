@@ -9,7 +9,7 @@ from django.views import generic as views
 from taggit import models as taggit_models
 from uni_form.layout import Hidden
 
-from utils.decorators import LoginRequired
+from ...utils.decorators import LoginRequired
 
 from .. import forms
 from .. import models

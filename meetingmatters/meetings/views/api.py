@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView
-from meetings import serializers
-from meetings import models
+from .. import serializers
+from .. import models
 
 class MeetingListApiView (ListAPIView):
     model = models.Meeting

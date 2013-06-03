@@ -1,5 +1,5 @@
 import json
-import requests
+import urllib2
 
 def possibilities(partial_address):
     results = geocode(partial_address)['results']
@@ -9,17 +9,19 @@ def geocode(address, retries=5, service='google', **kwargs):
     """attempts to geocode an address"""
 
     if service == 'google':
-        response = requests.get(
-            'http://maps.googleapis.com/maps/api/geocode/json',
-            params={'address': address, 'sensor': 'false'})
 
-        if response.status_code != 200 and retries > 0:
-            return geocode(address, retries-1)
-        if response.status_code != 200:
-            return None
+        try:
+            response = urllib2.urlopen(
+                'http://maps.googleapis.com/maps/api/geocode/json'
+                '?address=%s&sensor=false' % address)
+        except urllib2.HTTPError, e:
+            if retries > 0:
+                return geocode(address, retries-1)
+            else:
+                return None
 
-        response.encoding = 'UTF8'
-        return json.loads(response.text)
+        response_text = response.read().decode('utf-8')
+        return json.loads(response_text)
 
     else:
         raise ValueError('Unrecognized service: %s' % service)

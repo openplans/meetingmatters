@@ -6,8 +6,8 @@ from django.core.cache import cache
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
 
-from utils.geocode import geocode
-from utils.models import TimestampedModelMixin, SlugifiedModelMixin
+from ..utils.geocode import geocode
+from ..utils.models import TimestampedModelMixin, SlugifiedModelMixin
 
 
 class CachingManager (models.Manager):

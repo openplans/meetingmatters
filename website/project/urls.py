@@ -22,8 +22,8 @@ urlpatterns = patterns('',
     url(r'', include('django.contrib.auth.urls')),
 
     url(r'^s/', include('shorturls.urls')),
-    url(r'^meetings/', include('meetings.urls')),
-    url(r'^utils/', include('utils.urls')),
+    url(r'^meetings/', include('meetingmatters.meetings.urls')),
+    url(r'^utils/', include('meetingmatters.utils.urls')),
 
     url(r'^$', views.HomepageView.as_view(),
         name='project-home'),

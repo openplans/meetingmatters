@@ -196,9 +196,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 #    'social_auth.context_processors.social_auth_backends',
 #    'social_auth.context_processors.social_auth_by_type_backends',
 
-    'utils.context_processors.settings.DEBUG',
-    'utils.context_processors.settings.TEMPLATE_DEBUG',
-    'utils.context_processors.site',
+    'meetingmatters.utils.context_processors.settings.DEBUG',
+    'meetingmatters.utils.context_processors.settings.TEMPLATE_DEBUG',
+    'meetingmatters.utils.context_processors.site',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -289,7 +289,7 @@ TWITTER_CONSUMER_SECRET      = get_local('TWITTER_CONSUMER_SECRET')
 #
 
 SHORTEN_MODELS = {
-    'm': 'meetings.meeting',
+    'm': 'meetingmatters.meetings.meeting',
 }
 #SHORT_BASE_URL = 'http://mtm.tt/'
 
@@ -315,13 +315,13 @@ COMMUNITY_APPS = (
 )
 
 MY_REUSABLE_APPS = (
-    'datetime_fields',
-    'utils',
+    'meetingmatters.datetime_fields',
+    'meetingmatters.utils',
+    'meetingmatters.meetings',
 )
 
 PROJECT_APPS = (
     'project',
-    'meetings',
 )
 
 INSTALLED_APPS = (

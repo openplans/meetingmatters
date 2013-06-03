@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.views import generic as views
 from datetime import date, datetime
 
-from meetings.forms import MeetingFilters
-from meetings.models import Meeting
-from meetings.views.browse import MeetingListMixin
+from meetingmatters.meetings.forms import MeetingFilters
+from meetingmatters.meetings.models import Meeting
+from meetingmatters.meetings.views.browse import MeetingListMixin
 
 
 class AboutView (views.TemplateView):
